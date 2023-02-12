@@ -26,7 +26,7 @@ export const Dashboard = props => {
     <View style={styles.container}>
        
        <Text style={[typography.title, { color: colors.text }]}>
-       Dashboard Screen
+       Dashboard1 Screen
       </Text>
       <View style={{backgroundColor: '#FE4D4D', marginTop:20, borderWidth:1,paddingHorizontal:20, borderRadius:10}}>
         <Button title="Logout" onPress={logoutUser} />

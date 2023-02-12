@@ -1,7 +1,5 @@
 import { UserController } from '../controllers';
 import { debug } from 'react-native-reanimated';
-import SimpleToast from 'react-native-simple-toast';
-import Toast from 'react-native-simple-toast';
 import idx from 'idx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { navigate } from '../navigation/NavigationService';

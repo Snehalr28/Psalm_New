@@ -24,7 +24,6 @@ import {
 } from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {background} from '../../assets';
-import Toast from 'react-native-simple-toast';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {forgotPassword} from '../../actions/UserActions';

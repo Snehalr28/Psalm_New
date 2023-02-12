@@ -10,8 +10,6 @@ import {
   logoutUser,
   resendOtpUrl
 } from '../controllers/ApiList';
-import SimpleToast from 'react-native-simple-toast';
-import Toast from 'react-native-simple-toast';
 import { Alert } from 'react-native';
 export class UserController {
   static login(data) {

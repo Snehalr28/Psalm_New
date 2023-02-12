@@ -21,7 +21,6 @@ import {
   Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Toast from 'react-native-simple-toast';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../screens/CreateNewPassword/CreateNewPassword.styles';
 import {ScrollView} from 'react-native-gesture-handler';
