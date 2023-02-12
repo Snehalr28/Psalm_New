@@ -6,7 +6,7 @@ import {
   forgotPasswordUrl,
   confirmOtpUrl,
   resetPasswordUrl,
-  uploadurl,
+  updateMentorUrl,
   logoutUser,
   resendOtpUrl
 } from '../controllers/ApiList';
@@ -35,6 +35,27 @@ export class UserController {
 
           reject(error);
           Alert.alert(error.message);
+          console.log('log2',error)
+        });
+    });
+  }
+
+  static updateMentor(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.put(updateMentorUrl, data)
+        .then((response) => {
+          console.log('response<<<', response);
+          if (response.status == 'Success' ) {
+           console.log("success#######",response.status)
+            resolve({ response });
+          } else {
+            console.log('log1',response.message)
+          alert(response.message);
+            reject(response.message);
+          }
+        })
+        .catch((error) => {
+          reject(error);
           console.log('log2',error)
         });
     });

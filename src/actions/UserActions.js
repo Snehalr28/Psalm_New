@@ -12,6 +12,10 @@ export const TYPES = {
   LOGIN_ERROR: 'LOGIN_ERROR',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
 
+  UPDATE_MENTOR_REQUEST: 'UPDATE_MENTOR',
+  UPDATE_MENTOR_ERROR: 'UPDATE_MENTOR_ERROR',
+  UPDATE_MENTOR_SUCCESS: 'UPDATE_MENTOR_SUCCESS',
+
   REGISTER_REQUEST: 'REGISTER_REQUEST',
   REGISTER_ERROR: 'REGISTER_ERROR',
   REGISTER_SUCCESS: 'REGISTER_SUCCESS',
@@ -48,6 +52,18 @@ const loginRequest = () => ({
   payload: null,
 });
 
+const updateMentorRequest = () => ({
+  type: TYPES.UPDATE_MENTOR_REQUEST,
+  payload: null,
+});
+const updateMentorSuccess = (user) => ({
+  type: TYPES.UPDATE_MENTOR_SUCCESS,
+  payload: { user },
+});
+const updateMentorError = (error) => ({
+  type: TYPES.UPDATE_MENTOR_ERROR,
+  payload: { error },
+});
 const loginSuccess = (user) => ({
   type: TYPES.LOGIN_SUCCESS,
   payload: { user },
@@ -167,6 +183,28 @@ const uploadImageError = () => ({
   type: TYPES.UPLOAD_IMAGE_ERROR,
 });
 
+export const updateMentor= (data) => async (dispatch) =>{
+  console.log("dataaisss",data )
+  dispatch(updateMentorRequest());
+  // dispatch(loaderRequest());
+  console.log("Loder req call")
+  try {
+    const user = await UserController.updateMentor(data);
+    console.log('user------>', user)
+    console.log('userToken<<<', userToken)
+    dispatch(updateMentor(user));
+    console.log("Login success call")
+    dispatch(loaderSuccess());
+    console.log("Loder success call")
+
+  } catch (error) {
+    console.log(error)
+    dispatch(loaderError());
+    alert(error.response.message);
+    dispatch(loginError(error));
+  }
+
+}
 
 export const loginUser = (data) => async (dispatch) => {
   console.log("dataaisss",data )

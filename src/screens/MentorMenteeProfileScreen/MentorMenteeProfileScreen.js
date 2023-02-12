@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,17 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 // import CommonTextInput from '../../components/CommonTextInput';
 import {TextInput, HelperText} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-  export const MentorMenteeProfile = props => {
-    const [on, off] = useState(false);
+import {useSelector, useDispatch} from 'react-redux';
+
+import {getUser} from '../../selectors/UserSelectors';
+import {updateMentor} from '../../actions/UserActions';
+
+export const MentorMenteeProfile = props => {
+  const [on, off] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
+  const [number, setMobileNumber] = useState('');
   const [gender, setGender] = useState('');
   const [bio, setBio] = useState('');
   const [Dob, setDob] = useState('');
@@ -50,107 +55,131 @@ import {useNavigation} from '@react-navigation/native';
   const [skillTypeError, setSkillTypeError] = useState(false);
   const [skillNameError, setSkillNameError] = useState(false);
   const [certificateError, setCertificateError] = useState(false);
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  let userData = useSelector(getUser);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    setFirstName(userData.response.data.name);
+    setLastName(userData.response.data.name);
+    setEmail(userData.response.data.email);
+  }, []);
   const handleSubmitButton = () => {
-    if (firstName === '') {
-      // Alert.alert("Email can not be blank")
-      setFirstNameError(true);
-    } else {
-      setFirstNameError(false);
-    }
-    if (lastName === '') {
-      // Alert.alert("Password can not be blank")
-      setLastNameError(true);
-    } else {
-      setLastNameError(false);
-    }
-    if (email === '') {
-      // Alert.alert("Email can not be blank")
-      setEmailError(true);
-    } else {
-      setEmailError(false);
-    }
-    if (number === '') {
-      // Alert.alert("Password can not be blank")
-      setNumberError(true);
-    } else {
-      setNumberError(false);
-    }
-    if (Dob === '') {
-      // Alert.alert("Password can not be blank")
-      setDobError(true);
-    } else {
-      setDobError(false);
-    }
-    if (gender === '') {
-      // Alert.alert("Password can not be blank")
-      setGenderError(true);
-    } else {
-      setGenderError(false);
-    }
-    if (bio === '') {
-      // Alert.alert("Email can not be blank")
-      setBioError(true);
-    } else {
-      setBioError(false);
-    }
-    if (verification === '') {
-      // Alert.alert("Password can not be blank")
-      setVerificationError(true);
-    } else {
-      setVerificationError(false);
-    }
-    if (language === '') {
-      // Alert.alert("Email can not be blank")
-      setLanguageError(true);
-    } else {
-      setLanguageError(false);
-    }
-    if (address === '') {
-      // Alert.alert("Password can not be blank")
-      setAddressError(true);
-    } else {
-      setAddressError(false);
-    }
-    if (city === '') {
-      // Alert.alert("Password can not be blank")
-      setCityError(true);
-    } else {
-      setCityError(false);
-    }
-    if (province === '') {
-      // Alert.alert("Password can not be blank")
-      setProvinceError(true);
-    } else {
-      setProvinceError(false);
-    }
-    if (postalCode === '') {
-      // Alert.alert("Password can not be blank")
-      setPostalCodeError(true);
-    } else {
-      setPostalCodeError(false);
-    }
-    if (country === '') {
-      // Alert.alert("Password can not be blank")
-      setCountryError(true);
-    } else {
-      setCountryError(false);
-    }
-    if (skillName === '') {
-      // Alert.alert("Password can not be blank")
-      setSkillNameError(true);
-    } else {
-      setSkillNameError(false);
-    }
+    // if (firstName === '') {
+    //   // Alert.alert("Email can not be blank")
+    //   setFirstNameError(true);
+    // } else {
+    //   setFirstNameError(false);
+    // }
+    // if (lastName === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setLastNameError(true);
+    // } else {
+    //   setLastNameError(false);
+    // }
+    // if (email === '') {
+    //   // Alert.alert("Email can not be blank")
+    //   setEmailError(true);
+    // } else {
+    //   setEmailError(false);
+    // }
+    // if (number === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setNumberError(true);
+    // } else {
+    //   setNumberError(false);
+    // }
+    // if (Dob === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setDobError(true);
+    // } else {
+    //   setDobError(false);
+    // }
+    // if (gender === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setGenderError(true);
+    // } else {
+    //   setGenderError(false);
+    // }
+    // if (bio === '') {
+    //   // Alert.alert("Email can not be blank")
+    //   setBioError(true);
+    // } else {
+    //   setBioError(false);
+    // }
+    // if (verification === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setVerificationError(true);
+    // } else {
+    //   setVerificationError(false);
+    // }
+    // if (language === '') {
+    //   // Alert.alert("Email can not be blank")
+    //   setLanguageError(true);
+    // } else {
+    //   setLanguageError(false);
+    // }
+    // if (address === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setAddressError(true);
+    // } else {
+    //   setAddressError(false);
+    // }
+    // if (city === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setCityError(true);
+    // } else {
+    //   setCityError(false);
+    // }
+    // if (province === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setProvinceError(true);
+    // } else {
+    //   setProvinceError(false);
+    // }
+    // if (postalCode === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setPostalCodeError(true);
+    // } else {
+    //   setPostalCodeError(false);
+    // }
+    // if (country === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setCountryError(true);
+    // } else {
+    //   setCountryError(false);
+    // }
+    // if (skillName === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setSkillNameError(true);
+    // } else {
+    //   setSkillNameError(false);
+    // }
+    let updateMentorOb = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      role: userData.response.data.role,
+      // role: '1', //this should change after mentor mentee options available
+      phone: number,
+      image: '',
+      country_code: '+91',
+      _id: userData.response.data._id,
+    };
     // if (!emailError && !passwordError) {
-    //   dispatch(
-    //     loginUser({
-    //       email: email,
-    //       password: password,
-    //       role: 1,
-    //     }),
-    //   );
+    // dispatch(
+    console.log('updateMentorOb', updateMentorOb);
+    dispatch(
+      updateMentor(updateMentorOb, cb => {
+        console.log('CB', cb);
+        if (cb != false) {
+          if (cb.messageID == 200) {
+          }
+        }
+      }),
+    );
+
+    // );
     //   navigation.navigate('Temp');
     // }
   };
@@ -177,8 +206,8 @@ import {useNavigation} from '@react-navigation/native';
     }
   };
   const lastNameChange = text => {
-    setLastNameError(text);
-    validateLastName(text);
+    // setLastNameError(text);
+    setLastName(text);
   };
 
   const validateEmail = email => {
@@ -340,61 +369,61 @@ import {useNavigation} from '@react-navigation/native';
     // <View>
     //   <Text>Mentor Mentee Screen</Text>
     // </View>
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white', }}>
-    <KeyboardAwareScrollView>
-      <View
-        style={{
-          marginTop: 15,
-          marginLeft: 18,
-          marginRight: 20,
-        }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <KeyboardAwareScrollView>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            marginTop: 15,
+            marginLeft: 18,
+            marginRight: 20,
           }}>
-          <Image
-            style={{height: 25, width: 25}}
-            source={require('../../assets/Icons/user.png')}
-          />
-          <Text
+          <View
             style={{
-              fontSize: 14,
-              fontWeight: 'bold',
-              marginLeft: '-55%',
-              marginTop: 3,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}>
-            Create Profile
-          </Text>
-          <Image
-            style={{height: 25, width: 25}}
-            source={require('../../assets/Icons/Notification.png')}
-          />
-        </View>
-
-        <View
-          style={{
-            backgroundColor: '#ced4da',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 80,
-            width: 80,
-            borderRadius: 50,
-            flex: 1,
-            marginTop: 30,
-            marginLeft: 20,
-          }}>
-          <TouchableOpacity>
             <Image
-              style={{height: 30, width: 30, marginRight: 10, marginLeft: 10}}
-              source={require('../../assets/Icons/camera.png')}
+              style={{height: 25, width: 25}}
+              source={require('../../assets/Icons/user.png')}
             />
-          </TouchableOpacity>
-        </View>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: 'bold',
+                marginLeft: '-55%',
+                marginTop: 3,
+              }}>
+              Create Profile
+            </Text>
+            <Image
+              style={{height: 25, width: 25}}
+              source={require('../../assets/Icons/Notification.png')}
+            />
+          </View>
 
-        <View style={{flexDirection: 'row', marginTop: 25, marginBottom: 15}}>
-          <Text style={styles.MentorTextStyle}>Mentor</Text>
-          {/* <View style={{marginTop: 5, marginBottom: 5}}>
+          <View
+            style={{
+              backgroundColor: '#ced4da',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 80,
+              width: 80,
+              borderRadius: 50,
+              flex: 1,
+              marginTop: 30,
+              marginLeft: 20,
+            }}>
+            <TouchableOpacity>
+              <Image
+                style={{height: 30, width: 30, marginRight: 10, marginLeft: 10}}
+                source={require('../../assets/Icons/camera.png')}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={{flexDirection: 'row', marginTop: 25, marginBottom: 15}}>
+            <Text style={styles.MentorTextStyle}>Mentor</Text>
+            {/* <View style={{marginTop: 5, marginBottom: 5}}>
             <SwitchToggle
               style={styles.switchStyle}
               switchOn={on}
@@ -415,472 +444,470 @@ import {useNavigation} from '@react-navigation/native';
               }}
             />
           </View> */}
-          <Text style={styles.MenteeTextStyle}>Mentee</Text>
-        </View>
-
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-          <TextInput
-            placeholder="Enter Your First Name"
-            mode="outlined"
-            label={'First Name'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={firstNameError}
-            value={firstName}
-            onChangeText={e => firstNameChange(e)}
-          />
-          <HelperText type="error" visible={firstNameError}>
-            Enter Your First Name
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-          <TextInput
-            placeholder="Enter Your Last Name"
-            mode="outlined"
-            label={'Last Name'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={lastNameError}
-            value={lastName}
-            onChangeText={e => lastNameChange(e)}
-          />
-          <HelperText type="error" visible={lastNameError}>
-            Enter Your Last Name
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-          <TextInput
-            placeholder="Enter Your Email ID"
-            mode="outlined"
-            label={'Email ID'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={emailError}
-            value={email}
-            onChangeText={e => emailChange(e)}
-          />
-          <HelperText type="error" visible={emailError}>
-            Enter Your Last Name
-          </HelperText>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 5,
-            justifyContent: 'flex-start',
-            // marginBottom:10
-          }}>
-          <View>
-            <TextInput
-              style={{marginRight: 20, width: 65}}
-              placeholder="+1"
-              mode="outlined"
-              // label={'Number'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={numberError}
-              value={number}
-              onChangeText={e => numberChange(e)}
-            />
+            <Text style={styles.MenteeTextStyle}>Mentee</Text>
           </View>
 
-          <View>
+          <View style={styles.textInputView}>
+            {/* <View style={styles.requiredView}>
+            <Text style={styles.requiredText}>*</Text>
+          </View> */}
             <TextInput
-              style={{borderRadius: 10, width: '210%'}}
-              placeholder="450 1450 1885"
+              placeholder="Enter Your First Name"
               mode="outlined"
-              label={'Number'}
+              label={'First Name'}
               outlineColor="black"
               activeOutlineColor="black"
+              style={{borderRadius: 10}}
               autoCapitalize="none"
               autoCorrect={false}
-              error={numberError}
-              value={number}
-              onChangeText={e => numberChange(e)}
+              error={firstNameError}
+              value={firstName}
+              onChangeText={e => firstNameChange(e)}
             />
-            <HelperText type="error" visible={numberError}>
-              Enter Your Number
+            <HelperText type="error" visible={firstNameError}>
+              Enter Your First Name
             </HelperText>
           </View>
-          {/* </View> */}
-        </View>
 
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
+          <View style={styles.textInputView}>
+            {/* <View style={styles.requiredView}>
             <Text style={styles.requiredText}>*</Text>
           </View> */}
-          <TextInput
-            placeholder="Enter Your Date of Birth"
-            mode="outlined"
-            label={'Date of Birth'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={DobError}
-            value={Dob}
-            onChangeText={e => e}
-          />
-          <HelperText type="error" visible={emailError}>
-            Enter Your Last Name
-          </HelperText>
+            <TextInput
+              placeholder="Enter Your Last Name"
+              mode="outlined"
+              label={'Last Name'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={lastNameError}
+              value={lastName}
+              onChangeText={e => lastNameChange(e)}
+            />
+            <HelperText type="error" visible={lastNameError}>
+              Enter Your Last Name
+            </HelperText>
+          </View>
 
-          <View style={styles.imageView}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/Icons/Calendar.png')}
+          <View style={styles.textInputView}>
+            {/* <View style={styles.requiredView}>
+            <Text style={styles.requiredText}>*</Text>
+          </View> */}
+            <TextInput
+              placeholder="Enter Your Email ID"
+              mode="outlined"
+              label={'Email ID'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={emailError}
+              value={email}
+              onChangeText={e => emailChange(e)}
+            />
+            <HelperText type="error" visible={emailError}>
+              Enter Your Last Name
+            </HelperText>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 5,
+              justifyContent: 'flex-start',
+              // marginBottom:10
+            }}>
+            <View>
+              <TextInput
+                style={{marginRight: 20, width: 65}}
+                placeholder="+1"
+                mode="outlined"
+                // label={'Number'}
+                outlineColor="black"
+                activeOutlineColor="black"
+                autoCapitalize="none"
+                autoCorrect={false}
+                error={numberError}
+                value={number}
+                onChangeText={e => numberChange(e)}
+              />
+            </View>
+
+            <View>
+              <TextInput
+                style={{borderRadius: 10, width: '210%'}}
+                placeholder="450 1450 1885"
+                mode="outlined"
+                label={'Number'}
+                outlineColor="black"
+                activeOutlineColor="black"
+                autoCapitalize="none"
+                autoCorrect={false}
+                error={numberError}
+                value={number}
+                onChangeText={e => numberChange(e)}
+              />
+              <HelperText type="error" visible={numberError}>
+                Enter Your Number
+              </HelperText>
+            </View>
+            {/* </View> */}
+          </View>
+
+          <View style={styles.textInputView}>
+            {/* <View style={styles.requiredView}>
+            <Text style={styles.requiredText}>*</Text>
+          </View> */}
+            <TextInput
+              placeholder="Enter Your Date of Birth"
+              mode="outlined"
+              label={'Date of Birth'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={DobError}
+              value={Dob}
+              onChangeText={e => e}
+            />
+            <HelperText type="error" visible={emailError}>
+              Enter Your Last Name
+            </HelperText>
+
+            <View style={styles.imageView}>
+              <Image
+                style={styles.image}
+                source={require('../../assets/Icons/Calendar.png')}
+              />
+            </View>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              // style={{borderRadius: 10, width: '224%'}}
+              placeholder="Select Gender"
+              mode="outlined"
+              label={'Gender'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={genderError}
+              value={gender}
+              onChangeText={e => genderChange(e)}
+            />
+            <HelperText type="error" visible={genderError}>
+              Select Your Gender
+            </HelperText>
+
+            <View style={styles.imageViewStyle}>
+              <Image
+                style={styles.imageIconStyle}
+                source={require('../../assets/Icons/Vector.png')}
+              />
+            </View>
+          </View>
+
+          <View style={[styles.textInputView, {marginBottom: 20}]}>
+            <TextInput
+              // style={{borderRadius: 10, width: '224%', height:"200%"}}
+              multiline={true}
+              placeholder="Write Your Bio"
+              mode="outlined"
+              label={'Bio'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              height={160}
+              autoCapitalize="none"
+              autoCorrect={false}
+              // error={bioError}
+              value={bio}
+              onChangeText={e => setBio(e)}
             />
           </View>
-        </View>
 
-        <View style={styles.textInputView}>
-          <TextInput
-            // style={{borderRadius: 10, width: '224%'}}
-            placeholder="Select Gender"
-            mode="outlined"
-            label={'Gender'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={genderError}
-            value={gender}
-            onChangeText={e => genderChange(e)}
-          />
-          <HelperText type="error" visible={genderError}>
-            Select Your Gender
-          </HelperText>
+          <View style={styles.textInputView}>
+            <TextInput
+              placeholder="Verification ID"
+              mode="outlined"
+              label={'Verification ID'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={verificationError}
+              value={verification}
+              onChangeText={e => verificationChange(e)}
+            />
+            <HelperText type="error" visible={verificationError}>
+              Verification ID is Required
+            </HelperText>
+          </View>
 
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Vector.png')}
+          <View style={styles.textInputView}>
+            <TextInput
+              style={{borderRadius: 10}}
+              placeholder="Select Language"
+              mode="outlined"
+              label={'Language'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              // style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={languageError}
+              value={language}
+              onChangeText={e => languageChange(e)}
+            />
+            <HelperText type="error" visible={languageError}>
+              Select Your Language
+            </HelperText>
+
+            <View style={styles.imageViewStyle}>
+              <Image
+                style={styles.imageIconStyle}
+                source={require('../../assets/Icons/Vector.png')}
+              />
+            </View>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              placeholder="Enter Your Address"
+              mode="outlined"
+              label={'Province'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={addressError}
+              value={address}
+              onChangeText={e => addressChange(e)}
+            />
+            <HelperText type="error" visible={addressError}>
+              Enter Your Address
+            </HelperText>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              placeholder="Enter Your City"
+              mode="outlined"
+              label={'City'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={cityError}
+              value={city}
+              onChangeText={e => cityChange(e)}
+            />
+            <HelperText type="error" visible={cityError}>
+              Enter Your City
+            </HelperText>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              style={{borderRadius: 10, width: '224%'}}
+              placeholder="Enter Your Province"
+              mode="outlined"
+              label={'Province'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              // style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={provinceError}
+              value={province}
+              onChangeText={e => changeProvince(e)}
+            />
+            <HelperText type="error" visible={provinceError}>
+              Enter Your Lasprovincee
+            </HelperText>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              style={{borderRadius: 10, width: '224%'}}
+              placeholder="Enter Your Postal Code"
+              mode="outlined"
+              label={'Postal Code'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              // style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={postalCodeError}
+              value={postalCode}
+              onChangeText={e => postalCodeChange(e)}
+            />
+            <HelperText type="error" visible={postalCodeError}>
+              Enter Your Postal Code
+            </HelperText>
+          </View>
+
+          <View style={styles.textInputView}>
+            <TextInput
+              style={{borderRadius: 10, width: '224%'}}
+              placeholder="Enter Your Country"
+              mode="outlined"
+              label={'Country'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              // style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={countryError}
+              value={country}
+              onChangeText={e => countryChnage(e)}
+            />
+            <HelperText type="error" visible={countryError}>
+              Enter Country
+            </HelperText>
+          </View>
+
+          <View style={{marginTop: -15, marginBottom: 13}}>
+            <Text style={styles.addDocument}>Add Documents</Text>
+            <Text style={{fontWeight: '500', fontSize: 20, color: 'black'}}>
+              Skill Certification
+            </Text>
+          </View>
+
+          <View style={[styles.textInputView, {marginBottom: 15}]}>
+            <TextInput
+              placeholder="Enter Skill Type"
+              mode="outlined"
+              label={'Skill Type'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={skillTypeError}
+              value={skillType}
+              onChangeText={e => setSkillType(e)}
             />
           </View>
-        </View>
 
-        <View style={[styles.textInputView, {marginBottom: 20}]}>
-          <TextInput
-            // style={{borderRadius: 10, width: '224%', height:"200%"}}
-            multiline={true}
-            placeholder="Write Your Bio"
-            mode="outlined"
-            label={'Bio'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            height={160}
-            autoCapitalize="none"
-            autoCorrect={false}
-            // error={bioError}
-            value={bio}
-            onChangeText={e => setBio(e)}
-          />
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Verification ID"
-            mode="outlined"
-            label={'Verification ID'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={verificationError}
-            value={verification}
-            onChangeText={e => verificationChange(e)}
-          />
-          <HelperText type="error" visible={verificationError}>
-            Verification ID is Required
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            style={{borderRadius: 10}}
-            placeholder="Select Language"
-            mode="outlined"
-            label={'Language'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={languageError}
-            value={language}
-            onChangeText={e => languageChange(e)}
-          />
-          <HelperText type="error" visible={languageError}>
-            Select Your Language
-          </HelperText>
-
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Vector.png')}
+          <View style={styles.textInputView}>
+            <TextInput
+              placeholder="Enter Skill Name"
+              mode="outlined"
+              label={'Skill Name'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={skillNameError}
+              value={skillName}
+              onChangeText={e => skillNameChange(e)}
             />
+            <HelperText type="error" visible={skillNameError}>
+              Enter Skill Name
+            </HelperText>
           </View>
-        </View>
 
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Enter Your Address"
-            mode="outlined"
-            label={'Province'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={addressError}
-            value={address}
-            onChangeText={e => addressChange(e)}
-          />
-          <HelperText type="error" visible={addressError}>
-            Enter Your Address
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Enter Your City"
-            mode="outlined"
-            label={'City'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={cityError}
-            value={city}
-            onChangeText={e => cityChange(e)}
-          />
-          <HelperText type="error" visible={cityError}>
-            Enter Your City
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            style={{borderRadius: 10, width: '224%'}}
-            placeholder="Enter Your Province"
-            mode="outlined"
-            label={'Province'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={provinceError}
-            value={province}
-            onChangeText={e => changeProvince(e)}
-          />
-          <HelperText type="error" visible={provinceError}>
-            Enter Your Lasprovincee
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            style={{borderRadius: 10, width: '224%'}}
-            placeholder="Enter Your Postal Code"
-            mode="outlined"
-            label={'Postal Code'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={postalCodeError}
-            value={postalCode}
-            onChangeText={e => postalCodeChange(e)}
-          />
-          <HelperText type="error" visible={postalCodeError}>
-            Enter Your Postal Code
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            style={{borderRadius: 10, width: '224%'}}
-            placeholder="Enter Your Country"
-            mode="outlined"
-            label={'Country'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={countryError}
-            value={country}
-            onChangeText={e => countryChnage(e)}
-          />
-          <HelperText type="error" visible={countryError}>
-            Enter Country
-          </HelperText>
-        </View>
-
-        <View style={{marginTop: -15, marginBottom: 13}}>
-          <Text style={styles.addDocument}>Add Documents</Text>
-          <Text style={{fontWeight: '500', fontSize: 20, color: 'black'}}>
-            Skill Certification
-          </Text>
-        </View>
-
-        <View style={[styles.textInputView, {marginBottom: 15}]}>
-          <TextInput
-            placeholder="Enter Skill Type"
-            mode="outlined"
-            label={'Skill Type'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={skillTypeError}
-            value={skillType}
-            onChangeText={e => setSkillType(e)}
-          />
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Enter Skill Name"
-            mode="outlined"
-            label={'Skill Name'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={skillNameError}
-            value={skillName}
-            onChangeText={e => skillNameChange(e)}
-          />
-          <HelperText type="error" visible={skillNameError}>
-            Enter Skill Name
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            style={{borderRadius: 10}}
-            placeholder="Enter Your Certificate"
-            mode="outlined"
-            label={'Upload Certificate'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            // error={emailError}
-            value={email}
-            onChangeText={e => setCertificate(e)}
-          />
-
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Group.png')}
+          <View style={styles.textInputView}>
+            <TextInput
+              style={{borderRadius: 10}}
+              placeholder="Enter Your Certificate"
+              mode="outlined"
+              label={'Upload Certificate'}
+              outlineColor="black"
+              activeOutlineColor="black"
+              // style={{borderRadius: 10}}
+              autoCapitalize="none"
+              autoCorrect={false}
+              // error={emailError}
+              value={email}
+              onChangeText={e => setCertificate(e)}
             />
+
+            <View style={styles.imageViewStyle}>
+              <Image
+                style={styles.imageIconStyle}
+                source={require('../../assets/Icons/Group.png')}
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={{marginTop: 15,}}>
-          <Text style={styles.addDocument}>Add More Skills</Text>
+          <View style={{marginTop: 15}}>
+            <Text style={styles.addDocument}>Add More Skills</Text>
 
-          <View style={[styles.buttonView, { marginBottom:20, marginTop: 10}]}>
-            {/* <Button
+            <View
+              style={[styles.buttonView, {marginBottom: 20, marginTop: 10}]}>
+              {/* <Button
             title='Save'
               textStyle={styles.buttonText}
             /> */}
+              <TouchableOpacity
+                style={{
+                  height: 50,
+                  width: '125%',
+                  backgroundColor: '#FE4D4D',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor: '#FE4D4D',
+                  borderRadius: 10,
+                  marginBottom: 20,
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: '700',
+                    fontSize: 16,
+                    alignSelf: 'center',
+                  }}>
+                  Add Bank Account
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={{marginBottom: '15%'}}>
             <TouchableOpacity
+              onPress={() => handleSubmitButton()}
               style={{
-                height: 50,
-                width: '125%',
-                backgroundColor: '#FE4D4D',
+                borderWidth: 1,
+                height: '15%',
+                width: '100%',
+                borderRadius: 10,
+                backgroundColor: 'white',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderColor: '#FE4D4D',
-                borderRadius:10,
-                marginBottom:20,
-                
               }}>
               <Text
                 style={{
                   color: 'white',
                   fontWeight: '700',
-                  fontSize: 16,
                   alignSelf: 'center',
+                  fontSize: 16,
+                  color: '#FE4D4D',
                 }}>
-                 Add Bank Account
+                Save
               </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={{marginBottom: '15%'}}>
-          <TouchableOpacity
-           onPress={() => navigation.navigate('AddProgram')}
-            style={{
-              borderWidth:1,
-              height: '15%',
-              width: '100%',
-              borderRadius: 10,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderColor:"#FE4D4D"
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: '700',
-                alignSelf: 'center',
-                fontSize: 16,
-                color:"#FE4D4D"
-              }}>
-              Save
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        
-      </View>
-
-      {/* <View style={{flex: 2, marginBottom: 30}}>
+        {/* <View style={{flex: 2, marginBottom: 30}}>
       
       </View> */}
-    </KeyboardAwareScrollView>
-  </SafeAreaView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

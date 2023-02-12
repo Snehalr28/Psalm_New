@@ -16,13 +16,27 @@ export const userReducer = (
         ...state,
         user: payload.user,
         isLoginRequest: false,
-      userConfirm:true,
-
+        userConfirm: true,
         forgotUser: {},
       };
     case TYPES.JUST_TOKEN:
       return {...state, tokenOnly: payload};
+    case TYPES.LOGIN_ERROR:
+      return {...state, user: {}, isLoginRequest: false};
 
+    //update mentor reducer cases
+    case TYPES.UPDATE_MENTOR_REQUEST:
+      return {...state, isUpdateMentorRequest: true};
+    case TYPES.UPDATE_MENTOR_SUCCESS:
+      return {
+        ...state,
+        user: payload.user,
+        isUpdateMentorRequest: false,
+      };
+    case TYPES.UPDATE_MENTOR_ERROR:
+      return {...state, isUpdateMentorRequest: false};
+    case TYPES.JUST_TOKEN:
+      return {...state, tokenOnly: payload};
     case TYPES.LOGIN_ERROR:
       return {...state, user: {}, isLoginRequest: false};
     case TYPES.FORGOT_PASS_REQUEST:
@@ -42,11 +56,11 @@ export const userReducer = (
     case TYPES.CONFIRM_OTP_REQUEST:
       return {...state, isOtpMatchRequest: true};
     case TYPES.CONFIRM_OTP_SUCCESS:
-      console.log("user of OTP",)
-      return {...state,userConfirm:true,isOtpMatchRequest: false};
-      case TYPES.CONFIRM_OTP_SUCCESS_NAVIGATE:
-        console.log("user of OTP",)
-        return {...state,userConfirm:false,isOtpMatchRequest: false};
+      console.log('user of OTP');
+      return {...state, userConfirm: true, isOtpMatchRequest: false};
+    case TYPES.CONFIRM_OTP_SUCCESS_NAVIGATE:
+      console.log('user of OTP');
+      return {...state, userConfirm: false, isOtpMatchRequest: false};
     case TYPES.CONFIRM_OTP_ERROR:
       return {...state, isOtpMatchRequest: false};
 
@@ -72,7 +86,7 @@ export const userReducer = (
       return {...state, isSignUpRequest: false};
 
     case TYPES.CLEAR_STORE:
-      return {...state, userConfirm:false};
+      return {...state, userConfirm: false};
     default:
       return state;
   }
