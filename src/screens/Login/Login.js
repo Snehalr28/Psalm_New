@@ -17,6 +17,8 @@ import CheckBox from '@react-native-community/checkbox';
 import {useNavigation} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
 import {TextInput as MaterialTextInput} from 'react-native-paper';
+import {TextInputComponent} from '../../components/TextInputComponent';
+
 export const Login = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -146,7 +148,7 @@ export const Login = props => {
             </View>
           </View>
 
-          <View style={styles.emailView}>
+          {/* <View style={styles.emailView}>
             <MaterialTextInput
               placeholder="Email"
               mode="outlined"
@@ -154,7 +156,7 @@ export const Login = props => {
               outlineColor="grey"
               activeOutlineColor="black"
               style={{borderRadius: 10}}
-              autoCapitalize="none"
+            autoCapitalize="none"
               autoCorrect={false}
               // error={emailError}
               value={email}
@@ -174,7 +176,17 @@ export const Login = props => {
                 source={require('../../assets/assets/emailicon.png')}
               />
             </View>
-          </View>
+          </View> */}
+          <TextInputComponent
+            emailView={styles.emailView}
+            placeholder={''}
+            label={''}
+            styleInput={{borderRadius: 10}}
+            onChange={emailChange}
+            value={''}
+            empty={empty}
+            TextMessageAlert={''}
+          />
           <View style={styles.passwordView}>
             <MaterialTextInput
               style={{borderRadius: 10}}
