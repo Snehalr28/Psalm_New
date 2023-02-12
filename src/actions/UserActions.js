@@ -1,9 +1,9 @@
-import { UserController } from '../controllers';
-import { debug } from 'react-native-reanimated';
+import {UserController} from '../controllers';
+import {debug} from 'react-native-reanimated';
 import idx from 'idx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { navigate } from '../navigation/NavigationService';
-import { Alert } from 'react-native';
+import {navigate} from '../navigation/NavigationService';
+import {Alert} from 'react-native';
 
 export const TYPES = {
   CLEAR_STORE: 'CLEAR_STORE',
@@ -15,6 +15,10 @@ export const TYPES = {
   UPDATE_MENTOR_REQUEST: 'UPDATE_MENTOR',
   UPDATE_MENTOR_ERROR: 'UPDATE_MENTOR_ERROR',
   UPDATE_MENTOR_SUCCESS: 'UPDATE_MENTOR_SUCCESS',
+
+  ADD_MENTOR_REQUEST: 'ADD_MENTOR_REQUEST',
+  ADD_MENTOR_ERROR: 'ADD_MENTOR_ERROR',
+  ADD_MENTOR_SUCCESS: 'ADD_MENTOR_SUCCESS',
 
   REGISTER_REQUEST: 'REGISTER_REQUEST',
   REGISTER_ERROR: 'REGISTER_ERROR',
@@ -31,7 +35,7 @@ export const TYPES = {
   CONFIRM_OTP_REQUEST: 'CONFIRM_OTP_REQUEST',
   CONFIRM_OTP_ERROR: 'CONFIRM_OTP_ERROR',
   CONFIRM_OTP_SUCCESS: 'CONFIRM_OTP_SUCCESS',
-  CONFIRM_OTP_SUCCESS_NAVIGATE:'CONFIRM_OTP_SUCCESS_NAVIGATE',
+  CONFIRM_OTP_SUCCESS_NAVIGATE: 'CONFIRM_OTP_SUCCESS_NAVIGATE',
 
   RESET_PASS_REQUEST: 'RESET_PASS_REQUEST',
   RESET_PASS_ERROR: 'RESET_PASS_ERROR',
@@ -56,29 +60,43 @@ const updateMentorRequest = () => ({
   type: TYPES.UPDATE_MENTOR_REQUEST,
   payload: null,
 });
-const updateMentorSuccess = (user) => ({
+const updateMentorSuccess = user => ({
   type: TYPES.UPDATE_MENTOR_SUCCESS,
-  payload: { user },
+  payload: {user},
 });
-const updateMentorError = (error) => ({
+const updateMentorError = error => ({
   type: TYPES.UPDATE_MENTOR_ERROR,
-  payload: { error },
-});
-const loginSuccess = (user) => ({
-  type: TYPES.LOGIN_SUCCESS,
-  payload: { user },
+  payload: {error},
 });
 
-const loginError = (error) => ({
+const addMentorRequest = () => ({
+  type: TYPES.ADD_MENTOR_REQUEST,
+  payload: null,
+});
+const addMentorSuccess = user => ({
+  type: TYPES.ADD_MENTOR_SUCCESS,
+  payload: {user},
+});
+const addMentorError = error => ({
+  type: TYPES.ADD_MENTOR_ERROR,
+  payload: {error},
+});
+
+const loginSuccess = user => ({
+  type: TYPES.LOGIN_SUCCESS,
+  payload: {user},
+});
+
+const loginError = error => ({
   type: TYPES.LOGIN_ERROR,
-  payload: { error },
+  payload: {error},
 });
 
 const loaderRequest = () => ({
   type: TYPES.LOADER_REQUEST,
 });
 
-const loaderSuccess = (user) => ({
+const loaderSuccess = user => ({
   type: TYPES.LOADER_SUCCESS,
 });
 
@@ -86,31 +104,30 @@ const loaderError = () => ({
   type: TYPES.LOADER_FAIL,
 });
 
-
 const registerRequest = () => ({
   type: TYPES.REGISTER_REQUEST,
   payload: null,
 });
 
-const registerSuccess = (user) => ({
+const registerSuccess = user => ({
   type: TYPES.REGISTER_SUCCESS,
-  payload: { user },
+  payload: {user},
 });
 
-const registerError = (error) => ({
+const registerError = error => ({
   type: TYPES.REGISTER_ERROR,
-  payload: { error },
+  payload: {error},
 });
 const forgotPassRequest = () => ({
   type: TYPES.FORGOT_PASS_REQUEST,
 });
 
-const forgotPassSuccess = (payload) => ({
+const forgotPassSuccess = payload => ({
   type: TYPES.FORGOT_PASS_SUCCESS,
   payload,
 });
 
-const forgotPassError = (payload) => ({
+const forgotPassError = payload => ({
   type: TYPES.FORGOT_PASS_ERROR,
   payload,
 });
@@ -119,12 +136,12 @@ const resendOtpRequest = () => ({
   type: TYPES.RESEND_OTP_PASS_REQUEST,
 });
 
-const resendOtpSuccess = (payload) => ({
+const resendOtpSuccess = payload => ({
   type: TYPES.RESEND_OTP_PASS_SUCCESS,
   payload,
 });
 
-const resendOtpError = (payload) => ({
+const resendOtpError = payload => ({
   type: TYPES.RESEND_OTP_PASS_ERROR,
   payload,
 });
@@ -132,18 +149,17 @@ const confirmOTPRequest = () => ({
   type: TYPES.CONFIRM_OTP_REQUEST,
 });
 
-const confirmOTPSuccess = (user) => ({
+const confirmOTPSuccess = user => ({
   type: TYPES.CONFIRM_OTP_SUCCESS,
-  payload:{ user },
+  payload: {user},
 });
 
-
-const confirmOTPSuccessNavigate = (user) => ({
+const confirmOTPSuccessNavigate = user => ({
   type: TYPES.CONFIRM_OTP_SUCCESS_NAVIGATE,
-  payload:{ user },
+  payload: {user},
 });
 
-const confirmOTPError = (payload) => ({
+const confirmOTPError = payload => ({
   type: TYPES.CONFIRM_OTP_ERROR,
   payload,
 });
@@ -152,17 +168,17 @@ const resetPassRequest = () => ({
   type: TYPES.RESET_PASS_REQUEST,
 });
 
-const resetPassSuccess = (payload) => ({
+const resetPassSuccess = payload => ({
   type: TYPES.RESET_PASS_SUCCESS,
   payload,
 });
 
-const resetPassError = (payload) => ({
+const resetPassError = payload => ({
   type: TYPES.RESET_PASS_ERROR,
   payload,
 });
 
-const justToken = (value) => ({
+const justToken = value => ({
   type: TYPES.JUST_TOKEN,
 });
 
@@ -174,7 +190,7 @@ const uploadImageRequest = () => ({
   type: TYPES.UPLOAD_IMAGE_REQUEST,
 });
 
-const uploadImageSuccess = (response) => ({
+const uploadImageSuccess = response => ({
   type: TYPES.UPLOAD_IMAGE_SUCCESS,
   payload: response,
 });
@@ -183,73 +199,89 @@ const uploadImageError = () => ({
   type: TYPES.UPLOAD_IMAGE_ERROR,
 });
 
-export const updateMentor= (data) => async (dispatch) =>{
-  console.log("dataaisss",data )
+export const updateMentor = data => async dispatch => {
+  console.log('dataaisss', data);
   dispatch(updateMentorRequest());
   // dispatch(loaderRequest());
-  console.log("Loder req call")
+  console.log('Loder req call');
   try {
     const user = await UserController.updateMentor(data);
-    console.log('user------>', user)
-    console.log('userToken<<<', userToken)
-    dispatch(updateMentor(user));
-    console.log("Login success call")
+    console.log('user------>', user);
+    console.log('userToken<<<', userToken);
+    dispatch(updateMentorSuccess(user));
+    console.log('Login success call');
     dispatch(loaderSuccess());
-    console.log("Loder success call")
-
+    console.log('Loder success call');
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch(loaderError());
     alert(error.response.message);
-    dispatch(loginError(error));
+    dispatch(updateMentorError(error));
   }
+};
 
-}
+export const addMentor = data => async dispatch => {
+  console.log('dataaisss', data);
+  dispatch(addMentorRequest());
+  // dispatch(loaderRequest());
+  console.log('Loder req call');
+  try {
+    const user = await UserController.addMentor(data);
+    console.log('user------>', user);
+    dispatch(addMentorSuccess(user));
+    console.log('Login success call');
+    dispatch(loaderSuccess());
+    console.log('Loder success call');
+  } catch (error) {
+    console.log(error);
+    dispatch(addMentorError(error));
+  }
+};
 
-export const loginUser = (data) => async (dispatch) => {
-  console.log("dataaisss",data )
+export const loginUser = data => async dispatch => {
+  console.log('dataaisss', data);
   dispatch(loginRequest());
   dispatch(loaderRequest());
-  console.log("Loder req call")
+  console.log('Loder req call');
   try {
-    console.log("üser")
+    console.log('üser');
     const user = await UserController.login(data);
-    console.log('user------>', user)
-    let userToken = idx(user,(_) => _.response.data.token);
-    console.log("usertoken issssssss",userToken )
+    console.log('user------>', user);
+    let userToken = idx(user, _ => _.response.data.token);
+    console.log('usertoken issssssss', userToken);
     await AsyncStorage.setItem('userToken', userToken);
-    console.log('userToken<<<', userToken)
+    console.log('userToken<<<', userToken);
     dispatch(loginSuccess(user));
-    console.log("Login success call")
+    console.log('Login success call');
     dispatch(loaderSuccess());
-    console.log("Loder success call")
-
+    console.log('Loder success call');
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch(loaderError());
     alert(error.response.message);
     dispatch(loginError(error));
   }
 };
 
-export const forgotPassword = (data, cb) => async (dispatch) => {
+export const forgotPassword = (data, cb) => async dispatch => {
   dispatch(forgotPassRequest());
   try {
-    console.log("forget password try")
+    console.log('forget password try');
     const user = await UserController.forgotPassword(data.email);
-     console.log("forget password data", user)
+    console.log('forget password data', user);
     cb(user.response);
-    console.log("forget password data response", user.response)
-  
+    console.log('forget password data response', user.response);
+
     dispatch(forgotPassSuccess(user.response));
-  } catch (error) {ƒ
-    console.log("ërror isssss",error)
+  } catch (error) {
+    ƒ;
+    console.log('ërror isssss', error);
     alert(error.message || error);
     cb(false);
     dispatch(forgotPassError(error));
   }
 };
-export const resendOtp = (data, cb) => async (dispatch) => {
+export const resendOtp = (data, cb) => async dispatch => {
   dispatch(resendOtpRequest());
   try {
     const user = await UserController.resendOtp();
@@ -261,34 +293,33 @@ export const resendOtp = (data, cb) => async (dispatch) => {
     dispatch(resendOtpError(error));
   }
 };
-export const confirmOTP = (data, cb) => async (dispatch) => {
+export const confirmOTP = (data, cb) => async dispatch => {
   dispatch(confirmOTPRequest());
   try {
     const user = await UserController.confirmOtp(data);
     alert(user.response.message);
     cb(user.response);
-    console.log("confirm OTP response", user.response)
-  if(data.type){
-    dispatch(confirmOTPSuccessNavigate(user.response))
-  }else{
-    dispatch(confirmOTPSuccess(user.response));
-  }
-    
-  
+    console.log('confirm OTP response', user.response);
+    if (data.type) {
+      dispatch(confirmOTPSuccessNavigate(user.response));
+    } else {
+      dispatch(confirmOTPSuccess(user.response));
+    }
+
     //  dispatch(confirmOTPSuccess(user));
   } catch (error) {
-    alert(error.message || error)
+    alert(error.message || error);
     cb(false);
     dispatch(confirmOTPError(error));
   }
 };
 
-export const resetPassword = (data, cb) => async (dispatch) => {
+export const resetPassword = (data, cb) => async dispatch => {
   dispatch(resetPassRequest());
   try {
     const user = await UserController.resetPassword(data);
-    console.log(user,"üserdata")
-   alert(user.response.message);
+    console.log(user, 'üserdata');
+    alert(user.response.message);
     cb(user.response);
     dispatch(resetPassSuccess(user.response));
   } catch (error) {
@@ -297,7 +328,7 @@ export const resetPassword = (data, cb) => async (dispatch) => {
     dispatch(resetPassError(error));
   }
 };
-export const registerUser = (data, cb) => async (dispatch) => {
+export const registerUser = (data, cb) => async dispatch => {
   dispatch(registerRequest());
   try {
     const user = await UserController.signup(data);
@@ -323,11 +354,11 @@ export const registerUser = (data, cb) => async (dispatch) => {
 //     dispatch(uploadImageError());
 //   }
 // };
-export const logout = () => async (dispatch) => {
+export const logout = () => async dispatch => {
   try {
     // let logutResponse = await UserController.logout();
   } finally {
-    console.log("clear store");
+    console.log('clear store');
     dispatch(clearStore());
   }
 };

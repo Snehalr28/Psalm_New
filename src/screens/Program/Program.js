@@ -118,6 +118,31 @@ export function ProgramScreen() {
     } else {
       setProgramExpirError(false);
     }
+    const addMentorObj = {
+      category_id: "63ce4cb8655d803c9fdb5df7",
+      mentorship_name: "Java Script",
+      description: "java script classes",
+      mentorship_mode: 1,
+      start_date: "12/11/1981",
+      expiry_date: "12/11/1991",
+      duration: "1",
+      experience: "10",
+      price: "1500",
+      payment_mode: "card",
+      mentee_limit: "20",
+      user_id: "63c7bff0ec3143ab8ae9af7c"
+    };
+
+    dispatch(
+      updateMentor(addMentorObj, cb => {
+        console.log('CB', cb);
+        if (cb != false) {
+          if (cb.messageID == 200) {
+          }
+        }
+      }),
+    );
+
   };
 
   const validateProgramName = programName => {

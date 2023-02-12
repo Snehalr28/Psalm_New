@@ -8,7 +8,8 @@ import {
   resetPasswordUrl,
   updateMentorUrl,
   logoutUser,
-  resendOtpUrl
+  resendOtpUrl,
+  addMentorUrl
 } from '../controllers/ApiList';
 import { Alert } from 'react-native';
 export class UserController {
@@ -60,6 +61,27 @@ export class UserController {
         });
     });
   }
+
+  static addMentor(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.put(addMentorUrl, data)
+        .then((response) => {
+          console.log('response<<<', response);
+          if (response.status == 'Success') {
+           console.log("success#######", response.status);
+            resolve({ response });
+          } else {
+            console.log('log1', response.message);
+            reject(response.message);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+          console.log('log2',error)
+        });
+    });
+  }
+
 
   static signup(data) {
     return new Promise((resolve, reject) => {

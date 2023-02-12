@@ -35,6 +35,19 @@ export const userReducer = (
       };
     case TYPES.UPDATE_MENTOR_ERROR:
       return {...state, isUpdateMentorRequest: false};
+
+    //add mentor reducer cases
+    case TYPES.ADD_MENTOR_REQUEST:
+      return {...state, isAddMentorRequest: true};
+    case TYPES.ADD_MENTOR_SUCCESS:
+      return {
+        ...state,
+        addMentor: payload.user,
+        isAddMentorRequest: false,
+      };
+    case TYPES.ADD_MENTOR_ERROR:
+      return {...state, isAddMentorRequest: false};
+
     case TYPES.JUST_TOKEN:
       return {...state, tokenOnly: payload};
     case TYPES.LOGIN_ERROR:
