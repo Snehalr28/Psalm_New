@@ -9,7 +9,7 @@ import SplashScreen from 'react-native-splash-screen'; //import SplashScreen
 
 function App() {
   useEffect(() => {
-    SplashScreen.hide(); //hides the splash screen on app load.
+    SplashScreen.hide(); //hides the splash screen on app load...
   }, []);
   return (
     <Provider store={store}>
