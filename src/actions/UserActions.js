@@ -367,17 +367,18 @@ export const addMentor = data => async dispatch => {
   }
 };
 
-export const updateProgram = data => async dispatch => {
+export const updateProgram = (data,cb) => async dispatch => {
   console.log('dataaisss', data);
   dispatch(updateProgramRequest());
   // dispatch(loaderRequest());
   // console.log('Loder req call');
   try {
-    const user = await UserController.updateProgram(data);
-    console.log('user------>', user);
-    console.log('userToken<<<', userToken);
-    dispatch(updateProgramSuccess(user));
+    const UpProgram = await UserController.updateProgram(data);
+    console.log('user------>', UpProgram);
+    dispatch(updateProgramSuccess(updateProgram));
+    cb(UpProgram.message);
     console.log('Login success call');
+
     dispatch(loaderSuccess());
     console.log('Loder success call');
   } catch (error) {

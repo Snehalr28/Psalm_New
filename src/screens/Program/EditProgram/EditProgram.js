@@ -7,7 +7,7 @@ import {TextInput} from 'react-native-paper';
 import {useSelector, useDispatch} from 'react-redux';
 import {getUser} from '../../selectors/UserSelectors';
 import {useNavigation} from '@react-navigation/native';
-import { updateProgram } from '../../../actions/UserActions';
+import {updateProgram} from '../../../actions/UserActions';
 
 const EditProgram = () => {
   const [programName, setProgramName] = useState('');
@@ -23,7 +23,7 @@ const EditProgram = () => {
   const dispatch = useDispatch();
 
   const handleSubmitButton = () => {
-console.log("edit Program")
+    console.log('edit Program');
     let updateProgramObj = {
       category_id: '63ce4cb8655d803c9fdb5df7',
       mentorship_name: 'React Native',
@@ -38,9 +38,9 @@ console.log("edit Program")
       mentee_limit: '20',
       user_id: '63c7bff0ec3143ab8ae9af7c',
     };
-  
+
     console.log('updateProgramOb', updateProgramObj);
-    
+
     dispatch(
       updateProgram(updateProgramObj, cb => {
         console.log('CB Response of Edit Program', cb);
@@ -51,7 +51,6 @@ console.log("edit Program")
       }),
     );
   };
- 
 
   return (
     <SafeAreaView
@@ -163,11 +162,10 @@ console.log("edit Program")
           </View>
 
           <View style={{marginTop: 15}}>
-            <View
-              style={[styles.buttonView, {marginTop: 5}]}>
+            <View style={[styles.buttonView, {marginTop: 5}]}>
               <TouchableOpacity
-              onPress={() => handleSubmitButton()}
-              // onPress={handleSubmitButton()}
+                onPress={() => handleSubmitButton()}
+                // onPress={handleSubmitButton()}
                 // onPress={() => navigation.navigate('Add Bank Details')}
                 style={{
                   height: 50,
