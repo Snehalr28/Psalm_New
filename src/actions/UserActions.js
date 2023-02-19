@@ -12,13 +12,21 @@ export const TYPES = {
   LOGIN_ERROR: 'LOGIN_ERROR',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
 
-  UPDATE_MENTOR_REQUEST: 'UPDATE_MENTOR',
+  UPDATE_MENTOR_REQUEST: 'UPDATE_MENTOR_REQUEST',
   UPDATE_MENTOR_ERROR: 'UPDATE_MENTOR_ERROR',
   UPDATE_MENTOR_SUCCESS: 'UPDATE_MENTOR_SUCCESS',
+
+  UPDATE_PROGRAM_REQUEST: 'UPDATE_PROGRAM_REQUEST',
+  UPDATE_PROGRAM_ERROR: 'UPDATE_PROGRAM_ERROR',
+  UPDATE_PROGRAM_SUCCESS: 'UPDATE_PROGRAM_SUCCESS',
 
   ADD_MENTOR_REQUEST: 'ADD_MENTOR_REQUEST',
   ADD_MENTOR_ERROR: 'ADD_MENTOR_ERROR',
   ADD_MENTOR_SUCCESS: 'ADD_MENTOR_SUCCESS',
+
+  CATEGORY_DISPLAY_REQUEST: 'CATEGORY_DISPLAY_REQUEST',
+  CATEGORY_DISPLAY_ERROR: ' CATEGORY_DISPLAY_ERROR',
+  CATEGORY_DISPLAY_SUCCESS: 'CATEGORY_DISPLAY_SUCCESS',
 
   REGISTER_REQUEST: 'REGISTER_REQUEST',
   REGISTER_ERROR: 'REGISTER_ERROR',
@@ -54,32 +62,6 @@ export const TYPES = {
 const loginRequest = () => ({
   type: TYPES.LOGIN_REQUEST,
   payload: null,
-});
-
-const updateMentorRequest = () => ({
-  type: TYPES.UPDATE_MENTOR_REQUEST,
-  payload: null,
-});
-const updateMentorSuccess = user => ({
-  type: TYPES.UPDATE_MENTOR_SUCCESS,
-  payload: {user},
-});
-const updateMentorError = error => ({
-  type: TYPES.UPDATE_MENTOR_ERROR,
-  payload: {error},
-});
-
-const addMentorRequest = () => ({
-  type: TYPES.ADD_MENTOR_REQUEST,
-  payload: null,
-});
-const addMentorSuccess = user => ({
-  type: TYPES.ADD_MENTOR_SUCCESS,
-  payload: {user},
-});
-const addMentorError = error => ({
-  type: TYPES.ADD_MENTOR_ERROR,
-  payload: {error},
 });
 
 const loginSuccess = user => ({
@@ -178,65 +160,61 @@ const resetPassError = payload => ({
   payload,
 });
 
-const justToken = value => ({
-  type: TYPES.JUST_TOKEN,
-});
-
 const clearStore = () => ({
   type: TYPES.CLEAR_STORE,
 });
 
-const uploadImageRequest = () => ({
-  type: TYPES.UPLOAD_IMAGE_REQUEST,
+const updateMentorRequest = () => ({
+  type: TYPES.UPDATE_MENTOR_REQUEST,
+  payload: null,
+});
+const updateMentorSuccess = user => ({
+  type: TYPES.UPDATE_MENTOR_SUCCESS,
+  payload: {user},
+});
+const updateMentorError = error => ({
+  type: TYPES.UPDATE_MENTOR_ERROR,
+  payload: {error},
 });
 
-const uploadImageSuccess = response => ({
-  type: TYPES.UPLOAD_IMAGE_SUCCESS,
-  payload: response,
+const addMentorRequest = () => ({
+  type: TYPES.ADD_MENTOR_REQUEST,
+  payload: null,
+});
+const addMentorSuccess = user => ({
+  type: TYPES.ADD_MENTOR_SUCCESS,
+  payload: {user},
+});
+const addMentorError = error => ({
+  type: TYPES.ADD_MENTOR_ERROR,
+  payload: {error},
 });
 
-const uploadImageError = () => ({
-  type: TYPES.UPLOAD_IMAGE_ERROR,
+const updateProgramRequest = () => ({
+  type: TYPES.UPDATE_PROGRAM_REQUEST,
+  payload: null,
+});
+const updateProgramSuccess = user => ({
+  type: TYPES.UPDATE_PROGRAM_SUCCESS,
+  payload: {user},
+});
+const updateProgramError = error => ({
+  type: TYPES.UPDATE_PROGRAM_ERROR,
+  payload: {error},
 });
 
-export const updateMentor = data => async dispatch => {
-  console.log('dataaisss', data);
-  dispatch(updateMentorRequest());
-  // dispatch(loaderRequest());
-  console.log('Loder req call');
-  try {
-    const user = await UserController.updateMentor(data);
-    console.log('user------>', user);
-    console.log('userToken<<<', userToken);
-    dispatch(updateMentorSuccess(user));
-    console.log('Login success call');
-    dispatch(loaderSuccess());
-    console.log('Loder success call');
-  } catch (error) {
-    console.log(error);
-    dispatch(loaderError());
-    alert(error.response.message);
-    dispatch(updateMentorError(error));
-  }
-};
-
-export const addMentor = data => async dispatch => {
-  console.log('dataaisss', data);
-  dispatch(addMentorRequest());
-  // dispatch(loaderRequest());
-  console.log('Loder req call');
-  try {
-    const user = await UserController.addMentor(data);
-    console.log('user------>', user);
-    dispatch(addMentorSuccess(user));
-    console.log('Login success call');
-    dispatch(loaderSuccess());
-    console.log('Loder success call');
-  } catch (error) {
-    console.log(error);
-    dispatch(addMentorError(error));
-  }
-};
+const categoryDisplayRequest = () => ({
+  type: TYPES.CATEGORY_DISPLAY_REQUEST,
+  payload: null,
+});
+const categoryDisplaySuccess = category => ({
+  type: TYPES.CATEGORY_DISPLAY_SUCCESS,
+  payload: {category},
+});
+const categoryDisplayError = error => ({
+  type: TYPES.CATEGORY_DISPLAY_ERROR,
+  payload: {error},
+});
 
 export const loginUser = data => async dispatch => {
   console.log('dataaisss', data);
@@ -274,7 +252,6 @@ export const forgotPassword = (data, cb) => async dispatch => {
 
     dispatch(forgotPassSuccess(user.response));
   } catch (error) {
-    ƒ;
     console.log('ërror isssss', error);
     alert(error.message || error);
     cb(false);
@@ -343,22 +320,87 @@ export const registerUser = (data, cb) => async dispatch => {
   }
 };
 
-// export const uploadProfileImage = (data, groupImages) => async (dispatch) => {
-//   dispatch(uploadImageRequest());
-//   try {
-//     const response = await UserController.uploadImage(data);
-//     dispatch(uploadImageSuccess(response));
-//     dispatch(getMyAddressDetails());
-//   } catch (error) {
-//     Toast.show(error.message || error);
-//     dispatch(uploadImageError());
-//   }
-// };
 export const logout = () => async dispatch => {
   try {
     // let logutResponse = await UserController.logout();
   } finally {
     console.log('clear store');
     dispatch(clearStore());
+  }
+};
+
+export const updateMentor = data => async dispatch => {
+  console.log('dataaisss', data);
+  dispatch(updateMentorRequest());
+  // dispatch(loaderRequest());
+  console.log('Loder req call');
+  try {
+    const user = await UserController.updateMentor(data);
+    console.log('user------>', user);
+    console.log('userToken<<<', userToken);
+    dispatch(updateMentorSuccess(user));
+    console.log('Login success call');
+    dispatch(loaderSuccess());
+    console.log('Loder success call');
+  } catch (error) {
+    console.log(error);
+    dispatch(loaderError());
+    alert(error.response.message);
+    dispatch(updateMentorError(error));
+  }
+};
+
+export const addMentor = data => async dispatch => {
+  console.log('dataaisss', data);
+  dispatch(addMentorRequest());
+  console.log('Loder req call');
+  try {
+    const user = await UserController.addMentor(data);
+    console.log('user------>', user);
+    dispatch(addMentorSuccess(user));
+    console.log('Login success call');
+    dispatch(loaderSuccess());
+    console.log('Loder success call');
+  } catch (error) {
+    console.log(error);
+    dispatch(addMentorError(error));
+  }
+};
+
+export const updateProgram = data => async dispatch => {
+  console.log('dataaisss', data);
+  dispatch(updateProgramRequest());
+  // dispatch(loaderRequest());
+  // console.log('Loder req call');
+  try {
+    const user = await UserController.updateProgram(data);
+    console.log('user------>', user);
+    console.log('userToken<<<', userToken);
+    dispatch(updateProgramSuccess(user));
+    console.log('Login success call');
+    dispatch(loaderSuccess());
+    console.log('Loder success call');
+  } catch (error) {
+    console.log(error);
+    dispatch(loaderError());
+    alert(error.response.message);
+    dispatch(updateProgramError(error));
+  }
+};
+
+export const CategoryDisplay = cb => async dispatch => {
+  console.log('category display action');
+  dispatch(categoryDisplayRequest());
+  try {
+    console.log('/////Inside category try::');
+    const category = await UserController.CategoryDisplay();
+    console.log('Category Display User data');
+    dispatch(categoryDisplaySuccess(category));
+    cb(category.response);
+
+    console.log('display category success');
+  } catch (error) {
+    console.log(error);
+    dispatch(categoryDisplayError(error));
   }
 };

@@ -74,7 +74,7 @@ function OnboardingS({navigation}) {
   renderSkipButton = () => {
     return (
       <View>
-        <Text style={{color:"black", marginTop:15, }}>Skip</Text>
+        <Text style={{color: 'black', marginTop: 15}}>Skip</Text>
       </View>
     );
   };
@@ -85,7 +85,7 @@ function OnboardingS({navigation}) {
         style={{
           flex: 1,
           backgroundColor: item.backgroundColor,
-          // alignItems: 'center',
+
           justifyContent: 'space-around',
           paddingBottom: 80,
         }}>
@@ -98,7 +98,6 @@ function OnboardingS({navigation}) {
               color: 'black',
               textAlign: 'left',
               fontWeight: 'bold',
-              // marginBottom: 10,
             }}>
             {item.title}
           </Text>
@@ -133,9 +132,6 @@ function OnboardingS({navigation}) {
       {showRealApp ? (
         <Login />
       ) : (
-        // <Forgetpassword/>
-        // <View><Text>Hello</Text></View>
-
         <AppIntroSlider
           data={slides}
           renderItem={RenderItem}
@@ -163,13 +159,13 @@ const styles = StyleSheet.create({
   buttonCircle: {
     width: 60,
     height: 40,
-    // backgroundColor: 'rgba(0, 0, 0, .2)',
+
     backgroundColor: 'red',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
-    // borderRadius: 20,
+
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -194,20 +190,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'black',
     textAlign: 'left',
-    // justifyContent: 'flex-end',
-    // marginRight:100,
-    // paddingVertical: 30,
-    // marginTop:20,
-    // marginLeft:20
-    // marginBottom:100
   },
   introTitleStyle: {
     marginTop: 100,
     fontSize: 23,
     color: 'black',
-    // textAlign: 'center',
-    // marginRight:100,
-    // marginBottom: 16,
+
     textAlign: 'left',
     fontWeight: 'bold',
   },

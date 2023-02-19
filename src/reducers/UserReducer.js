@@ -17,24 +17,35 @@ export const userReducer = (
         user: payload.user,
         isLoginRequest: false,
         userConfirm: true,
+
         forgotUser: {},
       };
     case TYPES.JUST_TOKEN:
       return {...state, tokenOnly: payload};
-    case TYPES.LOGIN_ERROR:
-      return {...state, user: {}, isLoginRequest: false};
 
     //update mentor reducer cases
     case TYPES.UPDATE_MENTOR_REQUEST:
-      return {...state, isUpdateMentorRequest: true};
+      return {...state, isupdateMentorRequest: true};
     case TYPES.UPDATE_MENTOR_SUCCESS:
       return {
         ...state,
         user: payload.user,
-        isUpdateMentorRequest: false,
+        isupdateMentorRequest: false,
       };
     case TYPES.UPDATE_MENTOR_ERROR:
-      return {...state, isUpdateMentorRequest: false};
+      return {...state, isupdateMentorRequest: false};
+
+    //update program reducer cases
+    case TYPES.UPDATE_PROGRAM_REQUEST:
+      return {...state, isupdateProgramRequest: true};
+    case TYPES.UPDATE_PROGRAM_SUCCESS:
+      return {
+        ...state,
+        user: payload.user,
+        isupdateProgramRequest: false,
+      };
+    case TYPES.UPDATE_PROGRAM_ERROR:
+      return {...state, isupdateProgramRequest: false};
 
     //add mentor reducer cases
     case TYPES.ADD_MENTOR_REQUEST:
@@ -48,8 +59,29 @@ export const userReducer = (
     case TYPES.ADD_MENTOR_ERROR:
       return {...state, isAddMentorRequest: false};
 
-    case TYPES.JUST_TOKEN:
-      return {...state, tokenOnly: payload};
+    //add mentor reducer cases
+    case TYPES.ADD_MENTOR_REQUEST:
+      return {...state, isAddMentorRequest: true};
+    case TYPES.ADD_MENTOR_SUCCESS:
+      return {
+        ...state,
+        addMentor: payload.user,
+        isAddMentorRequest: false,
+      };
+    case TYPES.ADD_MENTOR_ERROR:
+      return {...state, isAddMentorRequest: false};
+
+    case TYPES.CATEGORY_DISPLAY_REQUEST:
+      return {...state, iscategoryDisplayRequest: true};
+    case TYPES.CATEGORY_DISPLAY_SUCCESS:
+      return {
+        ...state,
+        categoryDetails: payload.category,
+        iscategoryDisplayRequest: false,
+      };
+    case TYPES.CATEGORY_DISPLAY_ERROR:
+      return {...state, iscategoryDisplayRequest: false};
+
     case TYPES.LOGIN_ERROR:
       return {...state, user: {}, isLoginRequest: false};
     case TYPES.FORGOT_PASS_REQUEST:

@@ -1,14 +1,14 @@
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Config } from 'react-native-config';
-import { useSelector } from 'react-redux';
-import { strings } from '../../localization';
-import { getUser } from '../../selectors/UserSelectors';
-import { styles } from './Dashboard.styles';
-import { typography } from '../../theme';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../actions/UserActions';
+import {Text, View, TouchableOpacity} from 'react-native';
+import {Config} from 'react-native-config';
+import {useSelector} from 'react-redux';
+import {strings} from '../../localization';
+import {getUser} from '../../selectors/UserSelectors';
+import {styles} from './Dashboard.styles';
+import {typography} from '../../theme';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../actions/UserActions';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from '../../components';
 // import { strings } from '../../localization';
@@ -16,60 +16,78 @@ export const Dashboard = props => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   // const user = useSelector(getUser);
 
   const logoutUser = () => {
     dispatch(logout());
   };
   return (
-    <View style={styles.container}>
-       
-       <Text style={[typography.title, { color: colors.text }]}>
-       Dashboard1 Screen
-      </Text>
-      <View style={{backgroundColor: '#FE4D4D', marginTop:20, borderWidth:1,paddingHorizontal:20, borderRadius:10}}>
-        <Button title="Logout" onPress={logoutUser} />
+    <>
+      <View style={{marginBottom: '15%', marginTop: 10, marginRight: 150}}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('MentorMenteeProfileScreen')}
+          style={
+            {
+              marginTop:20
+             
+            }
+          }
+          >
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: '400',
+              alignSelf: 'center',
+              fontSize: 17,
+              color: 'black',
+            }}>
+            Hello, Username
+          </Text>
+        </TouchableOpacity>
       </View>
-      <View style={{marginBottom: '15%', marginTop:50}}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('MentorMenteeProfileScreen')} 
+      <View style={styles.container}>
+        <Text style={[typography.title, {color: colors.text}]}>Dashboard</Text>
+        <View
+          style={{
+            flex: 1,
+            marginTop: '5%',
+          }}>
+          <TouchableOpacity
+            onPress={logoutUser}
+            style={{
+              paddingHorizontal: 20,
+              height: '10%',
+              width: '150%',
+              backgroundColor: '#FE4D4D',
+              justifyContent: 'center',
+             
+              borderColor: '#FE4D4D',
+              borderRadius: 10,
+              marginBottom: 20,
+            }}>
+            <Text
               style={{
-                borderWidth:1,
-                height: '30%',
-                width: '200%',
-                borderRadius: 10,
-                backgroundColor: 'white',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor:"#FE4D4D",
-                paddingHorizontal:20
+                color: 'white',
+                fontWeight: '700',
+                fontSize: 16,
+                alignSelf: 'center',
               }}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: '700',
-                  alignSelf: 'center',
-                  fontSize: 16,
-                  color:"#FE4D4D"
-                }}>
-              Profile
-              </Text>
-            </TouchableOpacity>
-          </View>
+              Logout
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-
-      {/* <Text style={[typography.title, { color: colors.text }]}>
+        {/* <Text style={[typography.title, { color: colors.text }]}>
         {strings.home.message} {user?.username}
       </Text>
       <Text style={[typography.text, { color: colors.text }]}>
       {strings.home.variant} {Config.BUILD_VARIANT}
       </Text> */}
-    </View>
+      </View>
+    </>
   );
-}
-
-
+};
 
 // //import liraries
 // import React, {useState} from 'react';
@@ -915,7 +933,7 @@ export const Dashboard = props => {
 //                   borderColor: '#FE4D4D',
 //                   borderRadius:10,
 //                   marginBottom:20,
-                  
+
 //                 }}>
 //                 <Text
 //                   style={{
@@ -955,11 +973,10 @@ export const Dashboard = props => {
 //             </TouchableOpacity>
 //           </View>
 
-          
 //         </View>
 
 //         {/* <View style={{flex: 2, marginBottom: 30}}>
-        
+
 //         </View> */}
 //       </KeyboardAwareScrollView>
 //     </SafeAreaView>

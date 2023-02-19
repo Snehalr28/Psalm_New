@@ -14,6 +14,8 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import { SessionNavigator } from './SessionNavigator';
+import { ChatNavigator } from './ChatNavigator';
 const Tab = createBottomTabNavigator();
 
 export function 
@@ -36,7 +38,6 @@ AppNavigator() {
         inactiveTintColor: colors.inactiveTab,
       }}
       >
-     
       <Tab.Screen
         name="Home"
         component={HomeNavigator}
@@ -48,6 +49,16 @@ AppNavigator() {
         component={ProgramNavigator}
         options={{headerShown: false}}
       />
+         <Tab.Screen
+        name="Session"
+        component={SessionNavigator}
+        options={{headerShown: false}}
+      />
+         <Tab.Screen
+        name="Chat"
+        component={ChatNavigator}
+        options={{headerShown: false}}
+      /> 
     </Tab.Navigator>
   );
 }

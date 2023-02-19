@@ -5,4 +5,6 @@ export const resendOtpUrl = '/auth/resendotp';
 export const confirmOtpUrl = 'auth/otpverify';
 export const resetPasswordUrl = 'auth/create-password';
 export const updateMentorUrl = 'mentor/update';
+export const updateProgramUrl = 'mentorship/update';
+export const getCategory = 'category/getAll-category';
 export const addMentorUrl = 'mentorship/add';

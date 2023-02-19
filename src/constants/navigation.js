@@ -4,6 +4,8 @@ export const NAVIGATION = {
   register: 'Register',
   profile: 'Profile',
   program: 'Program',
+  session: 'Session',
+  chat: 'Chat',
   editProfile: 'EditProfile',
   onboarding: 'Onboarding',
   forgetPassword: 'ForgetPassword',

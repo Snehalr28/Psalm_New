@@ -153,6 +153,7 @@ export const styles = StyleSheet.create({
   },
   container: {flex: 1, backgroundColor: '#fff'},
   mainImage: {
+    alignItems:"center",
     marginTop: '25%', 
     marginLeft: '13%', 
     marginBottom: '10%'
@@ -203,6 +204,7 @@ export const styles = StyleSheet.create({
     marginTop: '7%',
     marginLeft: '10%',
     marginRight: '10%',
+    marginBottom:15
     // justifyContent:"center",
     // alignItems:"center"
   },
@@ -211,7 +213,7 @@ export const styles = StyleSheet.create({
     // marginTop: '5%',
     marginLeft: '10%',
     marginRight: '10%',
-    marginBottom:"6%",
+    marginBottom:"3%",
   },
   inputField: {
     borderWidth: 1,

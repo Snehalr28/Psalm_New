@@ -1,4 +1,3 @@
-//import liraries
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -7,24 +6,20 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  Button,
+  FlatList,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// import SwitchToggle from 'react-native-switch-toggle';
-// import CommonTextInput from '../../components/CommonTextInput';
 import {TextInput, HelperText} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-
 import {getUser} from '../../selectors/UserSelectors';
 import {updateMentor} from '../../actions/UserActions';
-
+import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 export const MentorMenteeProfile = props => {
-  const [on, off] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [number, setMobileNumber] = useState('');
+  const [number, setNumber] = useState('');
   const [gender, setGender] = useState('');
   const [bio, setBio] = useState('');
   const [Dob, setDob] = useState('');
@@ -55,6 +50,7 @@ export const MentorMenteeProfile = props => {
   const [skillTypeError, setSkillTypeError] = useState(false);
   const [skillNameError, setSkillNameError] = useState(false);
   const [certificateError, setCertificateError] = useState(false);
+
   const navigation = useNavigation();
   let userData = useSelector(getUser);
   const dispatch = useDispatch();
@@ -64,104 +60,22 @@ export const MentorMenteeProfile = props => {
     setLastName(userData.response.data.name);
     setEmail(userData.response.data.email);
   }, []);
+
   const handleSubmitButton = () => {
-    // if (firstName === '') {
-    //   // Alert.alert("Email can not be blank")
-    //   setFirstNameError(true);
-    // } else {
-    //   setFirstNameError(false);
-    // }
-    // if (lastName === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setLastNameError(true);
-    // } else {
-    //   setLastNameError(false);
-    // }
-    // if (email === '') {
-    //   // Alert.alert("Email can not be blank")
-    //   setEmailError(true);
-    // } else {
-    //   setEmailError(false);
-    // }
-    // if (number === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setNumberError(true);
-    // } else {
-    //   setNumberError(false);
-    // }
-    // if (Dob === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setDobError(true);
-    // } else {
-    //   setDobError(false);
-    // }
-    // if (gender === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setGenderError(true);
-    // } else {
-    //   setGenderError(false);
-    // }
-    // if (bio === '') {
-    //   // Alert.alert("Email can not be blank")
-    //   setBioError(true);
-    // } else {
-    //   setBioError(false);
-    // }
-    // if (verification === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setVerificationError(true);
-    // } else {
-    //   setVerificationError(false);
-    // }
-    // if (language === '') {
-    //   // Alert.alert("Email can not be blank")
-    //   setLanguageError(true);
-    // } else {
-    //   setLanguageError(false);
-    // }
-    // if (address === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setAddressError(true);
-    // } else {
-    //   setAddressError(false);
-    // }
-    // if (city === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setCityError(true);
-    // } else {
-    //   setCityError(false);
-    // }
-    // if (province === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setProvinceError(true);
-    // } else {
-    //   setProvinceError(false);
-    // }
-    // if (postalCode === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setPostalCodeError(true);
-    // } else {
-    //   setPostalCodeError(false);
-    // }
-    // if (country === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setCountryError(true);
-    // } else {
-    //   setCountryError(false);
-    // }
-    // if (skillName === '') {
-    //   // Alert.alert("Password can not be blank")
-    //   setSkillNameError(true);
-    // } else {
-    //   setSkillNameError(false);
-    // }
+ 
     let updateMentorOb = {
       firstName: firstName,
       lastName: lastName,
       email: email,
       role: userData.response.data.role,
-      // role: '1', //this should change after mentor mentee options available
       phone: number,
+      bio: bio,
+      // role: '1', //this should change after mentor mentee options available
+      language: language,
+      address: address,
+      city: city,
+      province: province,
+      postalcode: postalCode,
       image: '',
       country_code: '+91',
       _id: userData.response.data._id,
@@ -178,14 +92,10 @@ export const MentorMenteeProfile = props => {
         }
       }),
     );
-
-    // );
-    //   navigation.navigate('Temp');
-    // }
   };
 
   const validateName = firstName => {
-    let reg = /^[a-zA-Z]+$/;
+    let reg = /^[a-z A-Z]+$/;
     if (reg.test(firstName) === false) {
       setFirstNameError(true);
     } else {
@@ -198,7 +108,7 @@ export const MentorMenteeProfile = props => {
   };
 
   const validateLastName = firstName => {
-    let reg = /^[a-zA-Z]+$/;
+    let reg = /^[a-z A-Z]+$/;
     if (reg.test(firstName) === false) {
       setLastNameError(true);
     } else {
@@ -206,8 +116,8 @@ export const MentorMenteeProfile = props => {
     }
   };
   const lastNameChange = text => {
-    // setLastNameError(text);
     setLastName(text);
+    validateLastName(text);
   };
 
   const validateEmail = email => {
@@ -226,13 +136,13 @@ export const MentorMenteeProfile = props => {
   const validateNumber = password => {
     let reg = /^\d{10}$/;
     if (reg.test(password) === false) {
-      setMobileNumberError(true);
+      setNumberError(true);
     } else {
-      setMobileNumberError(false);
+      setNumberError(false);
     }
   };
   const numberChange = text => {
-    setMobileNumber(text);
+    setNumber(text);
     validateNumber(text);
   };
 
@@ -365,18 +275,38 @@ export const MentorMenteeProfile = props => {
     setSkillName(text);
     validateSkillName(text);
   };
+
+  const [array, setArray] = useState([
+    {skillType: '', skillName: '', certificate: '', isAdded: false},
+  ]);
+  const AddMed = (item, index) => {
+    let temp = Object.assign([], array, {
+      [index]: {...item, isAdded: true},
+    });
+    temp.push({
+      skillType: '',
+      skillName: '',
+      certificate: '',
+      isAdded: false,
+    });
+    setArray(temp);
+  };
+  const RemoveMed = index => {
+    array.splice(index, 1);
+    let temp = Object.assign([], array);
+    setArray(temp);
+  };
+
   return (
-    // <View>
-    //   <Text>Mentor Mentee Screen</Text>
-    // </View>
-    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <KeyboardAwareScrollView>
-        <View
-          style={{
-            marginTop: 15,
-            marginLeft: 18,
-            marginRight: 20,
-          }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        flexDirection: 'column',
+        padding: 25,
+        backgroundColor: '#fff',
+      }}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={{}}>
           <View
             style={{
               flexDirection: 'row',
@@ -422,101 +352,50 @@ export const MentorMenteeProfile = props => {
           </View>
 
           <View style={{flexDirection: 'row', marginTop: 25, marginBottom: 15}}>
-            <Text style={styles.MentorTextStyle}>Mentor</Text>
-            {/* <View style={{marginTop: 5, marginBottom: 5}}>
-            <SwitchToggle
-              style={styles.switchStyle}
-              switchOn={on}
-              onPress={() => off(!on)}
-              backgroundColorOn="#FF0000"
-              circleColorOff="#FF0000"
-              backgroundColorOff="#F0EFF3"
-              containerStyle={{
-                width: 37,
-                height: 18,
-                borderRadius: 25,
-                padding: 5,
-              }}
-              circleStyle={{
-                width: 12,
-                height: 12,
-                borderRadius: 20,
-              }}
-            />
-          </View> */}
-            <Text style={styles.MenteeTextStyle}>Mentee</Text>
+          {userData.response.data.role==1?(<Text style={styles.MentorTextStyle}>Mentor</Text>):(<Text style={styles.MentorTextStyle}>Mentee</Text>)}  
           </View>
 
-          <View style={styles.textInputView}>
-            {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-            <TextInput
-              placeholder="Enter Your First Name"
-              mode="outlined"
-              label={'First Name'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={firstNameError}
-              value={firstName}
-              onChangeText={e => firstNameChange(e)}
-            />
-            <HelperText type="error" visible={firstNameError}>
-              Enter Your First Name
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your First Namel'}
+            label={'First Name'}
+            onChangeText={firstNameChange}
+            value={firstName}
+            error={firstNameError}
+            TextMessageAlert={'Enter your First Name'}
+            condtionText={{color: 'red'}}
+            checkCondtion={firstNameError}
+          />
 
-          <View style={styles.textInputView}>
-            {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-            <TextInput
-              placeholder="Enter Your Last Name"
-              mode="outlined"
-              label={'Last Name'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={lastNameError}
-              value={lastName}
-              onChangeText={e => lastNameChange(e)}
-            />
-            <HelperText type="error" visible={lastNameError}>
-              Enter Your Last Name
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your Last Namel'}
+            label={'Last Name'}
+            onChangeText={lastNameChange}
+            value={lastName}
+            error={lastNameError}
+            TextMessageAlert={'Enter your Last Name'}
+            condtionText={{color: 'red'}}
+            checkCondtion={lastNameError}
+          />
 
-          <View style={styles.textInputView}>
-            {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-            <TextInput
-              placeholder="Enter Your Email ID"
-              mode="outlined"
-              label={'Email ID'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={emailError}
-              value={email}
-              onChangeText={e => emailChange(e)}
-            />
-            <HelperText type="error" visible={emailError}>
-              Enter Your Last Name
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Email'}
+            label={'Email ID'}
+            onChangeText={emailChange}
+            value={email}
+            // empty={empty}
+            error={emailError}
+            TextMessageAlert={'Email must be valid email address'}
+            condtionText={{color: 'red'}}
+            checkCondtion={emailError}
+          />
 
           <View
             style={{
               flexDirection: 'row',
-              marginTop: 5,
+              marginTop: 15,
               justifyContent: 'flex-start',
               // marginBottom:10
             }}>
@@ -525,113 +404,82 @@ export const MentorMenteeProfile = props => {
                 style={{marginRight: 20, width: 65}}
                 placeholder="+1"
                 mode="outlined"
-                // label={'Number'}
-                outlineColor="black"
+                outlineColor="#E5E4E2"
                 activeOutlineColor="black"
                 autoCapitalize="none"
                 autoCorrect={false}
-                error={numberError}
-                value={number}
-                onChangeText={e => numberChange(e)}
               />
             </View>
 
-            <View>
-              <TextInput
-                style={{borderRadius: 10, width: '210%'}}
-                placeholder="450 1450 1885"
-                mode="outlined"
-                label={'Number'}
-                outlineColor="black"
-                activeOutlineColor="black"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={numberError}
-                value={number}
-                onChangeText={e => numberChange(e)}
-              />
-              <HelperText type="error" visible={numberError}>
-                Enter Your Number
-              </HelperText>
-            </View>
-            {/* </View> */}
-          </View>
-
-          <View style={styles.textInputView}>
-            {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-            <TextInput
-              placeholder="Enter Your Date of Birth"
-              mode="outlined"
-              label={'Date of Birth'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={DobError}
-              value={Dob}
-              onChangeText={e => e}
+            <TextInputComponent
+              emailView={{borderRadius: 10, width: '76%'}}
+              placeholder={'450 1450 1885'}
+              label={'Number'}
+              onChangeText={numberChange}
+              value={number}
+              error={numberError}
+              TextMessageAlert={'Enter Your Number'}
+              condtionText={{color: 'red'}}
+              checkCondtion={numberError}
             />
-            <HelperText type="error" visible={emailError}>
-              Enter Your Last Name
-            </HelperText>
-
-            <View style={styles.imageView}>
-              <Image
-                style={styles.image}
-                source={require('../../assets/Icons/Calendar.png')}
-              />
-            </View>
           </View>
 
-          <View style={styles.textInputView}>
-            <TextInput
-              // style={{borderRadius: 10, width: '224%'}}
-              placeholder="Select Gender"
-              mode="outlined"
-              label={'Gender'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={genderError}
-              value={gender}
-              onChangeText={e => genderChange(e)}
-            />
-            <HelperText type="error" visible={genderError}>
-              Select Your Gender
-            </HelperText>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Date of Birth'}
+            label={'Date of Birth'}
+            onChangeText={setDob}
+            value={Dob}
+            emailIconView={styles.imageView}
+            emailIcon={styles.image}
+            source={require('../../assets/Icons/Calendar.png')}
+          />
 
-            <View style={styles.imageViewStyle}>
-              <Image
-                style={styles.imageIconStyle}
-                source={require('../../assets/Icons/Vector.png')}
-              />
-            </View>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Select Gender'}
+            label={'Gender'}
+            onChangeText={setGender}
+            value={gender}
+            emailIconView={styles.imageView}
+            emailIcon={styles.image}
+            source={require('../../assets/Icons/Vector.png')}
+          />
 
           <View style={[styles.textInputView, {marginBottom: 20}]}>
+            {/* <TextInputComponent
+            placeholder={'Write Your Bio'}
+            label={'Bio'}
+            onChangeText={setBio}
+            value={bio}
+            height={160}
+            // height={160}
+          /> */}
             <TextInput
               // style={{borderRadius: 10, width: '224%', height:"200%"}}
               multiline={true}
               placeholder="Write Your Bio"
               mode="outlined"
               label={'Bio'}
-              outlineColor="black"
+              outlineColor="#E5E4E2"
               activeOutlineColor="black"
               height={160}
               autoCapitalize="none"
               autoCorrect={false}
-              // error={bioError}
               value={bio}
               onChangeText={e => setBio(e)}
             />
           </View>
 
-          <View style={styles.textInputView}>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Verification ID'}
+            label={'Verification ID'}
+            onChangeText={setVerification}
+            value={verification}
+          />
+
+          {/* <View style={styles.textInputView}>
             <TextInput
               placeholder="Verification ID"
               mode="outlined"
@@ -648,132 +496,58 @@ export const MentorMenteeProfile = props => {
             <HelperText type="error" visible={verificationError}>
               Verification ID is Required
             </HelperText>
-          </View>
+          </View> */}
 
-          <View style={styles.textInputView}>
-            <TextInput
-              style={{borderRadius: 10}}
-              placeholder="Select Language"
-              mode="outlined"
-              label={'Language'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              // style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={languageError}
-              value={language}
-              onChangeText={e => languageChange(e)}
-            />
-            <HelperText type="error" visible={languageError}>
-              Select Your Language
-            </HelperText>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Select Language'}
+            label={'Language'}
+            onChangeText={setLanguage}
+            value={language}
+            emailIconView={styles.imageView}
+            emailIcon={styles.image}
+            source={require('../../assets/Icons/Vector.png')}
+          />
 
-            <View style={styles.imageViewStyle}>
-              <Image
-                style={styles.imageIconStyle}
-                source={require('../../assets/Icons/Vector.png')}
-              />
-            </View>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your Address'}
+            label={'Address'}
+            onChangeText={setAddress}
+            value={address}
+          />
 
-          <View style={styles.textInputView}>
-            <TextInput
-              placeholder="Enter Your Address"
-              mode="outlined"
-              label={'Province'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={addressError}
-              value={address}
-              onChangeText={e => addressChange(e)}
-            />
-            <HelperText type="error" visible={addressError}>
-              Enter Your Address
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your City'}
+            label={'City'}
+            onChangeText={setCity}
+            value={city}
+          />
 
-          <View style={styles.textInputView}>
-            <TextInput
-              placeholder="Enter Your City"
-              mode="outlined"
-              label={'City'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={cityError}
-              value={city}
-              onChangeText={e => cityChange(e)}
-            />
-            <HelperText type="error" visible={cityError}>
-              Enter Your City
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your Province'}
+            label={'Province'}
+            onChangeText={setProvince}
+            value={province}
+          />
 
-          <View style={styles.textInputView}>
-            <TextInput
-              style={{borderRadius: 10, width: '224%'}}
-              placeholder="Enter Your Province"
-              mode="outlined"
-              label={'Province'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              // style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={provinceError}
-              value={province}
-              onChangeText={e => changeProvince(e)}
-            />
-            <HelperText type="error" visible={provinceError}>
-              Enter Your Lasprovincee
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your Postal Code'}
+            label={'Postal Code'}
+            onChangeText={setPostalCode}
+            value={postalCode}
+          />
 
-          <View style={styles.textInputView}>
-            <TextInput
-              style={{borderRadius: 10, width: '224%'}}
-              placeholder="Enter Your Postal Code"
-              mode="outlined"
-              label={'Postal Code'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              // style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={postalCodeError}
-              value={postalCode}
-              onChangeText={e => postalCodeChange(e)}
-            />
-            <HelperText type="error" visible={postalCodeError}>
-              Enter Your Postal Code
-            </HelperText>
-          </View>
-
-          <View style={styles.textInputView}>
-            <TextInput
-              style={{borderRadius: 10, width: '224%'}}
-              placeholder="Enter Your Country"
-              mode="outlined"
-              label={'Country'}
-              outlineColor="black"
-              activeOutlineColor="black"
-              // style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              error={countryError}
-              value={country}
-              onChangeText={e => countryChnage(e)}
-            />
-            <HelperText type="error" visible={countryError}>
-              Enter Country
-            </HelperText>
-          </View>
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Enter Your Country'}
+            label={'Country'}
+            onChangeText={setCountry}
+            value={country}
+          />
 
           <View style={{marginTop: -15, marginBottom: 13}}>
             <Text style={styles.addDocument}>Add Documents</Text>
@@ -782,7 +556,177 @@ export const MentorMenteeProfile = props => {
             </Text>
           </View>
 
-          <View style={[styles.textInputView, {marginBottom: 15}]}>
+          <View>
+            <FlatList
+              data={array}
+              renderItem={({item, index}) => {
+                return (
+                  <View>
+                    <TextInputComponent
+                      emailView={styles.textInputView}
+                      placeholder={'"Skill Type"'}
+                      label={'Skill Type'}
+                      value={item.skillType}
+                      onChangeText={text =>
+                        setArray(
+                          Object.assign([], array, {
+                            [index]: {...item, skillType: text},
+                          }),
+                        )
+                      }
+                    />
+                    {/* <TextInput
+                      label="Skill Type"
+                      error={false}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      selectionColor={'red'}
+                      activeOutlineColor={'black'}
+                      mode="outlined"
+                      style={styles.TextInputStyle}
+                      placeholder="Skill Type"
+                      value={item.skillType}
+                      onChangeText={text =>
+                        setArray(
+                          Object.assign([], array, {
+                            [index]: {...item, skillType: text},
+                          }),
+                        )
+                      }
+                    /> */}
+
+
+<TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'"Skill Name"'}
+            label={"Skill Name"}
+            value={item.skillName}
+            onChangeText={text =>
+              setArray(
+                Object.assign([], array, {
+                  [index]: {...item, skillName: text},
+                }),
+              )
+            }
+            
+          />
+                    {/* <TextInput
+                      label="Skill Name"
+                      error={false}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      selectionColor={'red'}
+                      activeOutlineColor={'black'}
+                      mode="outlined"
+                      style={styles.TextInputStyle}
+                      placeholder="Skill Name"
+                      value={item.skillName}
+                      onChangeText={text =>
+                        setArray(
+                          Object.assign([], array, {
+                            [index]: {...item, skillName: text},
+                          }),
+                        )
+                      }
+                    /> */}
+
+<TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'"Upload Certificate"'}
+            label={"Upload Certificate"}
+            value={item.certificate}
+            onChangeText={text =>
+              setArray(
+                Object.assign([], array, {
+                  [index]: {...item, certificate: text},
+                }),
+              )
+            }
+            emailIconView={styles.imageView}
+            emailIcon={styles.image}
+            source={require('../../assets/Icons/Group.png')}
+            
+          />
+                    {/* <TextInput
+                      label="Upload Certificate"
+                      error={false}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      selectionColor={'red'}
+                      activeOutlineColor={'black'}
+                      mode="outlined"
+                      style={styles.TextInputStyle}
+                      keyboardType="numeric"
+                      placeholder="Upload Certificate"
+                      value={item.certificate}
+                      keyboardType="numeric"
+                      onChangeText={text =>
+                        setArray(
+                          Object.assign([], array, {
+                            [index]: {...item, certificate: text},
+                          }),
+                        )
+                      }
+                    /> */}
+
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignSelf: 'flex-start',
+                        // paddingRight: 20,
+                        marginTop: 20,
+                      }}>
+                      {item.isAdded ? (
+                        <TouchableOpacity
+                          style={{
+                            // height: 30,
+                            // width: 100,
+                            // borderRadius: 20,
+                            // borderWidth: 1,
+                            // backgroundColor: 'black',
+                            // alignItems: 'center',
+                            // marginTop: 10,
+                            // marginRight: 10,
+                          }}
+                          onPress={() => RemoveMed(index)}>
+                          <Text style={{color: 'red', fontSize: 18}}>
+                            Remove
+                          </Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          style={
+                            {
+                              // height: 35,
+                              // width: 100,
+                              // borderRadius: 20,
+                              // borderWidth: 1,
+                              // backgroundColor: "black",
+                              // alignItems: "center",
+                              // marginTop: 10,
+                              // marginRight: 10,
+                            }
+                          }
+                          onPress={() => AddMed(item, index)}>
+                          <Text
+                            style={{
+                              color: 'black',
+                              fontSize: 18,
+                              fontWeight: '400',
+                            }}>
+                            Add More Skills
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
+          {/* <View style={[styles.textInputView, {marginBottom: 15}]}>
             <TextInput
               placeholder="Enter Skill Type"
               mode="outlined"
@@ -796,9 +740,9 @@ export const MentorMenteeProfile = props => {
               value={skillType}
               onChangeText={e => setSkillType(e)}
             />
-          </View>
+          </View> */}
 
-          <View style={styles.textInputView}>
+          {/* <View style={styles.textInputView}>
             <TextInput
               placeholder="Enter Skill Name"
               mode="outlined"
@@ -815,9 +759,9 @@ export const MentorMenteeProfile = props => {
             <HelperText type="error" visible={skillNameError}>
               Enter Skill Name
             </HelperText>
-          </View>
+          </View> */}
 
-          <View style={styles.textInputView}>
+          {/* <View style={styles.textInputView}>
             <TextInput
               style={{borderRadius: 10}}
               placeholder="Enter Your Certificate"
@@ -839,10 +783,10 @@ export const MentorMenteeProfile = props => {
                 source={require('../../assets/Icons/Group.png')}
               />
             </View>
-          </View>
+          </View> */}
 
           <View style={{marginTop: 15}}>
-            <Text style={styles.addDocument}>Add More Skills</Text>
+            {/* <Text style={styles.addDocument}>Add More Skills</Text> */}
 
             <View
               style={[styles.buttonView, {marginBottom: 20, marginTop: 10}]}>
@@ -851,6 +795,7 @@ export const MentorMenteeProfile = props => {
               textStyle={styles.buttonText}
             /> */}
               <TouchableOpacity
+                onPress={() => navigation.navigate('Add Bank Details')}
                 style={{
                   height: 50,
                   width: '125%',
@@ -877,6 +822,7 @@ export const MentorMenteeProfile = props => {
           <View style={{marginBottom: '15%'}}>
             <TouchableOpacity
               onPress={() => handleSubmitButton()}
+              //  onPress={() => navigation.navigate('AddProgram')}
               style={{
                 borderWidth: 1,
                 height: '15%',
@@ -929,7 +875,12 @@ const styles = StyleSheet.create({
   switchStyle: {
     // marginTop:
   },
-  textInputView: {marginTop: -3},
+  textInputView: {
+    marginTop: '5%',
+    // marginLeft: '10%',
+    // marginRight: '10%',
+    // marginBottom: 10,
+  },
   requiredView: {marginBottom: '-8%', marginTop: 5},
   requiredText: {marginLeft: '21%', color: '#FF0000'},
   textInputField: {borderWidth: 1, borderRadius: 10, borderColor: '#313131'},
@@ -952,6 +903,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     color: 'black',
+    marginTop: 30,
   },
   buttonView: {
     backgroundColor: 'white',
@@ -966,3 +918,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+

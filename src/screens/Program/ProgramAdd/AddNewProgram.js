@@ -1,12 +1,11 @@
 import {useTheme} from '@react-navigation/native';
-
-
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {logout} from '../../actions/UserActions';
+import {addMentor, logout} from '../../../actions/UserActions';
 // import {Button} from '../../components';
-import {strings} from '../../localization';
+import {strings} from '../../../localization';
 // import {styles} from './Program.styles';
-import {typography} from '../../theme';
+import {typography} from '../../../theme';
 //import liraries
 import React, {useState, useCallback} from 'react';
 import {
@@ -20,7 +19,9 @@ import {
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput, HelperText} from 'react-native-paper';
-import ImagePicker from 'react-native-image-picker';
+import {TextInputComponent} from '../../../components/textInputComponent/TextInputComponent';
+// import ImagePicker from 'react-native-image-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 // create a component
 
@@ -32,15 +33,7 @@ const options = {
   },
 };
 
-
-
-
-
-
-
-
-
-export function ProgramScreen() {
+export function AddNewProgram() {
   const {colors} = useTheme();
   const dispatch = useDispatch();
 
@@ -58,7 +51,6 @@ export function ProgramScreen() {
   const [programExpir, setProgramExpir] = useState('');
   const [certificate, setCertificate] = useState('');
   const [description, setDescription] = useState('');
-
   const [selectedImage, setSelectedImage] = useState(null);
   const [programNameError, setProgramNameError] = useState(false);
   const [mentorshipModeError, setMentorshipModeError] = useState(false);
@@ -68,8 +60,11 @@ export function ProgramScreen() {
   const [allowError, setAllowError] = useState(false);
   const [availableError, setAvailableError] = useState(false);
   const [programExpirError, setProgramExpirError] = useState(false);
+  const navigation = useNavigation();
 
-  const handleSubmitButton = () => {
+  console.log('add program data');
+
+  const handleSubmitButton = ({navigation}) => {
     if (programName === '') {
       // Alert.alert("Email can not be blank")
       setProgramNameError(true);
@@ -88,12 +83,12 @@ export function ProgramScreen() {
     } else {
       setExprienceError(false);
     }
-    if (startDate === '') {
-      // Alert.alert("Password can not be blank")
-      setStartDateError(true);
-    } else {
-      setStartDateError(false);
-    }
+    // if (startDate === '') {
+    //   // Alert.alert("Password can not be blank")
+    //   setStartDateError(true);
+    // } else {
+    //   setStartDateError(false);
+    // }
     if (price === '') {
       // Alert.alert("Password can not be blank")
       setPriceError(true);
@@ -118,6 +113,7 @@ export function ProgramScreen() {
     } else {
       setProgramExpirError(false);
     }
+
     const addMentorObj = {
       category_id: "63ce4cb8655d803c9fdb5df7",
       mentorship_name: "Java Script",
@@ -134,7 +130,7 @@ export function ProgramScreen() {
     };
 
     dispatch(
-      updateMentor(addMentorObj, cb => {
+      addMentor(addMentorObj, cb => {
         console.log('CB', cb);
         if (cb != false) {
           if (cb.messageID == 200) {
@@ -269,29 +265,45 @@ export function ProgramScreen() {
   //   // }
   // };
 
+  // const handleChooseImage = useCallback(() => {
+  //   ImagePicker.showImagePicker(
+  //     {
+  //       title: 'Select Image',
+  //       storageOptions: {
+  //         skipBackup: true,
+  //         path: 'images',
+  //       },
+  //     },
+  //     response => {
+  //       if (response.didCancel) {
+  //         console.log('User cancelled image picker');
+  //       } else if (response.error) {
+  //         console.log('ImagePicker Error: ', response.error);
+  //       } else {
+  //         setSelectedImage({uri: response.uri});
+  //       }
+  //     },
+  //   );
+  // }, []);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const selectedDateStr = selectedDate.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
-  const handleChooseImage = useCallback(() => {
-    ImagePicker.showImagePicker(
-      {
-        title: 'Select Image',
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-        },
-      },
-      response => {
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        } else {
-          setSelectedImage({uri: response.uri});
-        }
-      },
-    );
-  }, []);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
-
+  const handleConfirm = date => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
 
   return (
     // <View style={styles.container}>
@@ -308,52 +320,53 @@ export function ProgramScreen() {
     // </View>
 
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-    <KeyboardAwareScrollView>
-      <View
-        style={{
-          flex: 1,
-          marginTop: 15,
-          marginLeft: 18,
-          marginRight: 20,
-          marginBottom: '20%',
-        }}>
+      <KeyboardAwareScrollView>
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginBottom: 10,
+            flex: 1,
+            marginTop: 15,
+            marginLeft: 18,
+            marginRight: 20,
+            marginBottom: '20%',
           }}>
-          <Image
-            style={{height: 25, width: 25}}
-            source={require('../../assets/Icons/Notification.png')}
-          />
-        </View>
-
-        <View
-          style={{
-            height: '12%',
-            width: '100%',
-            borderWidth: 1,
-            justifyContent: 'center',
-            marginBottom: 10,
-            borderRadius: 10,
-            backgroundColor: 'white',
-            marginBottom: 15,
-          }}>
-          <TouchableOpacity
-            onPress={e => {
-              selectImage();
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              marginBottom: 10,
             }}>
             <Image
-              style={{height: 45, width: 45, alignSelf: 'center'}}
-              source={require('../../assets/Icons/addProgram.png')}
-            />
-            <Text style={{alignSelf: 'center', fontWeight: '400'}}>
-              Upload Program Thumbnail
-            </Text>
-          </TouchableOpacity>
+              style={{height: 25, width: 25}}
+              source={require('../../../assets/Icons/Notification.png')}></Image>
+          </View>
 
           <View
+            style={{
+              height: '12%',
+              width: '100%',
+              borderWidth: 1,
+              justifyContent: 'center',
+              marginBottom: 10,
+              borderRadius: 10,
+              backgroundColor: 'white',
+              marginBottom: 15,
+              borderColor: '#E5E4E2',
+            }}>
+            <TouchableOpacity
+              onPress={e => {
+                console.log('select image');
+                // selectImage();
+              }}>
+              <Image
+                style={{height: 45, width: 45, alignSelf: 'center'}}
+                source={require('../../../assets/Icons/addProgram.png')}
+              />
+              <Text style={{alignSelf: 'center', fontWeight: '400'}}>
+                Upload Program Thumbnail
+              </Text>
+            </TouchableOpacity>
+
+            {/* <View
             style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Button title="Choose Image" onPress={handleChooseImage} />
             {selectedImage && (
@@ -363,261 +376,164 @@ export function ProgramScreen() {
                 style={{width: 200, height: 200}}
               />
             )}
+          </View> */}
           </View>
-        </View>
 
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Program Name"
-            mode="outlined"
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Program Name'}
             label={'Program Name'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={programNameError}
             value={programName}
-            onChangeText={e => programNameChange(e)}
+            onChangeText={e => setProgramName(e)}
           />
-          <HelperText type="error" visible={programNameError}>
-            Program Name Invalide
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Mentorship Mode"
-            mode="outlined"
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Mentorship Mode'}
             label={'Mentorship Mode'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={mentorshipModeError}
-            value={mentorshipMode}
-            onChangeText={e => mentorshipModeChange(e)}
-          />
-          <HelperText type="error" visible={mentorshipModeError}>
-            Mentorship Mode Invalide
-          </HelperText>
-
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Vector.png')}
-            />
-          </View>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Year of Exprience"
-            mode="outlined"
-            label={'Year of Exprience'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={exprienceError}
             value={exprience}
-            onChangeText={e => exprienceChange(e)}
+            onChangeText={e => setExprience(e)}
+            emailIconView={styles.imageViewStyle}
+            emailIcon={styles.imageIconStyle}
+            source={require('../../../assets/Icons/Vector.png')}
           />
-          <HelperText type="error" visible={exprienceError}>
-            Select Year of Exprience
-          </HelperText>
 
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Vector.png')}
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Year of Exprience'}
+            label={'Year of Exprience'}
+            value={mentorshipMode}
+            onChangeText={e => setMentorshipMode(e)}
+            emailIconView={styles.imageViewStyle}
+            emailIcon={styles.imageIconStyle}
+            source={require('../../../assets/Icons/Vector.png')}
+          />
+
+          <View>
+            <TextInputComponent
+              emailView={styles.textInputView}
+              placeholder={'Start Date'}
+              label={'Start Date'}
+              value={selectedDateStr}
+              onChangeText={e => selectedDate(e)}
+              onFocus={showDatePicker}
+              emailIconView={styles.imageViewStyle}
+              emailIcon={styles.imageIconStyle}
+              source={require('../../../assets/Icons/Calendar.png')}
+              // onPress={() => {
+              //   // showDatePicker();
+              //   console.log("show");
+              // }}
+              onPress={showDatePicker}
+            />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+              date={selectedDate}
+              format="DD-MM-YYYY"
+            />
+
+            <TextInputComponent
+              emailView={styles.textInputView}
+              placeholder={'Price'}
+              label={'Price'}
+              value={price}
+              onChangeText={e => setPrice(e)}
             />
           </View>
-        </View>
 
-        <View style={[styles.textInputView, {marginBottom: 20}]}>
-          <TextInput
-            placeholder="Start Date"
-            mode="outlined"
-            label={'Start Date'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            // error={startDateError}
-            value={startDate}
-            onChangeText={e => setStartDate(e)}
-          />
-          {/* <HelperText type="error" visible={startDateError}>
-            Select Start Date
-          </HelperText> */}
-
-          <View style={styles.imageView}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/Icons/Calendar.png')}
-            />
-          </View>
-        </View>
-
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Price"
-            mode="outlined"
-            label={'Price'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={priceError}
-            value={price}
-            onChangeText={e => priceChange(e)}
-          />
-          <HelperText type="error" visible={priceError}>
-            Price is Invalide
-          </HelperText>
-        </View>
-
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-          <TextInput
-            placeholder="Mentee Allowed"
-            mode="outlined"
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Mentee Allowed'}
             label={'Mentee Allowed'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={allowError}
             value={allow}
-            onChangeText={e => allowChange(e)}
+            onChangeText={e => setAllow(e)}
           />
-          <HelperText type="error" visible={allowError}>
-            Allow Mentee
-          </HelperText>
-        </View>
 
-        <View style={styles.textInputView}>
-          {/* <View style={styles.requiredView}>
-            <Text style={styles.requiredText}>*</Text>
-          </View> */}
-          <TextInput
-            placeholder="Mentor Availability"
-            mode="outlined"
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Mentor Availability'}
             label={'Mentor Availability'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={availableError}
             value={available}
-            onChangeText={e => availableChange(e)}
+            onChangeText={e => setAvailable(e)}
           />
-          <HelperText type="error" visible={availableError}>
-            Allow Mentee
-          </HelperText>
-        </View>
 
-        <View style={styles.textInputView}>
-          <TextInput
-            placeholder="Pgrogram Expiry Date"
-            mode="outlined"
-            label={'Program Expiry Date'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            autoCapitalize="none"
-            autoCorrect={false}
-            error={programExpirError}
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Pgrogram Expiry Date'}
+            label={'Pgrogram Expiry Date'}
             value={programExpir}
-            onChangeText={e => programExpirChange(e)}
+            onChangeText={e => setProgramExpir(e)}
+            emailIconView={styles.imageViewStyle}
+            emailIcon={styles.imageIconStyle}
+            source={require('../../../assets/Icons/Calendar.png')}
+            onPress={() => {
+              console.log('press on Icon');
+            }}
           />
-          <HelperText type="error" visible={programExpirError}>
-            Select Program Expiry Date
-          </HelperText>
-          <View style={styles.imageView}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/Icons/Calendar.png')}
-            />
-          </View>
-        </View>
 
-        <View style={[styles.textInputView, {marginBottom: 15}]}>
-          <TextInput
-            style={{borderRadius: 10}}
-            placeholder="Upload Skill Certificate"
-            mode="outlined"
+          <TextInputComponent
+            emailView={styles.textInputView}
+            placeholder={'Upload Skill Certificate'}
             label={'Upload Skill Certificate'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            // style={{borderRadius: 10}}
-            autoCapitalize="none"
-            autoCorrect={false}
-            // error={emailError}
             value={certificate}
             onChangeText={e => setCertificate(e)}
+            emailIconView={styles.imageViewStyle}
+            emailIcon={styles.imageIconStyle}
+            source={require('../../../assets/Icons/Group.png')}
+            onPress={() => {
+              console.log('press on Icon');
+            }}
           />
 
-          <View style={styles.imageViewStyle}>
-            <Image
-              style={styles.imageIconStyle}
-              source={require('../../assets/Icons/Group.png')}
+          <View style={[styles.textInputView, {marginBottom: '10%'}]}>
+            <TextInput
+              multiline={true}
+              placeholder="Program Description"
+              mode="outlined"
+              label={'Program Description'}
+              outlineColor="#E5E4E2"
+              activeOutlineColor="black"
+              height={150}
+              autoCapitalize="none"
+              autoCorrect={false}
+              // error={}
+              value={description}
+              onChangeText={e => setDescription(e)}
             />
           </View>
-        </View>
 
-        <View style={[styles.textInputView, {marginBottom: '10%'}]}>
-          <TextInput
-            multiline={true}
-            placeholder="Program Description"
-            mode="outlined"
-            label={'Program Description'}
-            outlineColor="black"
-            activeOutlineColor="black"
-            height={150}
-            autoCapitalize="none"
-            autoCorrect={false}
-            // error={}
-            value={description}
-            onChangeText={e => setDescription(e)}
-          />
-        </View>
-
-        <View style={[styles.buttonView, {marginBottom: 20, marginTop: 10}]}>
-          <TouchableOpacity
-            onPress={e => {
-              handleSubmitButton(e);
-            }}
-            style={{
-              height: 50,
-              width: '125%',
-              backgroundColor: '#FE4D4D',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderColor: '#FE4D4D',
-              borderRadius: 10,
-              marginBottom: 20,
-            }}>
-            <Text
+          <View style={[styles.buttonView, {marginBottom: 20, marginTop: 20}]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('programs')}
+              // onPress={e => {
+              //   handleSubmitButton(e);
+              // }}
               style={{
-                color: 'white',
-                fontWeight: '700',
-                fontSize: 16,
-                alignSelf: 'center',
+                height: 50,
+                width: '125%',
+                backgroundColor: '#FE4D4D',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderColor: '#FE4D4D',
+                borderRadius: 10,
+                marginBottom: 20,
               }}>
-              Add Bank Account
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  color: 'white',
+                  fontWeight: '700',
+                  fontSize: 16,
+                  alignSelf: 'center',
+                }}>
+                Add Program
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
-  </SafeAreaView>
-
-
-
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -641,7 +557,7 @@ const styles = StyleSheet.create({
   switchStyle: {
     // marginTop:
   },
-  textInputView: {marginTop: -3},
+  textInputView: {marginTop: 15},
   requiredView: {marginBottom: '-8%', marginTop: 5},
   requiredText: {marginLeft: '21%', color: '#FF0000'},
   textInputField: {borderWidth: 1, borderRadius: 10, borderColor: '#313131'},

@@ -1,23 +1,16 @@
 import {loginUser} from '../../actions/UserActions';
 import {Button} from '../../components';
 import * as regex from '../../test-utils/regex';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
-import {
-  Image,
-  ImageBackground,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from './Login.styles';
 import CheckBox from '@react-native-community/checkbox';
 import {useNavigation} from '@react-navigation/native';
 import {useFocusEffect} from '@react-navigation/native';
-import {TextInput as MaterialTextInput} from 'react-native-paper';
-import {TextInputComponent} from '../../components/TextInputComponent';
+import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 
 export const Login = props => {
   const [email, setEmail] = useState('');
@@ -27,12 +20,16 @@ export const Login = props => {
   const [checkemail, SetCheckEmail] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
   const [menteementor, setMenteeMentor] = useState('1');
-  const [change, setChange] = useState(false);
+  console.log('login data isss', email, password, show, empty, menteementor);
+
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
   const navigation = useNavigation();
   console.log(props, 'props');
   const dispatch = useDispatch();
   let loginLoader = useSelector(state => state.loaders.loading);
+  console.log('loginloaderstate is', loginLoader);
+
   const submitLogin = () => {
     console.log('Done', email, password);
     if (!regex.validateEmail(email)) {
@@ -41,11 +38,12 @@ export const Login = props => {
       console.log('invalid password');
     } else {
       console.log('else called');
+
       dispatch(
         loginUser({
           email: email,
           password: password,
-          role: menteementor,
+          role: 1,
         }),
       );
     }
@@ -57,7 +55,6 @@ export const Login = props => {
 
   const loginButtonPressed = () => {
     if (email === '' && password === '') {
-      // Alert.alert("Email can not be blank")
       setEmpty(true);
     } else {
       setEmpty(false);
@@ -77,10 +74,8 @@ export const Login = props => {
     if (reg.test(email) === false) {
       SetCheckEmail(true);
       setEmpty(false);
-      // setEmailError(true);
     } else {
       setEmpty(false);
-      // setEmailError(false);
       SetCheckEmail(false);
     }
   };
@@ -90,15 +85,12 @@ export const Login = props => {
     if (reg.test(password) === false) {
       setCheckPassword(true);
       setEmpty(false);
-      // setEmailError(true);
     } else {
       setEmpty(false);
-      // setEmailError(false);
       setCheckPassword(false);
     }
   };
 
-  //To clear the textinput data
   useFocusEffect(
     React.useCallback(() => {
       return () => {
@@ -124,99 +116,60 @@ export const Login = props => {
             <Text style={{color: 'black'}}>
               Welcome Back, you’ve been missed!
             </Text>
-            <View style={styles.buttonViewnew}>
-              <TouchableOpacity
-                onPress={() => {
-                  setChange(false);
-                  setMenteeMentor('1');
-                }}
-                style={change ? styles.mentorButton1 : styles.mentorButton}>
-                <Text style={change ? styles.mentorText1 : styles.mentorText}>
-                  Mentor
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={change ? styles.menteeButton1 : styles.menteeButton}
-                onPress={() => {
-                  setChange(true);
-                  setMenteeMentor('2');
-                }}>
-                <Text style={change ? styles.menteeText1 : styles.menteeText}>
-                  Mentee
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
 
-          <View style={styles.emailView}>
-            <MaterialTextInput
-              placeholder="Email"
-              mode="outlined"
-              label={'Email'}
-              outlineColor="grey"
-              activeOutlineColor="black"
-              style={{borderRadius: 10}}
-              autoCapitalize="none"
-              autoCorrect={false}
-              // error={emailError}
-              value={email}
-              onChangeText={emailChange}
-            />
-            {empty ? (
-              <Text style={{color: 'red'}}>Email is required</Text>
-            ) : null}
-            {checkemail ? (
-              <Text style={{color: 'red'}}>
-                Email must be a valid email address
-              </Text>
-            ) : null}
-            <View style={styles.emailIconView}>
-              <Image
-                style={styles.emailIcon}
-                source={require('../../assets/assets/emailicon.png')}
-              />
-            </View>
-          </View>
-          
-          <View style={styles.passwordView}>
-            <MaterialTextInput
-              style={{borderRadius: 10}}
-              placeholder="Password"
-              mode="outlined"
+          <TextInputComponent
+            emailView={styles.emailView}
+            placeholder={'Email'}
+            label={'Email ID'}
+            onChangeText={emailChange}
+            value={email}
+            empty={empty}
+            error={empty}
+            TextMessageAlert={'Email must be valid email address'}
+            TextMessage={'Email is required'}
+            condtionText={{color: 'red'}}
+            checkCondtion={checkemail}
+            emailIconView={styles.emailIconView}
+            emailIcon={styles.emailIcon}
+            source={require('../../assets/assets/emailicon.png')}
+          />
+          <View>
+            <TextInputComponent
+              emailView={styles.passwordView}
+              placeholder={'Password'}
               label={'Password'}
-              autoCapitalize="none"
-              outlineColor="grey"
-              activeOutlineColor="black"
-              autoCorrect={false}
-              secureTextEntry={show}
-              // error={passwordError}
-              value={password}
+              styleInput={styles.materialView}
               onChangeText={passwordChange}
+              value={password}
+              empty={empty}
+              secureTextEntry={show}
+              TextMessageAlert={'Password must be at least 6 characters'}
+              TextMessage={'Password is required'}
+              condtionText={{color: 'red'}}
+              checkCondtion={checkPassword}
+              checkemail={checkemail}
+              error={empty}
+              emailIconView={styles.emailIconView}
             />
-            {empty ? (
-              <Text style={{color: 'red'}}>Password is required</Text>
-            ) : null}
-            {checkPassword ? (
-              <Text style={{color: 'red'}}>
-                Password must be at least 6 characters
-              </Text>
-            ) : null}
-            <View style={styles.eyeImageView}>
+
+            <View style={[styles.emailIconView, {marginLeft: '13%'}]}>
               <TouchableOpacity onPress={() => setShow(!show)}>
                 {show ? (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 20}}
+                    style={{height: 20, width: 20, marginTop: 25}}
                     source={require('../../assets/assets/eyeicon.png')}
                   />
                 ) : (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 20}}
+                    style={{height: 20, width: 20, marginTop: 25}}
                     source={require('../../assets/assets/eye.png')}
                   />
                 )}
               </TouchableOpacity>
             </View>
           </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -261,15 +214,17 @@ export const Login = props => {
               </Text>
             </View>
           </View>
+
           <View style={styles.bottomButton}>
             <View style={styles.buttonView}>
               <Button
                 onPress={() => {
                   loginButtonPressed();
                   submitLogin();
+                  console.log('button');
                 }}
                 textStyle={styles.buttonText}
-                title={'Log in'}
+                title={'Login'}
               />
             </View>
             <View style={styles.textBottom}>

@@ -3,25 +3,27 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StyleSheet, View, Text} from 'react-native';
 import {NAVIGATION} from '../constants';
 import OnboardingS from '../screens/Onboarding/OnboardingS';
-import {Register} from '../screens/Register/Register';
+
 import ForgetPassword from '../screens/ForgetPassword/ForgetPassword';
 import {Login} from '../screens/Login/Login';
 import CreateNewPassword from '../screens/CreateNewPassword/CreateNewPassword';
 import VerifyEmail from '../screens/VerifyEmail/VerifyEmail';
 import BiometricLogin from '../screens/Biometric/BiometricLogin';
-
+import Register from '../screens/Register/Register';
 import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
 const Stack = createNativeStackNavigator();
+const showOnboard = false
 
 export function AuthNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {showOnboard && <Stack.Screen
         component={OnboardingS}
         name="Onboarding"
         options={{headerShown: false}}
-      />
+      />}
+     
       <Stack.Screen
         component={Login}
         name="Login"
