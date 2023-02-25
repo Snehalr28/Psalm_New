@@ -1,28 +1,21 @@
-import {lock, login, auth, backArrow} from '../../assets';
 import {resetPassword} from '../../actions/UserActions';
 import {Button, TextField} from '../../components';
-import {NAVIGATION} from '../../navigation';
-import {globalColors} from '../../theme/globalColors';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   Image,
-  TextInput,
-  ImageBackground,
-  Platform,
   Text,
   TouchableOpacity,
   View,
-  Pressable,
   Alert,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../screens/CreateNewPassword/CreateNewPassword.styles';
-import {ScrollView} from 'react-native-gesture-handler';
-import {TextInput as MaterialTextInput, HelperText} from 'react-native-paper';
 import {useFocusEffect} from '@react-navigation/native';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
+
+// import {useNavigation} from '@react-navigation/native';
 export const CreateNewPassword = ({route, navigation}) => {
   const [password, setPassword] = useState('');
   const [newpassword, setNewpassword] = useState('');
@@ -34,7 +27,8 @@ export const CreateNewPassword = ({route, navigation}) => {
 
   const [checkPassword, setCheckPassword] = useState(false);
   const [checkNewPassword, setCheckNewPassword] = useState(false);
-
+  // const {navigation, route} = props;
+  // const navigation = useNavigation();
   const dispatch = useDispatch();
   let forgotUserId = useSelector(state => state.user.forgotUser);
   let passwordResetRequest = useSelector(
@@ -44,6 +38,7 @@ export const CreateNewPassword = ({route, navigation}) => {
     if (password.length < 8) {
     } else if (newpassword.length < 8) {
     } else if (newpassword != password) {
+      alert('Password & confirm password does not match');
     } else {
       console.log('password, newpassword', password, newpassword);
       dispatch(
@@ -55,10 +50,9 @@ export const CreateNewPassword = ({route, navigation}) => {
             if (cb != false) {
               if (cb.responseCode == 200) {
                 console.log('login called successfullly');
-
-                Alert.alert('Password changed successfully');
+                alert('Password changed successfully');
                 navigation.navigate('Login');
-
+                // navigation.goBack();
                 console.log('navigate to login');
               }
             }
@@ -74,7 +68,6 @@ export const CreateNewPassword = ({route, navigation}) => {
       setEmpty(false);
     } else {
       setEmpty(false);
-
       setCheckPassword(false);
     }
   };
@@ -89,7 +82,6 @@ export const CreateNewPassword = ({route, navigation}) => {
       setEmpty(false);
     } else {
       setEmpty(false);
-
       setCheckNewPassword(false);
     }
   };
@@ -146,7 +138,7 @@ export const CreateNewPassword = ({route, navigation}) => {
               empty={empty}
               secureTextEntry={show}
               TextMessageAlert={
-                'Password must be at least 6 characters'
+                'Password must contains Special Characters,[A-Z],[a-z],[0-9]'
               }
               TextMessage={'Password is required'}
               condtionText={{color: 'red'}}
@@ -157,12 +149,13 @@ export const CreateNewPassword = ({route, navigation}) => {
               <TouchableOpacity onPress={() => setShow(!show)}>
                 {show ? (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 20}}
+                    style={styles.eyeIconImage}
                     source={require('../../assets/assets/eyeicon.png')}
                   />
                 ) : (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 20}}
+                  style={styles.eyeIconImage}
+                    // style={{height: 20, width: 20, marginTop: 20}}
                     source={require('../../assets/assets/eye.png')}
                   />
                 )}
@@ -179,7 +172,7 @@ export const CreateNewPassword = ({route, navigation}) => {
               empty={empty}
               secureTextEntry={shownext}
               TextMessageAlert={
-                'Password must be at least 6 characters'
+                'Password must contains Special Characters,[A-Z],[a-z],[0-9]'
               }
               TextMessage={'Password is required'}
               condtionText={{color: 'red'}}
@@ -207,9 +200,12 @@ export const CreateNewPassword = ({route, navigation}) => {
               onPress={() => {
                 submitPressed();
                 handleSavePassword();
+                // console.log("button")
               }}
               textStyle={styles.buttonText}
               title={'Save Password'}
+              // isLoading={loginLoader}
+              // disabled={loginLoader}
             />
           </View>
         </View>

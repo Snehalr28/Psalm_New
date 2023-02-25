@@ -7,9 +7,9 @@ import {
 } from '../screens/Program/ProgramAdd/AddNewProgram';
 import ProgramList from '../screens/Program/ProgramList/ProgramList';
 import ProgramCategory from '../screens/Program/ProgramCategory/ProgramCategory';
-import Programs from "../screens/Program/Programs/Programs"
-import ProgramDetails from "../screens/Program/ProgramDetails/ProgramDetails"
-import EditProgram from "../screens/Program/EditProgram/EditProgram"
+import Programs from '../screens/Program/Programs/Programs';
+import ProgramDetails from '../screens/Program/ProgramDetails/ProgramDetails';
+import EditProgram from '../screens/Program/EditProgram/EditProgram';
 const Stack = createNativeStackNavigator();
 export function ProgramNavigator() {
   return (

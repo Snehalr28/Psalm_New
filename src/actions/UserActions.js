@@ -4,6 +4,8 @@ import idx from 'idx';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigate} from '../navigation/NavigationService';
 import {Alert} from 'react-native';
+import {useSelector} from 'react-redux';
+import { getUser } from '../selectors/UserSelectors';
 
 export const TYPES = {
   CLEAR_STORE: 'CLEAR_STORE',
@@ -15,6 +17,15 @@ export const TYPES = {
   UPDATE_MENTOR_REQUEST: 'UPDATE_MENTOR_REQUEST',
   UPDATE_MENTOR_ERROR: 'UPDATE_MENTOR_ERROR',
   UPDATE_MENTOR_SUCCESS: 'UPDATE_MENTOR_SUCCESS',
+
+ 
+  PROGRAM_LIST_REQUEST: 'PROGRAM_LIST_REQUEST',
+  PROGRAM_LIST_ERROR: 'PROGRAM_LIST_ERROR',
+  PROGRAM_LIST_SUCCESS: 'PROGRAM_LIST_SUCCESS',
+
+  PROGRAM_DETAILS_REQUEST: 'PROGRAM_DETAILS_REQUEST',
+  PROGRAM_DETAILS_SUCCESS: 'PROGRAM_DETAILS_SUCCESS',
+  PROGRAM_DETAILS_ERROR: 'PROGRAM_DETAILS_ERROR',
 
   UPDATE_PROGRAM_REQUEST: 'UPDATE_PROGRAM_REQUEST',
   UPDATE_PROGRAM_ERROR: 'UPDATE_PROGRAM_ERROR',
@@ -54,9 +65,9 @@ export const TYPES = {
   LOADER_FAIL: 'LOADER_FAIL',
   LOADER_SUCCESS: 'LOADER_SUCCESS',
 
-  UPLOAD_IMAGE_REQUEST: 'UPLOAD_IMAGE_REQUEST',
-  UPLOAD_IMAGE_SUCCESS: 'UPLOAD_IMAGE_SUCCESS',
-  UPLOAD_IMAGE_SUCCESS: 'UPLOAD_IMAGE_SUCCESS',
+  FETCH_PROFILE_REQUEST: 'FETCH_PROFILE_REQUEST',
+  FETCH_PROFILE_SUCCESS: 'FETCH_PROFILE_SUCCESS',
+  FETCH_PROFILE_ERROR: 'FETCH_PROFILE_ERROR',
 };
 
 const loginRequest = () => ({
@@ -168,9 +179,9 @@ const updateMentorRequest = () => ({
   type: TYPES.UPDATE_MENTOR_REQUEST,
   payload: null,
 });
-const updateMentorSuccess = user => ({
+const updateMentorSuccess = UMdata => ({
   type: TYPES.UPDATE_MENTOR_SUCCESS,
-  payload: {user},
+  payload: {UMdata},
 });
 const updateMentorError = error => ({
   type: TYPES.UPDATE_MENTOR_ERROR,
@@ -194,9 +205,9 @@ const updateProgramRequest = () => ({
   type: TYPES.UPDATE_PROGRAM_REQUEST,
   payload: null,
 });
-const updateProgramSuccess = user => ({
+const updateProgramSuccess = UpProgram => ({
   type: TYPES.UPDATE_PROGRAM_SUCCESS,
-  payload: {user},
+  payload: {UpProgram},
 });
 const updateProgramError = error => ({
   type: TYPES.UPDATE_PROGRAM_ERROR,
@@ -216,40 +227,78 @@ const categoryDisplayError = error => ({
   payload: {error},
 });
 
+
+const ProgramListRequest = () => ({
+  type: TYPES.PROGRAM_LIST_REQUEST,
+  payload: null,
+});
+const ProgramListSuccess = ProgramListShow => ({
+  type: TYPES.PROGRAM_LIST_SUCCESS,
+  payload: {ProgramListShow},
+});
+const ProgramListError = error => ({
+  type: TYPES.PROGRAM_LIST_ERROR,
+  payload: {error},
+});
+
+const PrograDetailsRequest = () => ({
+  type: TYPES.PROGRAM_DETAILS_REQUEST,
+  payload: null,
+});
+const ProgramDetailsSuccess= ProgramDetailsShow => ({
+  type: TYPES.PROGRAM_DETAILS_SUCCESS,
+  payload: {ProgramDetailsShow},
+});
+const ProgramDetailsError = error => ({
+  type: TYPES.PROGRAM_DETAILS_ERROR,
+  payload: {error},
+});
+
+
+
+const FetchProfileRequest = () => ({
+  type:TYPES.FETCH_PROFILE_REQUEST,
+  payload: null
+})
+
+const FetchProfileSuccess = (profiledata) => ({
+  type:TYPES.FETCH_PROFILE_SUCCESS,
+  payload: profiledata
+})
+const FetchProfileError = () => ({
+  type:TYPES.FETCH_PROFILE_ERROR,
+  payload: {error}
+})
+
+
+
+
 export const loginUser = data => async dispatch => {
-  console.log('dataaisss', data);
+  console.log('Login Email and password Data', data);
   dispatch(loginRequest());
   dispatch(loaderRequest());
-  console.log('Loder req call');
   try {
-    console.log('üser');
     const user = await UserController.login(data);
-    console.log('user------>', user);
+    console.log('Login user------>', user);
     let userToken = idx(user, _ => _.response.data.token);
-    console.log('usertoken issssssss', userToken);
+    console.log('Login user token', userToken);
     await AsyncStorage.setItem('userToken', userToken);
-    console.log('userToken<<<', userToken);
     dispatch(loginSuccess(user));
-    console.log('Login success call');
     dispatch(loaderSuccess());
-    console.log('Loder success call');
   } catch (error) {
-    console.log(error);
-    dispatch(loaderError());
     alert(error.response.message);
     dispatch(loginError(error));
+    dispatch(loaderError());
   }
 };
 
 export const forgotPassword = (data, cb) => async dispatch => {
   dispatch(forgotPassRequest());
   try {
-    console.log('forget password try');
     const user = await UserController.forgotPassword(data.email);
     console.log('forget password data', user);
+    console.log('forget password response', user.response);
     cb(user.response);
-    console.log('forget password data response', user.response);
-
     dispatch(forgotPassSuccess(user.response));
   } catch (error) {
     console.log('ërror isssss', error);
@@ -271,6 +320,7 @@ export const resendOtp = (data, cb) => async dispatch => {
   }
 };
 export const confirmOTP = (data, cb) => async dispatch => {
+  console.log("confirm OTP")
   dispatch(confirmOTPRequest());
   try {
     const user = await UserController.confirmOtp(data);
@@ -282,7 +332,6 @@ export const confirmOTP = (data, cb) => async dispatch => {
     } else {
       dispatch(confirmOTPSuccess(user.response));
     }
-
     //  dispatch(confirmOTPSuccess(user));
   } catch (error) {
     alert(error.message || error);
@@ -295,7 +344,7 @@ export const resetPassword = (data, cb) => async dispatch => {
   dispatch(resetPassRequest());
   try {
     const user = await UserController.resetPassword(data);
-    console.log(user, 'üserdata');
+    console.log('üserdata',user);
     alert(user.response.message);
     cb(user.response);
     dispatch(resetPassSuccess(user.response));
@@ -329,55 +378,52 @@ export const logout = () => async dispatch => {
   }
 };
 
-export const updateMentor = data => async dispatch => {
-  console.log('dataaisss', data);
+export const updateMentor = (data, cb) => async dispatch => {
+  console.log('update mentor request', data);
   dispatch(updateMentorRequest());
   // dispatch(loaderRequest());
   console.log('Loder req call');
   try {
-    const user = await UserController.updateMentor(data);
-    console.log('user------>', user);
-    console.log('userToken<<<', userToken);
-    dispatch(updateMentorSuccess(user));
-    console.log('Login success call');
-    dispatch(loaderSuccess());
-    console.log('Loder success call');
+    const UMdata = await UserController.updateMentor(data);
+    console.log('update profile response is', UMdata);
+    console.log('update profile final response is', UMdata.response);
+
+    cb(UMdata.response);
+    dispatch(updateMentorSuccess(UMdata));
+    console.log('Update mentor success call');
   } catch (error) {
-    console.log(error);
-    dispatch(loaderError());
-    alert(error.response.message);
+    console.log('update mentor error', error);
     dispatch(updateMentorError(error));
+    alert(error.response.message);
   }
 };
 
+
 export const addMentor = data => async dispatch => {
-  console.log('dataaisss', data);
+  console.log('add program response', data);
   dispatch(addMentorRequest());
-  console.log('Loder req call');
   try {
     const user = await UserController.addMentor(data);
-    console.log('user------>', user);
+    console.log('Add program final response', user);
+    cb(user.response)
     dispatch(addMentorSuccess(user));
-    console.log('Login success call');
-    dispatch(loaderSuccess());
-    console.log('Loder success call');
   } catch (error) {
-    console.log(error);
+    console.log("add program error", error);
     dispatch(addMentorError(error));
   }
 };
 
-export const updateProgram = (data,cb) => async dispatch => {
-  console.log('dataaisss', data);
+export const updateProgram = (data, cb) => async dispatch => {
+  console.log('update program data isss', data);
   dispatch(updateProgramRequest());
-  // dispatch(loaderRequest());
-  // console.log('Loder req call');
+
   try {
     const UpProgram = await UserController.updateProgram(data);
-    console.log('user------>', UpProgram);
-    dispatch(updateProgramSuccess(updateProgram));
-    cb(UpProgram.message);
-    console.log('Login success call');
+    console.log('update program user------>', UpProgram);
+    dispatch(updateProgramSuccess(UpProgram));
+    console.log("check update program",UpProgram.response)
+    cb(UpProgram.response);
+   
 
     dispatch(loaderSuccess());
     console.log('Loder success call');
@@ -395,13 +441,68 @@ export const CategoryDisplay = cb => async dispatch => {
   try {
     console.log('/////Inside category try::');
     const category = await UserController.CategoryDisplay();
-    console.log('Category Display User data');
+    // var data = JSON.stringify(category)
+   
+    console.log('category response is',category);
     dispatch(categoryDisplaySuccess(category));
     cb(category.response);
 
-    console.log('display category success');
+    console.log('display category success',category.response);
   } catch (error) {
     console.log(error);
     dispatch(categoryDisplayError(error));
+  }
+};
+
+export const ShowProgram = (data,cb)  => async dispatch => {
+  console.log('Show list of program');
+  dispatch(ProgramListRequest());
+  try {
+    console.log('/////Inside Show program try::');
+    const ProgramListShow = await UserController.ShowProgram(data);
+    console.log('Show Program List',ProgramListShow);
+    dispatch(ProgramListSuccess(ProgramListShow));
+    cb(ProgramListShow.response);
+
+  
+  } catch (error) {
+    console.log(error);
+    dispatch(ProgramListError(error));
+  }
+};
+
+export const ProgramDetails = (data,cb)  => async dispatch => {
+  console.log('Show list of program');
+  dispatch(PrograDetailsRequest());
+  try {
+    console.log('/////Inside program Details try::');
+    const ProgramDetailsShow = await UserController.ShowDetails(data);
+    console.log('Show Program Details',ProgramDetailsShow);
+    dispatch(ProgramDetailsSuccess(ProgramDetailsShow));
+    cb(ProgramDetailsShow.response);
+
+  
+  } catch (error) {
+    console.log(error);
+    dispatch(ProgramDetailsError(error));
+  }
+};
+
+
+
+export const FetchProfileData = (data, cb)=> async dispatch => {
+  console.log('fetch User action inside');
+  dispatch(FetchProfileRequest());
+  try {
+    console.log("fetch profile fetch",data);
+    const profiledata = await UserController.FetchData(data);
+    console.log('fetch User data',profiledata);
+    dispatch(FetchProfileSuccess(profiledata));
+    cb(profiledata.response);
+
+    console.log('fetch success',profiledata.response);
+  } catch (error) {
+    console.log(error);
+    dispatch(FetchProfileError(error));
   }
 };

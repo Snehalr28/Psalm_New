@@ -52,11 +52,11 @@ export const VerifyEmail = ({route, navigation}) => {
 
   const submitPressed = () => {
     if (value && value.length == 0) {
-      Alert.alert('Please enter a otp');
+      alert('Please enter a otp');
       return;
     }
     if (value && value.length < 6) {
-      Alert.alert('OTP must be of 6 characters');
+      alert('OTP must be of 6 characters');
       return;
     } else {
       if (type) {
@@ -65,13 +65,13 @@ export const VerifyEmail = ({route, navigation}) => {
             if (cb.responseCode == 200) {
               navigation.navigate('createNewPassword');
             }
-            console.log('otp cb', cb, otp);
+            console.log('otp cb', cb);
           }),
         );
       } else {
         dispatch(
           confirmOTP({otp: value}, cb => {
-            console.log('otp cb', cb, otp);
+            console.log('otp cb', cb);
             if (cb.responseCode == 200) {
               //  navigation.navigate('Dashbord');
             }

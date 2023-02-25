@@ -3,7 +3,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StyleSheet, View, Text} from 'react-native';
 import {NAVIGATION} from '../constants';
 import OnboardingS from '../screens/Onboarding/OnboardingS';
-
 import ForgetPassword from '../screens/ForgetPassword/ForgetPassword';
 import {Login} from '../screens/Login/Login';
 import CreateNewPassword from '../screens/CreateNewPassword/CreateNewPassword';

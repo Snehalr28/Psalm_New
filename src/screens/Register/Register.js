@@ -1,4 +1,3 @@
-
 import {registerUser} from '../../actions/UserActions';
 import {Button} from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -344,7 +343,7 @@ export const Register = props => {
                 marginBottom: '6%',
               }}>
               <TextInputComponent
-                emailView={{width: 255}}
+                emailView={{width: 225}}
                 placeholder={'Mobile No.'}
                 label={'Mobile Number'}
                 onChangeText={numberChange}
@@ -355,7 +354,7 @@ export const Register = props => {
                 TextMessage={'Mobile no. is required'}
                 condtionText={{color: 'red'}}
                 checkCondtion={mobileNumberError}
-                emailIconView={styles.imageView}
+                emailIconView={[styles.imageView, {marginRight: '15%',}]}
                 emailIcon={styles.image}
                 source={require('../../assets/Icons/call.png')}
               />
@@ -380,6 +379,9 @@ export const Register = props => {
             source={require('../../assets/assets/eyeicon.png')}
             eyeImageView={props.eyeImageView}
           />
+
+
+          
 
           <View style={styles.inputTextView}>
             <Text style={styles.bottomText}>

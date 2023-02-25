@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native';
@@ -8,7 +8,47 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Images from '../../../assets/Images/Sample';
 import {styles} from './ProgramsStyles';
 import {useNavigation} from '@react-navigation/native';
+import {Button} from '../../../components/Button';
+import { ProgramDetails } from '../../../actions/UserActions';
 const Programs = props => {
+  useEffect(() => {
+    // ShowProgramDetails();
+  }, []);
+
+  const ShowProgramDetails = async () => {
+    console.log('Program List');
+    let ProgramDataOb = {
+      mentorid: '63f5af8c247174c71f3e2133',
+      programid: '63ee0fbafb4bd634c1730177',
+      
+    };
+    try {
+      dispatch(
+      ProgramDetails(ProgramDataOb ,cb=> {
+          console.log('show Program Detials', cb.data.docs);
+          // var mydata=[]
+          // mydata=cb.data.docs;
+          // mydata.map((e1)=>{
+          //   console.log(e1.image,"data is");
+          // })
+          if (cb != false) {
+            // setData(cb.data.docs)
+            console.log('check', cb.responseCode);
+            if (cb.status === 'success') {
+              //  setData(cb.data.docs)
+              // navigation.navigate('ProgramList');
+            }
+          }
+        }),
+      );
+    } catch (error) {
+      Alert.alert('Invalid Data');
+    }
+  };
+
+
+
+
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = index => {
     setCustomStyleIndex(index);
@@ -55,9 +95,7 @@ const Programs = props => {
           <Text style={styles.sequence}>
             {item.id}.{item.title}
           </Text>
-          <Text style={{fontSize: 14, fontWeight: '400', color: '#313131'}}>
-            {item.description}
-          </Text>
+          <Text style={styles.descriptionText}>{item.description}</Text>
         </View>
       </View>
 
@@ -96,13 +134,22 @@ const Programs = props => {
     </View>
   );
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        padding: 25,
-        backgroundColor: '#fff',
-      }}>
+    <SafeAreaView style={styles.ContainerView}>
+      <View style={styles.topContainer}>
+        <Image
+          style={styles.topBack}
+          source={require('../../../assets/Icons/BackIcon.png')}
+        />
+        <Text
+          style={styles.programText}>
+          Programs
+        </Text>
+        <Image
+          style={{height: 25, width: 25}}
+          source={require('../../../assets/Icons/Notification1.png')}
+        />
+      </View>
+      <ScrollView style={{marginTop: 20}} showsVerticalScrollIndicator={false}>
       <View>
         <Image
           style={{width: '100%', borderRadius: 10, marginBottom: 10}}
@@ -160,7 +207,7 @@ const Programs = props => {
         />
       )}
 
-      <ScrollView style={{marginTop: 20}} showsVerticalScrollIndicator={false}>
+      
         {customStyleIndex === 1 && (
           <View style={{marginRight: '5%'}}>
             <Text style={{marginBottom: 5}}>Program Description</Text>
@@ -289,25 +336,15 @@ const Programs = props => {
             </View>
 
             <View style={styles.Button}>
-
-            <TouchableWithoutFeedback
-               onPress={()=>navigation.navigate("Edit Program")}
-              // onPress={console.log('press')}
-              >
-              <View style={styles.ButtonView}>
-                <Text
-                  style={{
-                    alignSelf: 'center',
-                    color: '#FFFFFF',
-                    fontSize: 16,
-                    fontWeight: '700',
-                  }}>
-                  Edit Program
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
+              <Button
+                onPress={() => {
+                  navigation.navigate('Edit Program');
+                  console.log('button');
+                }}
+                title={'Edit Program'}
+              />
             </View>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>

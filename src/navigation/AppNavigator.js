@@ -4,16 +4,7 @@ import React from 'react';
 import {TabBarIcon} from '../components';
 import {NAVIGATION} from '../constants';
 import {HomeNavigator} from '../navigation/HomeNavigator';
-import {ProfileNavigator, ProgramNavigator} from './ProgramNavigator';
-import {
-  Alert,
-  Image,
-  ImageBackground,
-  Text,
-  TouchableOpacity,
-  View,
-  TextInput,
-} from 'react-native';
+import { ProgramNavigator } from './ProgramNavigator';
 import { SessionNavigator } from './SessionNavigator';
 import { ChatNavigator } from './ChatNavigator';
 const Tab = createBottomTabNavigator();
@@ -21,9 +12,7 @@ const Tab = createBottomTabNavigator();
 export function 
 AppNavigator() {
   const {colors} = useTheme();
-  // return(
-  //   <View style={{backgroundColor:"red",height:200}}></View>
-  // )
+  
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -43,10 +32,9 @@ AppNavigator() {
         component={HomeNavigator}
         options={{headerShown: false}}
       />
-      {/* <Tab.Screen name={NAVIGATION.profile} component={ProfileNavigator} /> */}
       <Tab.Screen
         name="Program"
-        component={ProgramNavigator}
+        component={ProgramNavigator }
         options={{headerShown: false}}
       />
          <Tab.Screen

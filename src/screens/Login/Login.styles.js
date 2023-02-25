@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
+import COLORS from "../../constants/color"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -116,7 +117,7 @@ export const styles = StyleSheet.create({
     height: 25,
   },
   container: {flex: 1, backgroundColor: '#fff'},
-  loginImage: {marginTop: '25%', marginLeft: '10%', marginBottom: '10%'},
+  loginImage: {marginTop: '20%', marginLeft: '10%', marginBottom: '10%'},
   textView: {flex: 2, marginLeft: '10%'},
   loginText: {
     color: 'black',
@@ -132,6 +133,12 @@ export const styles = StyleSheet.create({
     marginBottom:10,
     // justifyContent:"center",
     // alignItems:"center"
+  },
+  welcome:{
+   color: COLORS.GREY
+  },
+  textKeep:{
+    color: COLORS.GREY
   },
   emailInput: {
     borderWidth: 1,
@@ -155,13 +162,6 @@ export const styles = StyleSheet.create({
     marginRight: '10%',
     // marginBottom:"5%"
   },
-  // passwordInput: {
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  //   width: '100%',
-  //   color: 'black',
-  //   height: 45,
-  // },
   eyeImageView: {
     alignSelf: 'flex-end',
     marginTop: 5,
@@ -181,32 +181,23 @@ export const styles = StyleSheet.create({
     marginTop: -4,
     color: 'black',
     fontSize: 12,
-    // fontWeight: 'bold',
   },
   fgtPassword: {
     marginTop: -4,
     color: 'black',
     fontSize: 12,
     fontWeight: 'bold',
-    // marginRight: -5,
   },
   bottomButton: {
     flex: 4,
     alignContent: 'flex-end',
     marginTop: '20%',
-    // marginLeft: '10%',
     marginBottom: '10%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonView: {
     flex: 4,
-    // alignContent: 'flex-end',
-    // marginTop: '20%',
-    // // marginLeft: '10%',
-    // marginBottom: '10%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#FE4D4D',
     height: 50,
     width: '80%',
@@ -215,9 +206,7 @@ export const styles = StyleSheet.create({
   textBottom: {
     flex: 4,
     flexDirection: 'row',
-    // marginLeft: '15%',
     marginTop: 10,
-    // flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -256,11 +245,34 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
   },
+  imageIcon:{height: 20, width: 20, marginTop: 25},
   menteeText: {color: 'black', alignSelf: 'center', padding: 5},
   menteeText1: {color: 'white', alignSelf: 'center', padding: 5},
   mentorText: {color: 'white', alignSelf: 'center', padding: 5},
   mentorText1: {color: 'black', alignSelf: 'center', padding: 5},
+  checkboxView:{
+    flexDirection: 'row',
+    marginBottom: 20,
+    marginTop: 20,
+    justifyContent: 'space-around',
+    marginLeft: '7%',
+    marginRight: '8%',
+  },
+  checkStyle:{
+    // color: 'black',
+    borderWidth: 5,
+    // borderColor: 'red',
+    marginTop: -5,
+    marginLeft:-15,
+    // borderRadius:
+  },
+  // textKeep:{color: , paddingHorizontal: 6, fontSize: 10},
+  forgotText:{
+    color: COLORS.BLACK,
+    paddingHorizontal: 6,
+    fontSize: 10,
+    fontWeight: 'bold',
+    marginTop:3,
+    // marginLeft:"%"
+  },
 });
-// style={styles.InputView}
-// style={styles.Inputstyle }
-// style={styles.InputImageStyle}

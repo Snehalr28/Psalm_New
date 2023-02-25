@@ -3,6 +3,7 @@ import {black} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
+import COLORS from "../../constants/color"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -154,18 +155,18 @@ export const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#fff'},
   mainImage: {
     alignItems:"center",
-    marginTop: '25%', 
-    marginLeft: '13%', 
-    marginBottom: '10%'
-  },
+    marginTop: '15%', 
+    marginLeft: '10%', 
+    marginBottom: '10%',
+    marginRight:'10%'  },
   signUpTextView: {flex: 2, marginLeft: '10%'},
   signupText: {
-    color: 'black',
+    color: COLORS.BLACK,
     fontWeight: 'bold',
     fontSize: 30,
     marginBottom: 5,
   },
-  text: {color: 'black', fontSize:13},
+  text: {color: COLORS.GREY, fontSize:13},
   buttonView: {marginTop: 15, flexDirection: 'row'},
   mentorButton: {
     backgroundColor: 'black',
@@ -229,7 +230,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   image: {height: 20, width: 20, marginTop: 10},
-  bottomText: {color: 'grey', marginTop: '8%'},
+  bottomText: {color: COLORS.GREY, marginTop: '8%'},
   ContinueButton: {
     flex: 4,
     justifyContent: 'center',

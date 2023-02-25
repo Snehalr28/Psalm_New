@@ -1,31 +1,37 @@
-import React, {useEffect} from 'react';
+
+
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
   View,
   Text,
   Image,
-  StyleSheet,
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Images from '../../../assets/Images/Sample';
-import {Searchbar} from 'react-native-paper';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {styles} from './ProgramCategory.styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
-import {CategoryDisplay} from '../../../actions/UserActions';
+import {TextInput} from 'react-native';
 import {getUser} from '../../../selectors/UserSelectors';
+import CustomSearch from '../../../components/customSearch';
+import CustomHeader from "../../../components/customHeader"
+import {CategoryDisplay} from '../../../actions/UserActions';
+
+
 
 const ProgramCategory = props => {
+  const [dataNew, setData] = useState([]);
+  console.log('Data New', dataNew);
+
   let Data = useSelector(getUser);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   useEffect(() => {
-    Display();
+    // Display();
   }, []);
 
   const Display = async () => {
@@ -34,11 +40,12 @@ const ProgramCategory = props => {
     try {
       dispatch(
         CategoryDisplay(cb => {
-          console.log('Display Category data', cb.data.docs);
+          console.log('category display cb response is', cb);
           if (cb != false) {
-            console.log('check', cb.responseCode);
+            // setData(cb.data.docs)
+            console.log('checkCategory', cb.messageID);
             if (cb.status === 'success') {
-              
+              setData(cb.data.docs);
               // navigation.navigate('ProgramList');
             }
           }
@@ -49,7 +56,6 @@ const ProgramCategory = props => {
     }
   };
 
-  // const navigation = useNavigation();
   const data = [
     {
       id: '1',
@@ -73,92 +79,75 @@ const ProgramCategory = props => {
     },
   ];
   console.log('image', Images);
+  const [searchTerm, setSearchTerm] = useState('');
 
+  const handleSearchTermChange = text => {
+    setSearchTerm(text);
+  };
+
+  const filteredData = data.filter(item => {
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+  const baseURL = 'http://54.190.192.105:9192';
   const Item = ({title, image}) => (
     <View style={styles.itemContainer}>
       <TouchableWithoutFeedback
-        onPress={() => navigation.navigate('ProgramList')}
-        // onPress={() => console.log("btn presses")}
-
-        //    onPress={() => navigation('Register')}
-        // style={styles.itemContainer}
-      >
-        <View
-          style={{borderWidth: 1, borderColor: '#E5E4E2', borderRadius: 10}}>
-          <Image source={image} style={styles.image} />
+        onPress={() => navigation.navigate('ProgramList')}>
+        <View style={styles.imageView}>
+          <Image
+            source={{
+              uri: 'https://www.devteam.space/wp-content/uploads/2021/11/How-to-Build-a-Mobile-App-With-React-Native-656x369.jpg',
+            }}
+            style={styles.image}
+          />
+          {/* ÷ <Image source={{uri:baseURL+image}} style={styles.image} /> */}
           <Text style={styles.title}>{title}</Text>
         </View>
       </TouchableWithoutFeedback>
     </View>
   );
 
-  // const [searchQuery, setSearchQuery] = useState('');
-  // const onChangeSearch = query => setSearchQuery(query);
-
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        padding: 20,
-        backgroundColor: '#fff',
-      }}>
-      {/* <Searchbar
-        style={{
-          borderColor: 'black',
-          borderRadius: 10,
-          height: 43,
-          marginRight: 20,
-          marginLeft: 20,
-          marginBottom: -10,
-        }}
+    <SafeAreaView style={styles.container}>
+      {/* <View style={styles.topContainer}>
+        <Image
+          style={styles.iconStyle}
+          source={require('../../../assets/Icons/userProfile.png')}
+        />
+        <Text style={styles.topText}>Programs</Text>
+        <Image
+          style={styles.iconStyle}
+          source={require('../../../assets/Icons/Notification1.png')}
+        />
+      </View> */}
+      <View style={{flex:1, padding:5, marginRight:20, marginLeft:20, }}>
+      {/* <View style={{marginLeft:13, marginRight:13}}> */}
+      <CustomHeader
+        title="Programs"
+        leftIcon={require('../../../assets/Icons/userProfile.png')}
+        rightIcon={require('../../../assets/Icons/Notification1.png')}
+      />
+      {/* </View> */}
+        
+<View style={{marginLeft:"-12%", marginRight:"-12%"}}>
+<CustomSearch
+        searchTerm={searchTerm}
+        onSearchTermChange={handleSearchTermChange}
         placeholder="Search"
-        padding={2}
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      /> */}
-
+      />
+</View>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={data}
-        // data={Data}
+        data={filteredData}
+        // value={filteredData}
         renderItem={({item}) => <Item title={item.title} image={item.image} />}
-        // renderItem={({item}) => <Item title={item.categoryName} image={item.image} />}
         keyExtractor={item => item.id}
+        // keyExtractor={(item) => item.id.toString()}
       />
+      </View>
+    
     </SafeAreaView>
   );
 };
 
 export default ProgramCategory;
-
-{
-  /* <FlatList
-showsVerticalScrollIndicator={false}
-data={data}
-renderItem={
-  ({item}) => {
-    return (
-      <View style={styles.itemContainer}>
-        <TouchableOpacity
-          style={{
-            borderWidth: 1,
-            borderColor: '#E5E4E2',
-            borderRadius: 10,
-          }}
-          onPress={() => handleItemPress(item)}>
-          <Image source={item.image} style={styles.image} />
-          <Text style={styles.title}>{item.title}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-  // <Item title={item.title} image={item.image}
-  // item={item.id} />
-}
-keyExtractor={(item, index) => {
-  return index.toString();
-}}
-// keyExtractor={item => item.id}
-/> */
-}

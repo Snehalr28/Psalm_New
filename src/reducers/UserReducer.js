@@ -17,9 +17,20 @@ export const userReducer = (
         user: payload.user,
         isLoginRequest: false,
         userConfirm: true,
-
         forgotUser: {},
       };
+    // case TYPES.LOGIN_Update:
+    //   return {
+    //     ...state,
+    //     [...state.user,
+    //     user: payload.user,
+
+    //     isLoginRequest: false,
+    //     userConfirm: true,
+    //     forgotUser: {},
+    //   };
+    case TYPES.LOGIN_ERROR:
+      return {...state, user: {}, isLoginRequest: false};
     case TYPES.JUST_TOKEN:
       return {...state, tokenOnly: payload};
 
@@ -29,7 +40,7 @@ export const userReducer = (
     case TYPES.UPDATE_MENTOR_SUCCESS:
       return {
         ...state,
-        user: payload.user,
+        updateMentorData: payload.UMdata,
         isupdateMentorRequest: false,
       };
     case TYPES.UPDATE_MENTOR_ERROR:
@@ -41,7 +52,7 @@ export const userReducer = (
     case TYPES.UPDATE_PROGRAM_SUCCESS:
       return {
         ...state,
-        user: payload.user,
+        UpProgramStore: payload.UpProgram,
         isupdateProgramRequest: false,
       };
     case TYPES.UPDATE_PROGRAM_ERROR:
@@ -59,17 +70,47 @@ export const userReducer = (
     case TYPES.ADD_MENTOR_ERROR:
       return {...state, isAddMentorRequest: false};
 
-    //add mentor reducer cases
-    case TYPES.ADD_MENTOR_REQUEST:
-      return {...state, isAddMentorRequest: true};
-    case TYPES.ADD_MENTOR_SUCCESS:
+    // Fetch Profile Data
+
+    case TYPES.FETCH_PROFILE_REQUEST:
+      return {...state, isFetchProfileRequest: true};
+    case TYPES.FETCH_PROFILE_SUCCESS:
       return {
         ...state,
-        addMentor: payload.user,
-        isAddMentorRequest: false,
+        profiledata: payload.profiledata,
+        isFetchProfileRequest: false,
       };
-    case TYPES.ADD_MENTOR_ERROR:
-      return {...state, isAddMentorRequest: false};
+    case TYPES.FETCH_PROFILE_ERROR:
+      return {...state, isFetchProfileRequest: false};
+
+    // Show Program List
+    case TYPES.PROGRAM_LIST_REQUEST:
+      return {...state, isProgramListRequest: true};
+
+    case TYPES.PROGRAM_LIST_SUCCESS:
+      return {
+        ...state,
+        ProgramListDataShow: payload.ProgramListShow,
+        isProgramListRequest: false,
+      };
+    case TYPES.PROGRAM_LIST_ERROR:
+      return {...state, isProgramListRequest: false};
+
+   //Program details reducer
+
+   case TYPES.PROGRAM_DETAILS_REQUEST:
+    return {...state, isPrograDetailsRequest: true};
+
+  case TYPES.PROGRAM_DETAILS_SUCCESS:
+    return {
+      ...state,
+      ProgramDetailsShow: payload.ProgramDetailsShow,
+      isPrograDetailsRequest: false,
+    };
+  case TYPES.PROGRAM_DETAILS_ERROR:
+    return {...state, isPrograDetailsRequest: false};
+
+
 
     case TYPES.CATEGORY_DISPLAY_REQUEST:
       return {...state, iscategoryDisplayRequest: true};
@@ -82,8 +123,6 @@ export const userReducer = (
     case TYPES.CATEGORY_DISPLAY_ERROR:
       return {...state, iscategoryDisplayRequest: false};
 
-    case TYPES.LOGIN_ERROR:
-      return {...state, user: {}, isLoginRequest: false};
     case TYPES.FORGOT_PASS_REQUEST:
       return {...state, isForgotRequest: true};
     case TYPES.FORGOT_PASS_SUCCESS:

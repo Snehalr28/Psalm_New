@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-
+import FONTS from "../../constants/fonts"
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -7,8 +7,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
-
 
   tabsContainerStyle: {
     marginHorizontal: 16,
@@ -22,7 +20,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   activeTabTextStyle: {
-    color: '#000',
+    // color: '#000',
+    
   },
   tabContent: {
     justifyContent: 'center',

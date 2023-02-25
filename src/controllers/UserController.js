@@ -8,36 +8,44 @@ import {
   resetPasswordUrl,
   resendOtpUrl,
   uploadurl,
-  logoutUser,
   updateMentorUrl,
   updateProgramUrl,
   addMentorUrl,
   getCategory,
+  addProgram,
+  fetchProfileurl,
+  ProgramListurl,
+  getCategoryurl,
+  ProgramDetailsurl,
 } from '../controllers/ApiList';
 import {Alert} from 'react-native';
+import {getUser} from '../../selectors/UserSelectors';
+import {useSelector, useDispatch} from 'react-redux';
+
 export class UserController {
   static login(data) {
     return new Promise((resolve, reject) => {
       HttpClient.post(LoginUrl, data)
         .then(response => {
           console.log('TOKEN*********', response.data && response.data.token);
-          console.log('response<<<', response.message);
+          console.log('Login response<<<', response.message);
+        
           if (response.status == 'Success') {
-            //  Alert.alert(response.message);
-            console.log('success#######', response.status);
+            // alert(response.message);
+            console.log('Login success', response.status);
             const BearerToken = response.data.token;
             HttpClient.setAuthorization(response.data && BearerToken);
             resolve({response});
           } else {
-            console.log('log1', response.message);
+            console.log('Login message', response.message);
             alert(response.message);
             reject(response.message);
           }
         })
         .catch(error => {
           reject(error);
-          Alert.alert(error.message);
-          console.log('log2', error);
+          alert(error.message);
+          console.log('Login Error', error);
         });
     });
   }
@@ -65,9 +73,8 @@ export class UserController {
       console.log('getForgotPass<<>>', getForgotPass);
       HttpClient.get(getForgotPass)
         .then(response => {
-          console.log('response<<>>', response);
+          console.log('Get forget password response<<>>', response);
           if (response.responseCode == 200) {
-            console.log('Set Token+', response.data.token);
             HttpClient.setAuthorization(response.data && response.data.token);
             resolve({response});
           } else {
@@ -75,7 +82,7 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('error""""', error);
+          console.log('Forget password error', error);
           reject(error);
         });
     });
@@ -102,9 +109,9 @@ export class UserController {
 
   static CategoryDisplay() {
     return new Promise((resolve, reject) => {
-      HttpClient.get(getCategory)
+      HttpClient.get(getCategoryurl)
         .then(response => {
-          console.log('response resend<<>>', response);
+          console.log('Category response<<>>', response);
           if (response.messageID === 200) {
             resolve({response});
           } else {
@@ -145,7 +152,7 @@ export class UserController {
             resolve({response});
           } else {
             reject(response.message);
-            Alert.alert(response.message);
+            alert(response.message);
           }
         })
         .catch(error => {
@@ -153,50 +160,16 @@ export class UserController {
         });
     });
   }
-
-  // static uploadImage(data) {
-  //   return new Promise((resolve, reject) => {
-  //     HttpClient.post(uploadurl, data)
-  //       .then((response) => {
-  //         if (response.statusCode == 200) {
-  //           resolve({ response });
-  //         } else {
-  //           reject(response.message);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         reject(error);
-  //       });
-  //   });
-  // }
-
-  // static logout(data) {
-  //   return new Promise((resolve, reject) => {
-  //     HttpClient.get(logoutUser, data)
-  //       .then((response) => {
-  //         if (response.code == 200) {
-  //           // HttpClient.setAuthorization(response.data && response.data.token);
-  //           resolve({ response });
-  //         } else {
-  //           reject(response.message);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         reject(error);
-  //       });
-  //   });
-  // }
-
   static updateMentor(data) {
     return new Promise((resolve, reject) => {
       HttpClient.put(updateMentorUrl, data)
         .then(response => {
-          console.log('response<<<', response);
+          console.log('Update Mentor/add program Response', response);
           if (response.status == 'Success') {
-            console.log('success#######', response.status);
+            console.log('update mentor/ add program Success Response', response.status);
             resolve({response});
           } else {
-            console.log('log1', response.message);
+            console.log('update mentor add program else message', response.message);
             alert(response.message);
             reject(response.message);
           }
@@ -210,29 +183,90 @@ export class UserController {
 
   static addMentor(data) {
     return new Promise((resolve, reject) => {
-      HttpClient.put(addMentorUrl, data)
-        .then(response => {
-          console.log('response<<<', response);
+      console.log("add mentor inside")
+      HttpClient.post(addProgram, data)
+        .then((response) => {
+          console.log('add mentor response', response);
           if (response.status == 'Success') {
-            console.log('success#######', response.status);
-            resolve({response});
+           console.log("add mentor success#######", response.status);
+            resolve({ response });
           } else {
             console.log('log1', response.message);
             reject(response.message);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           reject(error);
-          console.log('log2', error);
+          console.log('log2',error)
         });
     });
   }
+
+
+  static FetchData(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.get(fetchProfileurl,data)
+        .then(response => {
+          console.log('fetch response response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('error""""', error);
+          reject(error);
+        });
+    });
+  }
+
+
+  static ShowProgram(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.get(ProgramListurl)
+        .then(response => {
+          console.log('show program response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('error""""', error);
+          reject(error);
+        });
+    });
+  }
+
+
+  static ShowDetails(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.get(ProgramDetailsurl)
+        .then(response => {
+          console.log('Show deatils response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('error""""', error);
+          reject(error);
+        });
+    });
+  }
+
+
+
 
   static updateProgram(data) {
     return new Promise((resolve, reject) => {
       HttpClient.put(updateProgramUrl, data)
         .then(response => {
-          console.log('response<<<', response);
+          console.log('Update program response<<<', response);
           if (response.status == 'Success') {
             console.log('success#######', response.status);
             resolve({response});
@@ -248,3 +282,4 @@ export class UserController {
     });
   }
 }
+

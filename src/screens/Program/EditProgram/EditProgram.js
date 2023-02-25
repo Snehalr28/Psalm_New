@@ -1,15 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInputComponent} from '../../../components/textInputComponent/TextInputComponent';
 import {TextInput} from 'react-native-paper';
+import {Button} from '../../../components/Button';
+import {styles} from './EditProgram.styles';
 import {useSelector, useDispatch} from 'react-redux';
 import {getUser} from '../../selectors/UserSelectors';
 import {useNavigation} from '@react-navigation/native';
 import {updateProgram} from '../../../actions/UserActions';
 
 const EditProgram = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [programName, setProgramName] = useState('');
   const [mentorShip, setMentorShip] = useState('');
   const [exp, setExp] = useState('');
@@ -19,15 +23,12 @@ const EditProgram = () => {
   const [availablity, setAvailablity] = useState('');
   const [description, setDescription] = useState('');
 
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
   const handleSubmitButton = () => {
     console.log('edit Program');
     let updateProgramObj = {
-      category_id: '63ce4cb8655d803c9fdb5df7',
-      mentorship_name: 'React Native',
-      description: 'java script classes',
+      category_id: '63c936090a9a959d9ed369d3',
+      mentorship_name: 'React Native Development',
+      description: 'React Native classes',
       mentorship_mode: 1,
       start_date: '12/11/1981',
       expiry_date: '12/11/1991',
@@ -36,7 +37,7 @@ const EditProgram = () => {
       price: '1500',
       payment_mode: 'card',
       mentee_limit: '20',
-      user_id: '63c7bff0ec3143ab8ae9af7c',
+      user_id: '63f5af8c247174c71f3e2133',
     };
 
     console.log('updateProgramOb', updateProgramObj);
@@ -44,27 +45,31 @@ const EditProgram = () => {
     dispatch(
       updateProgram(updateProgramObj, cb => {
         console.log('CB Response of Edit Program', cb);
-        // if (cb != false) {
-        //   if (cb.messageID == 200) {
-        //   }
-        // }
+        if (cb != false) {
+          if (cb.messageID == 200) {
+          }
+        }
       }),
     );
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        padding: 20,
-        backgroundColor: '#fff',
-      }}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageView}>
+        <Image
+          style={styles.imageStyle}
+          source={require('../../../assets/Icons/BackIcon.png')}
+        />
+        <Text style={styles.editText}>Edit Program</Text>
+        <Image
+          style={styles.imageIcon}
+          source={require('../../../assets/Icons/Notification1.png')}
+        />
+      </View>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Image
             style={{width: '100%', borderRadius: 10}}
-            // style={{height: '50%', width: '100%', borderRadius: 10}}
             source={require('../../../assets/Images/Sample/session.png')}
           />
           <TouchableOpacity
@@ -72,8 +77,7 @@ const EditProgram = () => {
               console.log('buttonPressed');
             }}>
             <Image
-              style={{alignSelf: 'flex-end', marginTop: -25, marginRight: 20}}
-              // style={{alignSelf: 'flex-end', marginTop: -25, marginRight: 20}}
+              style={styles.playIcon}
               source={require('../../../assets/Icons/Play.png')}
             />
           </TouchableOpacity>
@@ -137,14 +141,6 @@ const EditProgram = () => {
           />
 
           <View style={[styles.textInputView, {marginBottom: 20}]}>
-            {/* <TextInputComponent
-            placeholder={'Write Your Bio'}
-            label={'Bio'}
-            onChangeText={setBio}
-            value={bio}
-            height={160}
-            // height={160}
-          /> */}
             <TextInput
               // style={{borderRadius: 10, width: '224%', height:"200%"}}
               multiline={true}
@@ -161,34 +157,14 @@ const EditProgram = () => {
             />
           </View>
 
-          <View style={{marginTop: 15}}>
-            <View style={[styles.buttonView, {marginTop: 5}]}>
-              <TouchableOpacity
-                onPress={() => handleSubmitButton()}
-                // onPress={handleSubmitButton()}
-                // onPress={() => navigation.navigate('Add Bank Details')}
-                style={{
-                  height: 50,
-                  width: '100%',
-                  backgroundColor: '#FE4D4D',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderColor: '#FE4D4D',
-                  borderRadius: 10,
-                  marginBottom: 20,
-                }}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontWeight: '700',
-                    fontSize: 16,
-                    alignSelf: 'center',
-                  }}>
-                  Save Program
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <Button
+          onPress={() => handleSubmitButton()}
+            // onPress={() => {
+            //   navigation.navigate('Add Bank Details');
+            //   console.log('button');
+            // }}
+            title={'Save Program'}
+          />
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -196,12 +172,3 @@ const EditProgram = () => {
 };
 
 export default EditProgram;
-
-const styles = StyleSheet.create({
-  textInputView: {
-    marginTop: '5%',
-    // marginLeft: '10%',
-    // marginRight: '10%',
-    // marginBottom: 10,
-  },
-});

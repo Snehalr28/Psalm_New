@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
   StyleSheet,
@@ -8,18 +8,58 @@ import {
   FlatList,
   TouchableOpacity,
   ScrollView,
-  TouchableWithoutFeedback
+  TextInput,
+  Alert
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Searchbar} from 'react-native-paper';
-import {TextInput, IconButton} from 'react-native-paper';
+// import {TextInput, IconButton} from 'react-native-paper';
 import Images from '../../../assets/Images/Sample/index';
-import { styles } from '../../Program/ProgramList/ProgramList.styles';
-const image = '../';
+import {styles} from '../../Program/ProgramList/ProgramList.styles';
+import {Button} from '../../../components/Button';
+import CustomSearch from '../../../components/customSearch';
+import CustomHeader from "../../../components/customHeader"
+import { ShowProgram } from '../../../actions/UserActions';
+
+
 const ProgramList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = query => setSearchQuery(query);
+  useEffect(() => {
+    // ProgramByCategory();
+  }, []);
+
+  const ProgramByCategory = async () => {
+    console.log('Program List');
+    let ProgramDataOb = {
+      mentorid: '63f5af8c247174c71f3e2133',
+      category_id: '63c936090a9a959d9ed369d3',
+      
+    };
+    try {
+      dispatch(
+        ShowProgram(ProgramDataOb ,cb=> {
+          console.log('Display Category data iss', cb.data.docs);
+          // var mydata=[]
+          // mydata=cb.data.docs;
+          // mydata.map((e1)=>{
+          //   console.log(e1.image,"data is");
+          // })
+          if (cb != false) {
+            // setData(cb.data.docs)
+            console.log('check', cb.responseCode);
+            if (cb.status === 'success') {
+              //  setData(cb.data.docs)
+              // navigation.navigate('ProgramList');
+            }
+          }
+        }),
+      );
+    } catch (error) {
+      Alert.alert('Invalid Data');
+    }
+  };
 
   const data = [
     {
@@ -44,78 +84,87 @@ const ProgramList = () => {
       totalSession: 12,
     },
   ];
+
+  const [search, setSearch] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchTermChange = text => {
+    setSearchTerm(text);
+  };
+
+  const filteredData = data.filter(item => {
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   const navigation = useNavigation();
   const Item = ({title, image, date, totalSession, price}) => (
-    // onPress={() => navigation.navigate('programs')}
-<TouchableWithoutFeedback
-      onPress={() => navigation.navigate('programs')}
-      // onPress={() => console.log("btn presses")}
-   
-      //    onPress={() => navigation('Register')}
-      // style={styles.itemContainer}
-      >
     <View style={[styles.card, styles.elevation]}>
-      <Image source={image} style={styles.image} />
+<View style={{}}>
+<Image source={image} style={styles.image}/>
+</View>
+  
+ 
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{date}</Text>
-
-        {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View>
+        <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
+          <View style={{flexDirection:"column", justifyContent:"space-between"}}>
             <Text style={styles.priceText}>Price</Text>
             <Text style={styles.price}>{`$${price}`}</Text>
           </View>
 
-          <View>
-            <Text style={styles.sessionText}>Total Sessions</Text>
-            <Text style={styles.session}>{totalSession}</Text>
+          <View style={{marginLeft:2, flexDirection:"column",justifyContent:"space-between"}}>
+            <Text style={{color:"#313131",  marginLeft:5, fontSize:10}}>Total Sessions</Text>
+            <Text style={{ color:"#313131", marginLeft:5, }}>{totalSession}</Text>
           </View>
         </View>
 
         {/* </View> */}
       </View>
     </View>
-    </TouchableWithoutFeedback>
   );
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        padding: 20,
-        backgroundColor: '#fff',
-      }}>
-      {/* <ScrollView> */}
-      <View>
-        <Searchbar
-          style={{
-            // borderWidth: 0.5,
-            borderColor: 'black',
-            borderRadius: 10,
-            height: 43,
-          }}
+    <SafeAreaView style={styles.container}>
+
+<CustomHeader
+        title="Programs"
+        leftIcon={require('../../../assets/Icons/userProfile.png')}
+        rightIcon={require('../../../assets/Icons/Notification1.png')}
+      />
+      {/* <View style={styles.containerView}>
+        <Image
+          style={styles.topIcon}
+          source={require('../../../assets/Icons/userProfile.png')}
+        />
+        <Text style={styles.topText}>Programs</Text>
+        <Image
+          style={styles.topIcon}
+          source={require('../../../assets/Icons/Notification1.png')}
+        />
+      </View> */}
+      {/* <View style={styles.searchView}>
+        <View style={styles.searchIcon}>
+          <Image source={require('../../../assets/Icons/Search.png')} />
+        </View>
+
+        <TextInput
           placeholder="Search"
-          padding={2}
-          // height={30}
-          // mode="outlined"
-          // outlineColor="black"
-          onChangeText={onChangeSearch}
-          value={searchQuery}
+          value={search}
+          style={styles.searchInputText}
+          textAlign="left"
+        />
+      </View> */}
+      <View style={{marginLeft: '-10%', marginRight: '-10%'}}>
+        <CustomSearch
+          searchTerm={searchTerm}
+          onSearchTermChange={handleSearchTermChange}
+          placeholder="Search"
         />
       </View>
 
-      <View
-        style={{
-          marginTop: 23,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginBottom:10
-        }}>
-        <Text style={{fontSize: 20, fontWeight: '500', color: '#313131'}}>
-          Career Consultation
-        </Text>
+      <View style={styles.topHeading}>
+        <Text style={styles.headingText}>Career Consultation</Text>
         <View
           style={{
             marginBottom: 10,
@@ -123,47 +172,25 @@ const ProgramList = () => {
           <View style={{}}>
             <Image
               style={{height: 20, width: 20, marginTop: 5}}
-          
               source={require('../../../assets/Icons/Stroke.png')}
             />
           </View>
         </View>
       </View>
-
       <FlatList
-        data={data}
+        data={filteredData}
         renderItem={({item}) => <Item {...item} />}
         keyExtractor={item => item.title}
       />
-
-      <TouchableOpacity
-          onPress={e => {
-              navigation.navigate('Add New Program');
-            }}
-        style={{
-          justifyContent: 'center',
-          alignSelf: 'center',
-          borderWidth: 1,
-          height: 45,
-          width: '100%',
-          borderRadius: 10,
-          backgroundColor: '#FE4D4D',
-          borderColor: '#FE4D4D',
-        }}>
-        <Text
-          style={{
-            alignSelf: 'center',
-            color: 'white',
-            fontWeight: '700',
-            fontSize: 16,
-          }}>
-          Add New Program
-        </Text>
-      </TouchableOpacity>
-      {/* </ScrollView> */}
+      <Button
+        onPress={() => {
+          navigation.navigate('Add New Program');
+          console.log('button');
+        }}
+        title={'Add New Program'}
+      />
     </SafeAreaView>
   );
 };
 
 export default ProgramList;
-

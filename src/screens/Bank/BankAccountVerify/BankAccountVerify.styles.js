@@ -17,5 +17,10 @@ export const styles = StyleSheet.create({
     focusCell: {
       borderColor: '#000',
     },
-    loginImage: {marginTop: '25%', marginLeft: '10%', marginBottom: '10%'},
+    loginImage: {marginTop: '15%', padding:10},
+    upperText:{fontSize: 14, fontWeight: '400', color:"#313131"},
+    codeField:{marginLeft: 10, marginRight: 10},
+    textView: {flexDirection: 'row', marginTop: 20, marginLeft: 10},
+    resendText:{color: 'black', fontWeight: '600'},
+  buttonView:{marginTop: '42%'},
   });

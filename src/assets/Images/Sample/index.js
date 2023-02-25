@@ -23,7 +23,9 @@ const Images = {
 
     introduction: require("./introduction.png"),
     deserunt: require("./deserunt.png"),
-    deserunt1: require("./deserunt1.png")
+    deserunt1: require("./deserunt1.png"),
 
+    dashbordImage1: require("./currentImage1.png"),
+    dashbordImage2: require("./currentImage2.png")
 };
 module.exports = Images;
