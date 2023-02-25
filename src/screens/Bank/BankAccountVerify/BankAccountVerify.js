@@ -1,20 +1,5 @@
-// import React, {useEffect} from 'react';
-// import {StyleSheet, View, Text} from 'react-native';
-// import {useNavigation} from '@react-navigation/native';
-// export const BankVerify= props => { 
-//   const navigation = useNavigation(); 
-//   return (
-//    <View>
-//     <Text>BankVerify Screen</Text>
-//    </View>
-//   );
-// }
-// export default BankVerify;
-
-
-
 import React, {useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {SafeAreaView, Text, View, Image,} from 'react-native';
 import {
   CodeField,
   Cursor,
@@ -23,6 +8,7 @@ import {
 } from 'react-native-confirmation-code-field';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { styles } from './BankAccountVerify.styles';
+import {Button} from "../../../components/Button"
 const CELL_COUNT = 6;
 
 const BankAccountVerify = ({navigation}) => {
@@ -42,15 +28,15 @@ const BankAccountVerify = ({navigation}) => {
         </View>
 
         <View style={{marginTop: 15}}>
-          <Text style={{fontSize: 14, fontWeight: '400'}}>
+          <Text style={styles.upperText}>
             A Verification Code has been sent to
           </Text>
-          <Text style={{fontSize: 14, fontWeight: '400'}}>
+          <Text style={styles.upperText}>
             Cameron.w123@gmail.com
           </Text>
         </View>
 
-        <View style={{marginLeft: 10, marginRight: 10}}>
+        <View style={styles.codeField}>
           <CodeField
             ref={ref}
             {...props}
@@ -71,39 +57,19 @@ const BankAccountVerify = ({navigation}) => {
             )}
           />
         </View>
-        <View style={{flexDirection: 'row', marginTop: 20, marginLeft: 10}}>
+        <View style={styles.textView}>
           <Text style={{color: 'black'}}>I didn't receive code.</Text>
-          <Text style={{color: 'black', fontWeight: '600'}}> Resend code</Text>
+          <Text style={styles.resendText}> Resend code</Text>
         </View>
 
-        <View style={{marginTop: '42%'}}>
-          <TouchableOpacity
-            onPress={e => {
-            //   handleSubmitButton(e);
-              navigation.navigate('Add Bank Account');
-            }}
-            style={{
-              flex: 1,
-              height: 45,
-              width: '100%',
-              backgroundColor: '#FE4D4D',
-              justifyContent: 'center',
-              // alignItems: 'flex-end',
-
-              borderColor: '#FE4D4D',
-              borderRadius: 10,
-              marginBottom: 20,
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: '700',
-                fontSize: 16,
-                alignSelf: 'center',
-              }}>
-              Verify & Proceed
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.buttonView}>
+            <Button
+              onPress={() => {
+                navigation.navigate('Add Bank Account');
+                console.log('button');
+              }}
+              title={'Verify & Proceed'}
+            />
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>

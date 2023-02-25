@@ -1,12 +1,34 @@
 import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
-  mainContainer:{
-      borderWidth: 1,
-      borderColor: '#E5E4E2',
-      borderRadius: 10,
-      marginTop: 20,
-      // marginBottom:10
-    },
+  mainContainer: {
+    borderWidth: 1,
+    borderColor: '#E5E4E2',
+    borderRadius: 10,
+    marginTop: 20,
+    // marginBottom:10
+  },
+  ContainerView: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 25,
+    backgroundColor: '#fff',
+  },
+  topContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // marginBottom: 25,
+    // marginLeft: '5%',
+    // marginRight: '5%',
+    // paddingTop:8
+  },
+  programText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginLeft: '-63%',
+    marginTop: 3,
+  },
+  topBack: {height: 20, width: 20, marginTop: 4},
+  descriptionText: {fontSize: 14, fontWeight: '400', color: '#313131'},
 
   textViewStyel: {
     flexDirection: 'row',

@@ -5,7 +5,8 @@ export const ProgramDetails = props => {
   const navigation = useNavigation(); 
   return (
    <View>
-    <Text onPress={()=>navigation.navigate("Program Details")}>Sessions Screen</Text>
+      {/* <Text onPress={()=>navigation.navigate("Program Details")}>Sessions Screen</Text> */}
+    <Text style={{color:'black'}}>ChatNavigator Screen</Text>
    </View>
   );
 }

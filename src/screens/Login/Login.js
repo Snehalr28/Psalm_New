@@ -13,19 +13,19 @@ import {useFocusEffect} from '@react-navigation/native';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 
 export const Login = props => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('updatementor1@yopmail.com');
+  const [password, setPassword] = useState('Admin@123');
   const [show, setShow] = useState(true);
   const [empty, setEmpty] = useState(false);
   const [checkemail, SetCheckEmail] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
-  const [menteementor, setMenteeMentor] = useState('1');
-  console.log('login data isss', email, password, show, empty, menteementor);
+
+  console.log('login data isss', email, password, show, empty);
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const navigation = useNavigation();
-  console.log(props, 'props');
+
   const dispatch = useDispatch();
   let loginLoader = useSelector(state => state.loaders.loading);
   console.log('loginloaderstate is', loginLoader);
@@ -43,14 +43,13 @@ export const Login = props => {
         loginUser({
           email: email,
           password: password,
-          role: 1,
         }),
       );
     }
   };
   const colors = {
     true: 'green',
-    false: 'black',
+    false: "#959593",
   };
 
   const loginButtonPressed = () => {
@@ -113,7 +112,7 @@ export const Login = props => {
           </View>
           <View style={styles.textView}>
             <Text style={styles.loginText}>Let’s Log in</Text>
-            <Text style={{color: 'black'}}>
+            <Text style={styles.welcome}>
               Welcome Back, you’ve been missed!
             </Text>
           </View>
@@ -157,12 +156,12 @@ export const Login = props => {
               <TouchableOpacity onPress={() => setShow(!show)}>
                 {show ? (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 25}}
+                    style={styles.imageIcon}
                     source={require('../../assets/assets/eyeicon.png')}
                   />
                 ) : (
                   <Image
-                    style={{height: 20, width: 20, marginTop: 25}}
+                    style={styles.imageIcon}
                     source={require('../../assets/assets/eye.png')}
                   />
                 )}
@@ -170,46 +169,25 @@ export const Login = props => {
             </View>
           </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              marginBottom: 20,
-              marginTop: 20,
-              justifyContent: 'space-around',
-              marginLeft: '7%',
-              marginRight: '8%',
-            }}>
+          <View style={styles.checkboxView}>
             <View
               style={{justifyContent: 'space-between', flexDirection: 'row'}}>
               <CheckBox
-                style={{
-                  color: 'black',
-                  borderWidth: 5,
-                  borderColor: 'red',
-                  marginTop: -5,
-                }}
+                style={styles.checkStyle}
                 disabled={false}
                 tintColors={colors}
                 value={toggleCheckBox}
                 onValueChange={newValue => setToggleCheckBox(newValue)}
               />
-              <View style={{marginLeft: -7}}>
-                <Text
-                  style={{color: 'black', paddingHorizontal: 6, fontSize: 10}}>
-                  keep me signed in
-                </Text>
+              <View style={{marginLeft: 1, marginTop:2}}>
+                <Text style={{color:"#959593", fontSize:10, }}>Keep me signed in</Text>
               </View>
             </View>
 
-            <View style={{}}>
+            <View style={{marginRight:-15}}>
               <Text
                 onPress={() => navigation.navigate('ForgetPassword')}
-                style={{
-                  color: 'black',
-                  paddingHorizontal: 6,
-                  fontSize: 10,
-                  fontWeight: 'bold',
-                }}>
+                style={styles.forgotText}>
                 Forgot Password?
               </Text>
             </View>
@@ -223,17 +201,17 @@ export const Login = props => {
                   submitLogin();
                   console.log('button');
                 }}
-                textStyle={styles.buttonText}
                 title={'Login'}
               />
             </View>
+
             <View style={styles.textBottom}>
-              <Text style={{color: 'black'}}>Don't have an account yet?</Text>
+              <Text style={{color: 'black'}}>Don't have an account yet? {""}</Text>
               <Text
                 style={styles.signupText}
                 onPress={() => navigation.navigate('Register')}>
                 Sign up
-              </Text>
+                </Text>
             </View>
           </View>
         </View>

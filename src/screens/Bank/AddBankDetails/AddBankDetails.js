@@ -4,6 +4,8 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput, HelperText} from 'react-native-paper';
 import {styles} from './AddBankDetails.styles';
+import {Button} from '../../../components/Button';
+import {TextInputComponent} from '../../../components/textInputComponent/TextInputComponent';
 const AddBankDetails = ({navigation}) => {
   const [accountNumber, setAccountNumber] = useState('');
   const [accountConfirm, setAccountConfirm] = useState('');
@@ -14,19 +16,16 @@ const AddBankDetails = ({navigation}) => {
 
   const handleSubmitButton = () => {
     if (accountNumber === '') {
-      // Alert.alert("Email can not be blank")
       setAccountNumberError(true);
     } else {
       setAccountNumberError(false);
     }
     if (accountConfirm === '') {
-      // Alert.alert("Password can not be blank")
       setAccountConfirmError(true);
     } else {
       setAccountConfirmError(false);
     }
     if (swiftCode === '') {
-      // Alert.alert("Email can not be blank")
       setSwiftCodeError(true);
     } else {
       setSwiftCodeError(false);
@@ -84,105 +83,60 @@ const AddBankDetails = ({navigation}) => {
             <Text style={styles.cameronText}>Cameron Williamson</Text>
           </View>
 
-          <View style={{flex: 3, justifyContent: 'center'}}>
-            <View style={styles.textInputView}>
-              <TextInput
-                placeholder="Account Number"
-                mode="outlined"
-                label={'Account Number'}
-                outlineColor="black"
-                activeOutlineColor="black"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={accountNumberError}
-                value={accountNumber}
-                onChangeText={e => ChangeAccountNumber(e)}
-              />
-              <HelperText type="error" visible={accountNumberError}>
-                Enter Correct Account Number
-              </HelperText>
+          <View style={styles.textInputStyel}>
+            <TextInputComponent
+              emailView={styles.textInputView}
+              placeholder={'Account Number'}
+              label={'Account Number'}
+              onChangeText={() => {
+                ChangeAccountNumber();
+              }}
+              value={accountNumber}
+              // error={accountNumberError}
+              TextMessageAlert={'Enter Your Number'}
+              // condtionText={{color: 'red'}}
+              emailIconView={styles.imageViewStyle}
+              emailIcon={styles.imageIconStyle}
+              source={require('../../../assets/assets/eyeicon.png')}
+              // checkCondtion={numberError}
+            />
 
-              <View style={styles.imageViewStyle}>
-                <Image
-                  style={styles.imageIconStyle}
-                  source={require('../../../assets/assets/eyeicon.png')}
-                />
-              </View>
-            </View>
+            <TextInputComponent
+              emailView={styles.textInputView}
+              placeholder={'Re-enter Account Number'}
+              label={'Re-enter Account Number'}
+              onChangeText={e => changeConfirmAccount(e)}
+              value={accountConfirm}
+              // error={accountNumberError}
+              TextMessageAlert={'Enter Your Number'}
+              // condtionText={{color: 'red'}}
+              emailIconView={styles.imageViewStyle}
+              emailIcon={styles.imageIconStyle}
+              source={require('../../../assets/assets/eyeicon.png')}
+              // checkCondtion={numberError}
+            />
 
-            <View style={styles.textInputView}>
-              <TextInput
-                placeholder="Re-enter Account Number"
-                mode="outlined"
-                label={'Re-enter Account Number'}
-                outlineColor="black"
-                activeOutlineColor="black"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={accountConfirmError}
-                value={accountConfirm}
-                onChangeText={e => changeConfirmAccount(e)}
-              />
-              <HelperText type="error" visible={accountConfirmError}>
-                Account Number is Required
-              </HelperText>
-
-              <View style={styles.imageViewStyle}>
-                <Image
-                  style={styles.imageIconStyle}
-                  source={require('../../../assets/assets/eyeicon.png')}
-
-                />
-              </View>
-            </View>
-
-            <View style={styles.textInputView}>
-              <TextInput
-                placeholder="SWIFT Code"
-                mode="outlined"
-                label={'SWIFT Code'}
-                outlineColor="black"
-                activeOutlineColor="black"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={swiftCodeError}
-                value={swiftCode}
-                onChangeText={e => changeSwiftCode(e)}
-              />
-              <HelperText type="error" visible={swiftCodeError}>
-                Invalid Swift Code
-              </HelperText>
-            </View>
+            <TextInputComponent
+              emailView={styles.textInputView}
+              placeholder={'SWIFT Code'}
+              label={'SWIFT Code'}
+              onChangeText={e => changeSwiftCode(e)}
+              value={swiftCode}
+              // error={accountNumberError}
+              TextMessageAlert={'Enter Your Number'}
+              // condtionText={{color: 'red'}}
+              // checkCondtion={numberError}
+            />
           </View>
 
-          <View style={{flex: 4, marginTop: '70%'}}>
-            <TouchableOpacity
-              onPress={e => {
-                handleSubmitButton(e);
+          <View style={styles.buttonView}>
+            <Button
+              onPress={() => {
                 navigation.navigate('Bank Account Verify');
+                console.log('button');
               }}
-              style={{
-                flex: 1,
-                height: 45,
-                width: '100%',
-                backgroundColor: '#FE4D4D',
-                justifyContent: 'center',
-                // alignItems: 'flex-end',
-
-                borderColor: '#FE4D4D',
-                borderRadius: 10,
-                marginBottom: 20,
-              }}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontWeight: '700',
-                  fontSize: 16,
-                  alignSelf: 'center',
-                }}>
-                Proceed
-              </Text>
-            </TouchableOpacity>
+              title={'Proceed'}
+            />
           </View>
         </View>
       </KeyboardAwareScrollView>

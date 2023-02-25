@@ -5,7 +5,7 @@ export const ChatScreen = props => {
   const navigation = useNavigation(); 
   return (
    <View>
-    <Text>ChatNavigator Screen</Text>
+    <Text style={{color:'black'}}>ChatNavigator Screen</Text>
    </View>
   );
 }

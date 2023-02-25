@@ -25,11 +25,11 @@ export const ForgetPassword = ({route, navigation}) => {
     try {
       dispatch(
         forgotPassword({email}, cb => {
-          console.log('checkEmail<<', email, cb);
+          console.log('Check Email<<', email, cb);
           if (cb != false) {
             console.log('check', cb.responseCode);
             if (cb.responseCode == 200) {
-              Alert.alert('Otp sent successfully');
+              alert('Otp sent successfully');
               navigation.navigate('VerifyEmail', {
                 email: email,
                 type: 'forgot',
@@ -39,10 +39,10 @@ export const ForgetPassword = ({route, navigation}) => {
         }),
       );
     } catch (error) {
-      Alert.alert('Mobile no. is invalid');
+     alert('Invalid Email address');
     }
   };
-  const [emailError, setEmailError] = useState(false);
+
   const handleSendButton = () => {
     if (email === '') {
       setEmpty(true);
@@ -114,8 +114,7 @@ export const ForgetPassword = ({route, navigation}) => {
                   handleSendButton();
                 }}
                 textStyle={styles.buttonText}
-                cd
-                title={'send'}
+                title={'Send'}
               />
             </View>
           </View>

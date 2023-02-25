@@ -33,14 +33,15 @@ client.interceptors.response.use(
   }
 );
 const setAuthorization = async (token) => {
-  // console.log('token<<<<setaut',token)
+  console.log('token<<<<setaut',token)
   // debugger;
   let newToken = token;
   client.defaults.headers.common.authorization = newToken;
-  // console.log('newtoken<<<<',newToken)
+  console.log('New Token<<<<',newToken)
 };
 const clearAuthorization  = async () => {
    await AsyncStorage.removeItem('userToken');
   delete client.defaults.headers.common.authorization;
 };
 export const HttpClient = { ...client, setAuthorization, clearAuthorization, };
+console.log("HTTP client response",HttpClient)

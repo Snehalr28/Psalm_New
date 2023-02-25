@@ -8,7 +8,7 @@ import {globalFonts} from '../../theme/globalFonts';
 
 export const styles = StyleSheet.create({
     container: {flex: 1, backgroundColor: 'white'},
-    textInputView: {marginTop: -3},
+    textInputView: {marginTop: 10},
     mainView: {marginLeft: 20, marginTop: 20, marginRight: 20},
     bankDetailText: {
       color: 'black',
@@ -35,4 +35,6 @@ export const styles = StyleSheet.create({
       position: 'absolute',
     },
     imageIconStyle: {height: 17, width: 19, marginTop: 13},
+    textInputStyel: {flex: 3, justifyContent: 'center'},
+    buttonView:{flex: 4, marginTop: '79%', marginBottom:20},
   });
