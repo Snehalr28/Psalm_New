@@ -170,7 +170,7 @@ export const userReducer = (
       return {...state, isSignUpRequest: false};
 
     case TYPES.CLEAR_STORE:
-      return {...state, userConfirm: false};
+      return {...state, userConfirm: false, user: {}};
     default:
       return state;
   }

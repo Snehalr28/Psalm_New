@@ -354,7 +354,7 @@ export const Register = props => {
                 TextMessage={'Mobile no. is required'}
                 condtionText={{color: 'red'}}
                 checkCondtion={mobileNumberError}
-                emailIconView={[styles.imageView, {marginRight: '15%',}]}
+                emailIconView={[styles.imageView, {marginRight: '15%'}]}
                 emailIcon={styles.image}
                 source={require('../../assets/Icons/call.png')}
               />
@@ -379,9 +379,6 @@ export const Register = props => {
             source={require('../../assets/assets/eyeicon.png')}
             eyeImageView={props.eyeImageView}
           />
-
-
-          
 
           <View style={styles.inputTextView}>
             <Text style={styles.bottomText}>

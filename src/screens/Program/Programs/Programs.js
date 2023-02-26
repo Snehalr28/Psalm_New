@@ -2,14 +2,14 @@ import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native';
-import {Text, View, Image, TouchableWithoutFeedback} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Images from '../../../assets/Images/Sample';
 import {styles} from './ProgramsStyles';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from '../../../components/Button';
-import { ProgramDetails } from '../../../actions/UserActions';
+import {ProgramDetails} from '../../../actions/UserActions';
 const Programs = props => {
   useEffect(() => {
     // ShowProgramDetails();
@@ -20,11 +20,10 @@ const Programs = props => {
     let ProgramDataOb = {
       mentorid: '63f5af8c247174c71f3e2133',
       programid: '63ee0fbafb4bd634c1730177',
-      
     };
     try {
       dispatch(
-      ProgramDetails(ProgramDataOb ,cb=> {
+        ProgramDetails(ProgramDataOb, cb => {
           console.log('show Program Detials', cb.data.docs);
           // var mydata=[]
           // mydata=cb.data.docs;
@@ -45,9 +44,6 @@ const Programs = props => {
       Alert.alert('Invalid Data');
     }
   };
-
-
-
 
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = index => {
@@ -140,74 +136,70 @@ const Programs = props => {
           style={styles.topBack}
           source={require('../../../assets/Icons/BackIcon.png')}
         />
-        <Text
-          style={styles.programText}>
-          Programs
-        </Text>
+        <Text style={styles.programText}>Programs</Text>
         <Image
           style={{height: 25, width: 25}}
           source={require('../../../assets/Icons/Notification1.png')}
         />
       </View>
       <ScrollView style={{marginTop: 20}} showsVerticalScrollIndicator={false}>
-      <View>
-        <Image
-          style={{width: '100%', borderRadius: 10, marginBottom: 10}}
-          source={require('../../../assets/Images/Sample/session.png')}
-        />
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: '500',
-            color: '#313131',
-            marginBottom: 10,
-          }}>
-          Aliqua id fugiat nostrud irure
-        </Text>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={styles.timeTextStyle}>02-21-2022 | 03:50 PM</Text>
-          <Text style={[styles.timeTextStyle, {fontSize: 18}]}>$14.99</Text>
-        </View>
-
-        <View style={{marginTop: 20}}>
-          <SegmentedControlTab
-            values={['Sessions', 'More']}
-            selectedIndex={customStyleIndex}
-            onTabPress={handleCustomIndexSelect}
-            borderRadius={0}
-            tabsContainerStyle={{
-              borderColor: 'black',
-            }}
-            tabStyle={{
-              marginRight: '50%',
-              borderColor: 'white',
-            }}
-            activeTabStyle={{
-              backgroundColor: 'white',
-              marginTop: 2,
-              borderColor: 'black',
-              borderTopColor: 'white',
-              borderEndColor: 'white',
-              borderStartColor: 'white',
-            }}
-            tabTextStyle={{color: 'black', fontWeight: 'bold', fontSize: 14}}
-            activeTabTextStyle={{color: 'black'}}
-            lastTabStyle={{marginLeft: '-47%'}}
+        <View>
+          <Image
+            style={{width: '100%', borderRadius: 10, marginBottom: 10}}
+            source={require('../../../assets/Images/Sample/session.png')}
           />
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: '500',
+              color: '#313131',
+              marginBottom: 10,
+            }}>
+            Aliqua id fugiat nostrud irure
+          </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.timeTextStyle}>02-21-2022 | 03:50 PM</Text>
+            <Text style={[styles.timeTextStyle, {fontSize: 18}]}>$14.99</Text>
+          </View>
+
+          <View style={{marginTop: 20}}>
+            <SegmentedControlTab
+              values={['Sessions', 'More']}
+              selectedIndex={customStyleIndex}
+              onTabPress={handleCustomIndexSelect}
+              borderRadius={0}
+              tabsContainerStyle={{
+                borderColor: 'black',
+              }}
+              tabStyle={{
+                marginRight: '50%',
+                borderColor: 'white',
+              }}
+              activeTabStyle={{
+                backgroundColor: 'white',
+                marginTop: 2,
+                borderColor: 'black',
+                borderTopColor: 'white',
+                borderEndColor: 'white',
+                borderStartColor: 'white',
+              }}
+              tabTextStyle={{color: 'black', fontWeight: 'bold', fontSize: 14}}
+              activeTabTextStyle={{color: 'black'}}
+              lastTabStyle={{marginLeft: '-47%'}}
+            />
+          </View>
+          <View style={{height: 1, backgroundColor: '#E5E4E2'}}></View>
         </View>
-        <View style={{height: 1, backgroundColor: '#E5E4E2'}}></View>
-      </View>
 
-      {customStyleIndex === 0 && (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+        {customStyleIndex === 0 && (
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
 
-      
         {customStyleIndex === 1 && (
           <View style={{marginRight: '5%'}}>
             <Text style={{marginBottom: 5}}>Program Description</Text>

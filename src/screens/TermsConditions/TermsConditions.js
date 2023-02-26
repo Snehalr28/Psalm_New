@@ -1,34 +1,7 @@
-/* eslint-disable react-native-a11y/has-valid-accessibility-ignores-invert-colors */
-// import { loginUser } from '@/actions/UserActions';
-import {lock, login, auth, backArrow, mail} from '../../assets';
-import {confirmOTP, resendOtp, forgotPassword} from '../../actions/UserActions';
-import {Button, TextField} from '../../components';
-import {NAVIGATION} from '../../constants';
-// import OTPInputView from 'twotalltotems/react-native-otp-input'
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-// import { InitiateNotification } from '@/test-utils/notificationManager';
-// import * as regex from '@/test-utils/regex';
-import {globalColors} from '../../theme/globalColors';
-import React, {useRef, useState, useEffect} from 'react';
-import {
-  Image,
-  ImageBackground,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-  Pressable,
-  ScrollView,
-  TextInput,
-  Alert,
-} from 'react-native';
+
+import React from 'react';
+import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {styles} from './TermsConditions.styles';

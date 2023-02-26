@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,21 @@ import {
   FlatList,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {TextInput, HelperText} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getUser} from '../../selectors/UserSelectors';
 import {Button} from '../../components/Button';
 // import {styles} from './MentorMenteeProfileScreen.styles';
 // import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
-import {Dropdown} from 'react-native-element-dropdown';
 import CustomDropdown from '../../components/customDropdown';
 import CustomHeader from '../../components/customHeader';
 import {FetchProfileData, updateMentor} from '../../actions/UserActions';
 import {styles} from './MentorMenteeProfileScreen.styles';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Alert, Modal, Pressable} from 'react-native';
+
 export const MentorMenteeProfile = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -47,7 +49,28 @@ export const MentorMenteeProfile = props => {
   const [genderError, setGenderError] = useState(false);
   const [bioError, setBioError] = useState(false);
   const [DobError, setDobError] = useState(false);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [response, setResponse] = useState(null);
+  const actions = [
+    {
+      title: 'Take Image',
+      type: 'capture',
+      options: {
+        saveToPhotos: true,
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+    },
+    {
+      title: 'Select Image',
+      type: 'library',
+      options: {
+        selectionLimit: 0,
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+    },
+  ];
   const navigation = useNavigation();
   const user = useSelector(getUser);
   console.log('mentor mentee data', user);
@@ -167,30 +190,6 @@ export const MentorMenteeProfile = props => {
     let temp = Object.assign([], array);
     setArray(temp);
   };
-
-  // const [date, setDate] = useState('');
-  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // console.log('is datepicker open', isDatePickerVisible);
-
-  // const showDatePicker = () => {
-  //   setDatePickerVisibility(true);
-  // };
-
-  // const hideDatePicker = () => {
-  //   setDatePickerVisibility(false);
-  // };
-
-  // const handleConfirm = date => {
-  //   console.log('datettttvyvyuvu', date);
-  //   setDob(date);
-  //   hideDatePicker();
-  // };
-
-  // const getDate = () => {
-  //   let tempDate = Dob.toString().split(' ');
-  //   return Dob !== '' ? `${tempDate[2]} ${tempDate[1]} ${tempDate[3]}` : '';
-  // };
-
   const data = [
     {label: 'Male', value: 'Male'},
     {label: 'Female', value: 'Female'},
@@ -211,6 +210,7 @@ export const MentorMenteeProfile = props => {
     {label: 'Vietnamese', value: 'Vietnamese'},
     {label: 'Italian', value: 'Italian'},
   ];
+
   const [selectLang, setSelectLang] = useState(null);
   return (
     <SafeAreaView style={styles.container}>
@@ -221,7 +221,7 @@ export const MentorMenteeProfile = props => {
       />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profileStyle}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image
               style={styles.profileImage}
               source={require('../../assets/Icons/camera.png')}
@@ -229,12 +229,51 @@ export const MentorMenteeProfile = props => {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.textMentor}>
-          {/* {userData.response.data.role == 1 ? (
-              <Text style={styles.MentorTextStyle}>Mentor</Text>
-            ) : (
-              <Text style={styles.MentorTextStyle}>Mentee</Text>
-            )} */}
+        <View style={styles.textMentor}></View>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                      launchCamera(
+                        {
+                          storageOptions: {
+                            skipBackup: true,
+                            path: 'images',
+                          },
+                        },
+                        response => {
+                          console.log(response);
+                        },
+                      );
+                    }}>
+                    <Text>Camera</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      launchImageLibrary(actions[1].options, setResponse)
+                    }>
+                    <Text>Library</Text>
+                  </TouchableOpacity>
+                </View>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
         </View>
 
         <TextInputComponent
@@ -317,23 +356,6 @@ export const MentorMenteeProfile = props => {
           source={require('../../assets/Icons/Calendar.png')}
           // onPress={showDatePicker}
         />
-
-        {/* <View>
-            <TouchableOpacity onPress={showDatePicker}>
-              <Image
-                // style={styles.image}
-                source={require('../../assets/Icons/Calendar.png')}
-              />
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-                display={'inline'}
-              />
-            </TouchableOpacity>
-          </View> */}
-
         <CustomDropdown
           data={data}
           value={value}

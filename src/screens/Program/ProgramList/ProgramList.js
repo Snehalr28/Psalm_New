@@ -1,27 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Alert
-} from 'react-native';
+import {Text, View, Image, FlatList, Alert} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Searchbar} from 'react-native-paper';
-// import {TextInput, IconButton} from 'react-native-paper';
 import Images from '../../../assets/Images/Sample/index';
 import {styles} from '../../Program/ProgramList/ProgramList.styles';
 import {Button} from '../../../components/Button';
 import CustomSearch from '../../../components/customSearch';
-import CustomHeader from "../../../components/customHeader"
-import { ShowProgram } from '../../../actions/UserActions';
-
+import CustomHeader from '../../../components/customHeader';
+import {ShowProgram} from '../../../actions/UserActions';
 
 const ProgramList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,11 +21,10 @@ const ProgramList = () => {
     let ProgramDataOb = {
       mentorid: '63f5af8c247174c71f3e2133',
       category_id: '63c936090a9a959d9ed369d3',
-      
     };
     try {
       dispatch(
-        ShowProgram(ProgramDataOb ,cb=> {
+        ShowProgram(ProgramDataOb, cb => {
           console.log('Display Category data iss', cb.data.docs);
           // var mydata=[]
           // mydata=cb.data.docs;
@@ -99,23 +84,32 @@ const ProgramList = () => {
   const navigation = useNavigation();
   const Item = ({title, image, date, totalSession, price}) => (
     <View style={[styles.card, styles.elevation]}>
-<View style={{}}>
-<Image source={image} style={styles.image}/>
-</View>
-  
- 
+      <View style={{}}>
+        <Image source={image} style={styles.image} />
+      </View>
+
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{date}</Text>
-        <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
-          <View style={{flexDirection:"column", justifyContent:"space-between"}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View
+            style={{flexDirection: 'column', justifyContent: 'space-between'}}>
             <Text style={styles.priceText}>Price</Text>
             <Text style={styles.price}>{`$${price}`}</Text>
           </View>
 
-          <View style={{marginLeft:2, flexDirection:"column",justifyContent:"space-between"}}>
-            <Text style={{color:"#313131",  marginLeft:5, fontSize:10}}>Total Sessions</Text>
-            <Text style={{ color:"#313131", marginLeft:5, }}>{totalSession}</Text>
+          <View
+            style={{
+              marginLeft: 2,
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{color: '#313131', marginLeft: 5, fontSize: 10}}>
+              Total Sessions
+            </Text>
+            <Text style={{color: '#313131', marginLeft: 5}}>
+              {totalSession}
+            </Text>
           </View>
         </View>
 
@@ -126,35 +120,11 @@ const ProgramList = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-
-<CustomHeader
+      <CustomHeader
         title="Programs"
         leftIcon={require('../../../assets/Icons/userProfile.png')}
         rightIcon={require('../../../assets/Icons/Notification1.png')}
       />
-      {/* <View style={styles.containerView}>
-        <Image
-          style={styles.topIcon}
-          source={require('../../../assets/Icons/userProfile.png')}
-        />
-        <Text style={styles.topText}>Programs</Text>
-        <Image
-          style={styles.topIcon}
-          source={require('../../../assets/Icons/Notification1.png')}
-        />
-      </View> */}
-      {/* <View style={styles.searchView}>
-        <View style={styles.searchIcon}>
-          <Image source={require('../../../assets/Icons/Search.png')} />
-        </View>
-
-        <TextInput
-          placeholder="Search"
-          value={search}
-          style={styles.searchInputText}
-          textAlign="left"
-        />
-      </View> */}
       <View style={{marginLeft: '-10%', marginRight: '-10%'}}>
         <CustomSearch
           searchTerm={searchTerm}

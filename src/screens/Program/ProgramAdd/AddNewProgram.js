@@ -1,27 +1,16 @@
-import {useTheme} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {addMentor, logout, updateMentor} from '../../../actions/UserActions';
-import React, {useState, useCallback} from 'react';
+import {addMentor} from '../../../actions/UserActions';
+import React, {useState} from 'react';
 import {View, Text, SafeAreaView, Image, TouchableOpacity} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {TextInput, HelperText} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import {TextInputComponent} from '../../../components/textInputComponent/TextInputComponent';
 import {Button} from '../../../components/Button';
 import {styles} from './AddNewProgram.styles';
-import CustomHeader from "../../../components/customHeader"
-
-const options = {
-  title: 'Select Image',
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-};
-
+import CustomHeader from '../../../components/customHeader';
 export function AddNewProgram() {
   const dispatch = useDispatch();
-
   const [programName, setProgramName] = useState('');
   const [mentorshipMode, setMentorshipMode] = useState('');
   const [exprience, setExprience] = useState('');
@@ -32,11 +21,7 @@ export function AddNewProgram() {
   const [programExpir, setProgramExpir] = useState('');
   const [certificate, setCertificate] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null);
-
   const navigation = useNavigation();
-
-
 
   const handleSubmitButton = props => {
     const addMentorObj = {
@@ -68,30 +53,20 @@ export function AddNewProgram() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.headerView}>
-        <Image
-          style={{height: 25, width: 25}}
-          source={require('../../../assets/Icons/userProfile.png')}
+      <View
+        style={{
+          marginLeft: 18,
+          marginRight: 20,
+          marginTop: 10,
+        }}>
+        <CustomHeader
+          title="Add New Program"
+          // textStyle={{marginLeft:1}}
+          leftIcon={require('../../../assets/Icons/userProfile.png')}
+          rightIcon={require('../../../assets/Icons/Notification1.png')}
         />
-        <Text style={styles.addText}>Add New Program</Text>
-        <Image
-          style={styles.imageIcon}
-          source={require('../../../assets/Icons/Notification1.png')}
-        />
-      </View> */}
-      <View     style={{
-            marginLeft: 18,
-            marginRight: 20,
-            marginTop:10
-          }}>
-      <CustomHeader 
-        title="Add New Program"
-        // textStyle={{marginLeft:1}}
-        leftIcon={require('../../../assets/Icons/userProfile.png')}
-        rightIcon={require('../../../assets/Icons/Notification1.png')}
-      />
       </View>
-      
+
       <KeyboardAwareScrollView>
         <View
           style={{

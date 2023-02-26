@@ -1,19 +1,7 @@
 import React, {useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  Button,
-} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 
 import AppIntroSlider from 'react-native-app-intro-slider';
-
-import Onboarding from 'react-native-onboarding-swiper';
-
 import {Login} from '../Login/Login';
 
 function OnboardingS({navigation}) {

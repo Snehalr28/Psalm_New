@@ -15,24 +15,12 @@ const CustomHeader = ({title, newtitle, leftIcon, rightIcon, textStyle, onPress}
   return (
     <View style={styles.containerView}>
       {leftIcon && <Image style={styles.topIcon} source={leftIcon} />}
-      {/* <View style={textStyle}> */}
-      {/* <TouchableOpacity
-        onPress={() => navigation.navigate('MentorMenteeProfileScreen')}
-           
-            style={{
-             
-            }}> */}
       <View>
         <TouchableOpacity onPress={onPress}>
         <Text style={styles.topText}>{title}</Text>
         </TouchableOpacity>
       </View>
-      
-      {/* </View> */}
-      {/* </TouchableOpacity> */}
       <TouchableOpacity onPress={() => logoutUser()} style={{}}>
-        {/* <Text style={styles.topText}>{newtitle}</Text> */}
-        {/* </View> */}
       </TouchableOpacity>
 
       {rightIcon && <Image style={styles.topIcon} source={rightIcon} />}

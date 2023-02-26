@@ -1,5 +1,3 @@
-
-
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
@@ -13,25 +11,19 @@ import Images from '../../../assets/Images/Sample';
 import {styles} from './ProgramCategory.styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {TextInput} from 'react-native';
 import {getUser} from '../../../selectors/UserSelectors';
 import CustomSearch from '../../../components/customSearch';
-import CustomHeader from "../../../components/customHeader"
+import CustomHeader from '../../../components/customHeader';
 import {CategoryDisplay} from '../../../actions/UserActions';
-
-
-
 const ProgramCategory = props => {
   const [dataNew, setData] = useState([]);
-  console.log('Data New', dataNew);
-
   let Data = useSelector(getUser);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   useEffect(() => {
-    // Display();
+    Display();
   }, []);
 
   const Display = async () => {
@@ -40,11 +32,11 @@ const ProgramCategory = props => {
     try {
       dispatch(
         CategoryDisplay(cb => {
-          console.log('category display cb response is', cb);
+          console.log('category display cb response is', cb.data.docs[0]);
           if (cb != false) {
             // setData(cb.data.docs)
-            console.log('checkCategory', cb.messageID);
-            if (cb.status === 'success') {
+            console.log('checkCategory', cb.data.docs.length);
+            if (cb.messageID === 200) {
               setData(cb.data.docs);
               // navigation.navigate('ProgramList');
             }
@@ -109,43 +101,31 @@ const ProgramCategory = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.topContainer}>
-        <Image
-          style={styles.iconStyle}
-          source={require('../../../assets/Icons/userProfile.png')}
+      <View style={{flex: 1, padding: 5, marginRight: 20, marginLeft: 20}}>
+        <CustomHeader
+          title="Programs"
+          leftIcon={require('../../../assets/Icons/userProfile.png')}
+          rightIcon={require('../../../assets/Icons/Notification1.png')}
         />
-        <Text style={styles.topText}>Programs</Text>
-        <Image
-          style={styles.iconStyle}
-          source={require('../../../assets/Icons/Notification1.png')}
+        <View style={{marginLeft: '-12%', marginRight: '-12%'}}>
+          <CustomSearch
+            searchTerm={searchTerm}
+            onSearchTermChange={handleSearchTermChange}
+            placeholder="Search"
+          />
+        </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={dataNew}
+          renderItem={({item}) => 
+          {
+            console.log('Item:--', item);
+           return <Item title={item.mentorship_name} image={item.image} />
+          }
+        }
+          keyExtractor={item => item.id}
         />
-      </View> */}
-      <View style={{flex:1, padding:5, marginRight:20, marginLeft:20, }}>
-      {/* <View style={{marginLeft:13, marginRight:13}}> */}
-      <CustomHeader
-        title="Programs"
-        leftIcon={require('../../../assets/Icons/userProfile.png')}
-        rightIcon={require('../../../assets/Icons/Notification1.png')}
-      />
-      {/* </View> */}
-        
-<View style={{marginLeft:"-12%", marginRight:"-12%"}}>
-<CustomSearch
-        searchTerm={searchTerm}
-        onSearchTermChange={handleSearchTermChange}
-        placeholder="Search"
-      />
-</View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={filteredData}
-        // value={filteredData}
-        renderItem={({item}) => <Item title={item.title} image={item.image} />}
-        keyExtractor={item => item.id}
-        // keyExtractor={(item) => item.id.toString()}
-      />
       </View>
-    
     </SafeAreaView>
   );
 };

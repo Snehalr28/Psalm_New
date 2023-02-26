@@ -1,8 +1,5 @@
-import {lock, login, auth, backArrow, mail} from '../../assets';
-import {confirmOTP, resendOtp, forgotPassword} from '../../actions/UserActions';
-import {Button, TextField} from '../../components';
-import {NAVIGATION} from '../../constants';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+import {confirmOTP, resendOtp} from '../../actions/UserActions';
+import {Button} from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   CodeField,
@@ -10,30 +7,13 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {globalColors} from '../../theme/globalColors';
-import React, {useRef, useState, useEffect} from 'react';
-import {
-  Image,
-  ImageBackground,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-  Pressable,
-  ScrollView,
-  TextInput,
-  Alert,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Image, Text, TouchableOpacity, View, Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {styles} from './VerifyEmail.styles';
-import CodeInput from 'react-native-confirmation-code-input';
-import {sub} from 'react-native-reanimated';
-import {RFValue} from 'react-native-responsive-fontsize';
 
 export const VerifyEmail = ({route, navigation}) => {
-  const [otp, setOTP] = useState();
-  const otpRef = useRef();
   const CELL_COUNT = 6;
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -47,8 +27,6 @@ export const VerifyEmail = ({route, navigation}) => {
   const {type} = route.params;
 
   const dispatch = useDispatch();
-
-  let OTPLoader = useSelector(state => state.user.isOtpMatchRequest);
 
   const submitPressed = () => {
     if (value && value.length == 0) {
