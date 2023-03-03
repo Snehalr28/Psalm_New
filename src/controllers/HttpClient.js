@@ -13,6 +13,8 @@ const client = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+
 // console.log(window.routeNavigation,'chhhhhh')
 client.interceptors.response.use(
   // (response) => response.data,
@@ -21,7 +23,7 @@ client.interceptors.response.use(
     // console.log(response?.data?.code,'00datacheck>>')
     if (response?.data?.code == 400 || response?.data?.code == 401 || response?.data?.code == 403 ){
       console.log('useDispatchNav(logout())');
-      window.useDispatchNav(logout());
+      // window.useDispatchNav(logout());
   } return response.data},
   (error) => {
     if (error.response) {
@@ -33,6 +35,9 @@ client.interceptors.response.use(
     }
   }
 );
+
+
+
 const setAuthorization = async (token) => {
   console.log('token<<<<setaut',token)
   // debugger;
@@ -46,3 +51,4 @@ const clearAuthorization  = async () => {
 };
 export const HttpClient = { ...client, setAuthorization, clearAuthorization, };
 console.log("HTTP client response",HttpClient)
+

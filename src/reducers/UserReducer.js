@@ -60,15 +60,15 @@ export const userReducer = (
 
     //add mentor reducer cases
     case TYPES.ADD_MENTOR_REQUEST:
-      return {...state, isAddMentorRequest: true};
+      return {...state, isaddMentorRequest: true};
     case TYPES.ADD_MENTOR_SUCCESS:
       return {
         ...state,
-        addMentor: payload.user,
-        isAddMentorRequest: false,
+        addMentor: payload.addMentor,
+        isaddMentorRequest: false,
       };
     case TYPES.ADD_MENTOR_ERROR:
-      return {...state, isAddMentorRequest: false};
+      return {...state, isaddMentorRequest: false};
 
     // Fetch Profile Data
 
@@ -83,18 +83,17 @@ export const userReducer = (
     case TYPES.FETCH_PROFILE_ERROR:
       return {...state, isFetchProfileRequest: false};
 
-    // Show Program List
+   ///Program List
     case TYPES.PROGRAM_LIST_REQUEST:
-      return {...state, isProgramListRequest: true};
-
+      return {...state, isProgramListShowRequest: true};
     case TYPES.PROGRAM_LIST_SUCCESS:
       return {
         ...state,
-        ProgramListDataShow: payload.ProgramListShow,
-        isProgramListRequest: false,
+        showlist: payload.showlist,
+        isPROGRAM_LIST_ERROR: false,
       };
-    case TYPES.PROGRAM_LIST_ERROR:
-      return {...state, isProgramListRequest: false};
+    case TYPES.CATEGORY_DISPLAY_ERROR:
+      return {...state, isProgramListShowRequest: false};
 
    //Program details reducer
 

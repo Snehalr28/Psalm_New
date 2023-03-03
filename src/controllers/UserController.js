@@ -21,6 +21,7 @@ import {
 import {Alert} from 'react-native';
 import {getUser} from '../../selectors/UserSelectors';
 import {useSelector, useDispatch} from 'react-redux';
+import { HttpClientMultipart } from './HttpClientMultipart';
 
 export class UserController {
   static login(data) {
@@ -101,7 +102,7 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('error""""', error);
+          console.log('resend otp error""""', error);
           reject(error);
         });
     });
@@ -119,7 +120,7 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('error""""', error);
+          console.log('category display error""""', error);
           reject(error);
         });
     });
@@ -137,6 +138,7 @@ export class UserController {
           }
         })
         .catch(error => {
+          console.log('confirm otp error""""', error);
           reject(error);
         });
     });
@@ -156,13 +158,14 @@ export class UserController {
           }
         })
         .catch(error => {
+          console.log('resend password error""""', error);
           reject(error);
         });
     });
   }
   static updateMentor(data) {
     return new Promise((resolve, reject) => {
-      HttpClient.put(updateMentorUrl, data)
+      HttpClientMultipart.put(updateMentorUrl, data)
         .then(response => {
           console.log('Update Mentor/add program Response', response);
           if (response.status == 'Success') {
@@ -176,6 +179,7 @@ export class UserController {
         })
         .catch(error => {
           reject(error);
+          console.log('update mentor error""""', error);
           console.log('log2', error);
         });
     });
@@ -197,6 +201,7 @@ export class UserController {
         })
         .catch((error) => {
           reject(error);
+          console.log('add mentor error""""', error);
           console.log('log2',error)
         });
     });
@@ -215,7 +220,7 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('error""""', error);
+          console.log('fetch data error""""', error);
           reject(error);
         });
     });
@@ -223,8 +228,9 @@ export class UserController {
 
 
   static ShowProgram(data) {
+    console.log("//Inside show")
     return new Promise((resolve, reject) => {
-      HttpClient.get(ProgramListurl)
+      HttpClient.get(ProgramListurl, data)
         .then(response => {
           console.log('show program response<<>>', response);
           if (response.messageID === 200) {
@@ -234,7 +240,7 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('error""""', error);
+          console.log('show program error""""', error);
           reject(error);
         });
     });
@@ -253,6 +259,7 @@ export class UserController {
           }
         })
         .catch(error => {
+          console.log('show details error""""', error);
           console.log('error""""', error);
           reject(error);
         });
@@ -277,6 +284,7 @@ export class UserController {
         })
         .catch(error => {
           reject(error);
+          console.log('show update program error""""', error);
           console.log('log2', error);
         });
     });

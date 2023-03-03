@@ -1,13 +1,13 @@
 import {StyleSheet} from 'react-native';
+import FONTS from "../../../constants/fonts"
+import COLORS from "../../../constants/color"
 export const styles = StyleSheet.create({
-  imageView:{borderColor: '#E5E4E2', borderRadius: 10, borderWidth: 0.5, },
+  imageView:{borderColor: COLORS.HIGHLIGHT, borderRadius: 20, borderWidth: 0.5, width:"100%"},
   container:{
     flex: 1,
     flexDirection: 'column',
-    // padding: 35,
     paddingTop: 10,
-    // paddingLeft:10,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
   },
   topContainer: {
     flexDirection: 'row',
@@ -30,16 +30,16 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
     justifyContent:"center",
-    margin:25
-    // width:
+    // margin:25
+    // width:"100%"
   },
 
  
   image: {
-    // justifyContent:"center",
-  // padding:25,
-    height: 150,
-    width:310
+    height: 165,
+    width:"100%",
+    borderTopLeftRadius:10, 
+    borderTopRightRadius:10
   },
 
   title: {
@@ -47,8 +47,7 @@ export const styles = StyleSheet.create({
     marginBottom:20,
     marginLeft: 16,
     fontSize: 18,
-    fontWeight: '600',
-    // fontSize:26,
-    color:"#313131"
+    fontFamily:FONTS.SEMI_BOLD,
+    color: COLORS.BLACK
   },
 });

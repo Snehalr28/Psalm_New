@@ -1,10 +1,12 @@
 import {StyleSheet} from 'react-native';
+import FONTS from '../../../constants/fonts';
+import COLORS from '../../../constants/color';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
   },
   containerView: {
     flexDirection: 'row',
@@ -17,34 +19,22 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 10,
-    // marginTop:15,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    // width: '100%',
     marginVertical: 10,
-    // borderWidth:1,
-    flexWrap:"wrap"
+    flexWrap: 'wrap',
   },
   topText: {
     fontSize: 14,
-    fontWeight: 'bold',
     marginLeft: '-63%',
     marginTop: 3,
-    color: '#313131',
+    color: COLORS.BLACK,
+    fontFamily: FONTS.BOLD,
   },
-  // searchView: {
-  //   justifyContent: 'flex-start',
-  //   flexDirection: 'row',
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  //   borderColor: '#E5E4E2',
-  //   backgroundColor: '#fffafa',
-  // },
-  // searchIcon: {marginTop: 10, marginLeft: 10},
   elevation: {
-    shadowColor: '#000',
+    shadowColor: COLORS.DARK_BLACK,
     elevation: 3,
-    flexDirection:"row"
+    flexDirection: 'row',
   },
   topHeading: {
     marginTop: 23,
@@ -52,62 +42,55 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  headingText: {fontSize: 20, fontWeight: '500', color: '#313131'},
-  // searchInputText: {
-  //   borderRadius: 10,
-  //   width: '95%',
-  //   marginLeft: 10,
-  //   marginTop: -4,
-  //   marginBotto: 5,
-  // },
+  headingText: {fontSize: 20, color: COLORS.BLACK, fontFamily: FONTS.BOLD},
+
   image: {
     width: 109,
-    height:109,
-    // borderRadius: 10
+    height: 109,
   },
   textContainer: {
     marginLeft: 7,
     justifyContent: 'center',
-    // marginRight:50
-  //   width:160,
-  // borderWidth:1
-  // height:109,
-  // width:190
-  // flexWrap:"wrap"
   },
   title: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#313131',
+    color: COLORS.BLACK,
+    fontFamily: FONTS.MEDIUM,
     marginBottom: 6,
   },
   date: {
     fontSize: 12,
-    color: 'grey',
-    fontWeight: '500',
     marginBottom: 7,
     marginTop: 3,
+    color: COLORS.GREY,
+    fontFamily: FONTS.MEDIUM,
   },
   sessionText: {
-    color: '#313131',
+    color: COLORS.BLACK,
     marginLeft: -9,
     marginBottom: 3,
   },
-  session: {
-    fontSize: 12,
-    color: '#313131',
-    fontWeight: '500',
-    marginLeft: '-5%',
-  },
   priceText: {
-    color: '#313131',
     marginBottom: 3,
-    // marginRight:10
-    fontSize:10
+    fontSize: 10,
+    color: COLORS.BLACK,
+    fontFamily:FONTS.REGULAR
   },
   price: {
     fontSize: 12,
-    color: '#313131',
-    fontWeight: '500',
+    color: COLORS.BLACK,
+    fontFamily: FONTS.MEDIUM,
+  },
+  totalSession: {
+    color: COLORS.BLACK,
+    fontFamily:FONTS.REGULAR,
+    marginLeft: 5,
+    fontSize: 10,
+  },
+  totalSessionNo: {
+    fontSize: 12,
+    color: COLORS.BLACK,
+    fontFamily: FONTS.MEDIUM,
+    marginLeft: 5,
   },
 });

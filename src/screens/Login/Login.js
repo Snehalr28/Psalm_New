@@ -13,10 +13,12 @@ import {useFocusEffect} from '@react-navigation/native';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 
 export const Login = props => {
-  const [email, setEmail] = useState('updatementor1@yopmail.com');
-  const [password, setPassword] = useState('Admin@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [show, setShow] = useState(true);
   const [empty, setEmpty] = useState(false);
+  const [emptyPassword,setEmptyPassword]=useState(false);
+  const[ emptyEmail ,  setEmptyEmail]=useState(false);
   const [checkemail, SetCheckEmail] = useState(false);
   const [checkPassword, setCheckPassword] = useState(false);
 
@@ -49,7 +51,7 @@ export const Login = props => {
   };
   const colors = {
     true: 'green',
-    false: "#959593",
+    false: '#959593',
   };
 
   const loginButtonPressed = () => {
@@ -58,6 +60,27 @@ export const Login = props => {
     } else {
       setEmpty(false);
     }
+    // if (email != '' && password === '') {
+    //   setEmptyPassword(true);
+    // } else {
+    //   setEmpty(false);
+    // }
+    // if (email === '' && password != '') {
+    //   setEmptyEmail(true)
+
+    // } else {
+    //   setEmpty(false);
+    // }
+    // if (email === '' && password === '') {
+    //   setEmpty(true);
+    // } if else(email != '' && password === '') {
+    //   setEmpty(true);
+    // }if else(email === '' && password != '') {
+    //   setEmpty(true);
+    // }
+    // else {
+    //   setEmpty(false);
+    // }
   };
 
   const emailChange = text => {
@@ -171,7 +194,7 @@ export const Login = props => {
 
           <View style={styles.checkboxView}>
             <View
-              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              style={styles.middleView}>
               <CheckBox
                 style={styles.checkStyle}
                 disabled={false}
@@ -179,8 +202,8 @@ export const Login = props => {
                 value={toggleCheckBox}
                 onValueChange={newValue => setToggleCheckBox(newValue)}
               />
-              <View style={{marginLeft: 1, marginTop:2}}>
-                <Text style={{color:"#959593", fontSize:10, }}>Keep me signed in</Text>
+              <View style={styles.keepMeStyle}>
+                <Text style={styles.keepMeText}>Keep me signed in</Text>
               </View>
             </View>
 
@@ -206,7 +229,7 @@ export const Login = props => {
             </View>
 
             <View style={styles.textBottom}>
-              <Text style={{color: 'black'}}>Don't have an account yet? {""}</Text>
+              <Text style={styles.dontHaveText}>Don't have an account yet? {""}</Text>
               <Text
                 style={styles.signupText}
                 onPress={() => navigation.navigate('Register')}>

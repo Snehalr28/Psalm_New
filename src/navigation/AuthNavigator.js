@@ -12,16 +12,15 @@ import Register from '../screens/Register/Register';
 import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
 const Stack = createNativeStackNavigator();
-const showOnboard = false
 
 export function AuthNavigator() {
   return (
     <Stack.Navigator>
-      {showOnboard && <Stack.Screen
+       {/* <Stack.Screen
         component={OnboardingS}
         name="Onboarding"
         options={{headerShown: false}}
-      />}
+      /> */}
      
       <Stack.Screen
         component={Login}

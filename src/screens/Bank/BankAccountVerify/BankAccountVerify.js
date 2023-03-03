@@ -31,7 +31,7 @@ const BankAccountVerify = ({navigation}) => {
           <Text style={styles.upperText}>
             A Verification Code has been sent to
           </Text>
-          <Text style={styles.upperText}>
+          <Text style={styles.upperTextEmail}>
             Cameron.w123@gmail.com
           </Text>
         </View>
@@ -58,7 +58,7 @@ const BankAccountVerify = ({navigation}) => {
           />
         </View>
         <View style={styles.textView}>
-          <Text style={{color: 'black'}}>I didn't receive code.</Text>
+          <Text style={styles.DontReceive}>I didn't receive code.</Text>
           <Text style={styles.resendText}> Resend code</Text>
         </View>
 

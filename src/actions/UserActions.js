@@ -187,9 +187,9 @@ const addMentorRequest = () => ({
   type: TYPES.ADD_MENTOR_REQUEST,
   payload: null,
 });
-const addMentorSuccess = user => ({
+const addMentorSuccess = addMentor => ({
   type: TYPES.ADD_MENTOR_SUCCESS,
-  payload: {user},
+  payload: {addMentor},
 });
 const addMentorError = error => ({
   type: TYPES.ADD_MENTOR_ERROR,
@@ -223,15 +223,15 @@ const categoryDisplayError = error => ({
 });
 
 
-const ProgramListRequest = () => ({
+const ProgramListShowRequest = () => ({
   type: TYPES.PROGRAM_LIST_REQUEST,
   payload: null,
 });
-const ProgramListSuccess = ProgramListShow => ({
+const ProgramListShowSuccess = showlist => ({
   type: TYPES.PROGRAM_LIST_SUCCESS,
-  payload: {ProgramListShow},
+  payload: {showlist},
 });
-const ProgramListError = error => ({
+const ProgramListShowError = error => ({
   type: TYPES.PROGRAM_LIST_ERROR,
   payload: {error},
 });
@@ -398,10 +398,11 @@ export const addMentor = data => async dispatch => {
   console.log('add program response', data);
   dispatch(addMentorRequest());
   try {
-    const user = await UserController.addMentor(data);
-    console.log('Add program final response', user);
-    cb(user.response)
-    dispatch(addMentorSuccess(user));
+    const addMentor = await UserController.addMentor(data);
+    console.log('Add program final response', addMentor);
+    cb(addMentor.response)
+    dispatch(add)
+    dispatch(addMentorSuccess(addMentor));
   } catch (error) {
     console.log("add program error", error);
     dispatch(addMentorError(error));
@@ -449,20 +450,22 @@ export const CategoryDisplay = cb => async dispatch => {
   }
 };
 
-export const ShowProgram = (data,cb)  => async dispatch => {
-  console.log('Show list of program');
-  dispatch(ProgramListRequest());
+export const ProgramListShow = (data,cb)  => async dispatch => {
+  console.log("::Inside Program")
+  console.log('Show list of program',data);
+  dispatch(ProgramListShowRequest());
+  console.log("Program list call")
   try {
     console.log('/////Inside Show program try::');
-    const ProgramListShow = await UserController.ShowProgram(data);
-    console.log('Show Program List',ProgramListShow);
-    dispatch(ProgramListSuccess(ProgramListShow));
-    cb(ProgramListShow.response);
+    const showlist = await UserController.ShowProgram(data);
+    console.log('Show Program List',showlist);
+    dispatch(ProgramListShowSuccess(showlist));
+    cb(showlist.response);
 
   
   } catch (error) {
-    console.log(error);
-    dispatch(ProgramListError(error));
+    console.log("program list error",error);
+    dispatch((error));
   }
 };
 
@@ -479,7 +482,7 @@ export const ProgramDetails = (data,cb)  => async dispatch => {
   
   } catch (error) {
     console.log(error);
-    dispatch(ProgramDetailsError(error));
+    dispatch(ProgramDetailsError(error));ProgramListShowError
   }
 };
 

@@ -354,7 +354,7 @@ export const Register = props => {
                 TextMessage={'Mobile no. is required'}
                 condtionText={{color: 'red'}}
                 checkCondtion={mobileNumberError}
-                emailIconView={[styles.imageView, {marginRight: '15%'}]}
+                emailIconView={[styles.imageView, {marginRight: '15%',}]}
                 emailIcon={styles.image}
                 source={require('../../assets/Icons/call.png')}
               />
@@ -380,6 +380,9 @@ export const Register = props => {
             eyeImageView={props.eyeImageView}
           />
 
+
+          
+
           <View style={styles.inputTextView}>
             <Text style={styles.bottomText}>
               By signing up, you're agree to our
@@ -387,11 +390,11 @@ export const Register = props => {
             <View style={{flexDirection: 'row'}}>
               <Text
                 onPress={() => navigation.navigate('Terms & Conditions')}
-                style={{color: 'black'}}>
-                Terms & Conditions
+                style={styles.termsStyle}>
+                Terms & Conditions 
               </Text>
-              <Text style={{color: 'grey', marginLeft: 2}}>and</Text>
-              <Text style={{color: 'black', marginLeft: 2}}>
+              <Text style={styles.andStyle}> and </Text>
+              <Text style={styles.termsStyle}>
                 Privacy Policy
               </Text>
             </View>
@@ -412,7 +415,7 @@ export const Register = props => {
             <Text
               onPress={() => navigation.navigate('Login')}
               style={styles.login}>
-              Login
+              Log in
             </Text>
           </View>
         </View>

@@ -1,31 +1,57 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
-import {Text, View, Image, FlatList, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Searchbar} from 'react-native-paper';
+// import {TextInput, IconButton} from 'react-native-paper';
 import Images from '../../../assets/Images/Sample/index';
 import {styles} from '../../Program/ProgramList/ProgramList.styles';
 import {Button} from '../../../components/Button';
 import CustomSearch from '../../../components/customSearch';
 import CustomHeader from '../../../components/customHeader';
-import {ShowProgram} from '../../../actions/UserActions';
+import {ProgramListShow, ShowProgram} from '../../../actions/UserActions';
+import {useDispatch, useSelector} from 'react-redux';
+import { getUser } from '../../../selectors/UserSelectors';
 
-const ProgramList = () => {
+const ProgramList = ({route}) => {
+  const navigation = useNavigation();
+
+  let getuserData = useSelector(getUser);
+  console.log('Get userId for program list', getuserData.response.data._id);
+  const {passId} = route.params;
+
+  console.log('Id get from Program Category', passId);
   const [searchQuery, setSearchQuery] = useState('');
+  const [dataNew, setData] = useState([]);
+  console.log("response of program list",dataNew)
+  const dispatch = useDispatch();
   const onChangeSearch = query => setSearchQuery(query);
   useEffect(() => {
-    // ProgramByCategory();
+    ProgramByCategory();
   }, []);
 
+  
   const ProgramByCategory = async () => {
-    console.log('Program List');
-    let ProgramDataOb = {
-      mentorid: '63f5af8c247174c71f3e2133',
-      category_id: '63c936090a9a959d9ed369d3',
+    console.log('Program List call');
+    let ProgramListOb = {
+      mentorid: getuserData.response.data._id,
+      category_id: passId,
     };
     try {
       dispatch(
-        ShowProgram(ProgramDataOb, cb => {
-          console.log('Display Category data iss', cb.data.docs);
+       ProgramListShow(ProgramListOb, cb => {
+        console.log("Program Object iss",ProgramListOb)
+          console.log('Display Program Category', cb.data.docs[0]);
           // var mydata=[]
           // mydata=cb.data.docs;
           // mydata.map((e1)=>{
@@ -34,7 +60,8 @@ const ProgramList = () => {
           if (cb != false) {
             // setData(cb.data.docs)
             console.log('check', cb.responseCode);
-            if (cb.status === 'success') {
+            if (cb.messageID === 200) {
+              setData(cb.data.docs);
               //  setData(cb.data.docs)
               // navigation.navigate('ProgramList');
             }
@@ -77,25 +104,31 @@ const ProgramList = () => {
     setSearchTerm(text);
   };
 
-  const filteredData = data.filter(item => {
+  const filteredData = dataNew.filter(item => {
     return item.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
+  const baseURL = 'http://54.190.192.105:9192/';
 
-  const navigation = useNavigation();
-  const Item = ({title, image, date, totalSession, price}) => (
+  const Item = ({title, image,price,start_date,availibility_from}) => (
     <View style={[styles.card, styles.elevation]}>
       <View style={{}}>
-        <Image source={image} style={styles.image} />
+      <Image source={{uri:baseURL+image}} style={styles.image} />
+        {/* <Image source={image} style={styles.image} /> */}
       </View>
 
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <View style={{flexDirection:"row"}}>
+        <Text style={styles.date}>{start_date}</Text>
+        <Text style={{marginLeft:5,marginRight:5}}>|</Text>
+        <Text style={styles.date}>{availibility_from}</Text>
+        </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View
             style={{flexDirection: 'column', justifyContent: 'space-between'}}>
             <Text style={styles.priceText}>Price</Text>
             <Text style={styles.price}>{`$${price}`}</Text>
+            {/* <Text style={styles.price}>45</Text> */}
           </View>
 
           <View
@@ -104,10 +137,10 @@ const ProgramList = () => {
               flexDirection: 'column',
               justifyContent: 'space-between',
             }}>
-            <Text style={{color: '#313131', marginLeft: 5, fontSize: 10}}>
+            <Text style={styles.totalSession}>
               Total Sessions
             </Text>
-            <Text style={{color: '#313131', marginLeft: 5}}>
+            <Text style={styles.totalSessionNo}>
               {totalSession}
             </Text>
           </View>
@@ -148,13 +181,29 @@ const ProgramList = () => {
         </View>
       </View>
       <FlatList
-        data={filteredData}
-        renderItem={({item}) => <Item {...item} />}
-        keyExtractor={item => item.title}
+        data={dataNew}
+        // data={filteredData}
+        renderItem={({item}) => 
+        {
+          console.log('Item Data:--->>>', item,item.mentorship_name,item.image,item.price,item.availibility_from,item.start_date);
+         return <Item title={item.mentorship_name} 
+         image={item.image} 
+         price={item.price}
+         availibility_from={item.availibility_from}
+         start_date={item.start_date}
+
+         />
+        }
+      }
+        keyExtractor={item => item.id}
+
+
+        // renderItem={({item}) => <Item {...item} />}
+        // keyExtractor={item => item.title}
       />
       <Button
         onPress={() => {
-          navigation.navigate('Add New Program');
+          navigation.navigate('Add New Program',{passId:passId});
           console.log('button');
         }}
         title={'Add New Program'}

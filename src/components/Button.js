@@ -8,30 +8,25 @@ import {
   ActivityIndicator,
 } from 'react-native';
 // import { typography } from '@/theme';
+import FONTS from "../constants/fonts"
+import COLORS from "../constants/color"
 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    // borderRadius: 5,
-    // borderWidth: 0,
-    // padding: 10,
-    // width: '100%',
-
-    justifyContent: 'center',
+    backgroundColor:COLORS.PRIMARY,
           alignSelf: 'center',
-          borderWidth: 1,
           height: 45,
           width: '100%',
           borderRadius: 10,
-          backgroundColor: '#FE4D4D',
-          borderColor: '#FE4D4D',
+          borderColor: COLORS.PRIMARY,
   },
   textStyle:{
-      // alignSelf: 'center',
-      color: 'white',
-      fontWeight: '700',
       fontSize: 16,
+      fontFamily:FONTS.BOLD,
+      color:COLORS.WHITE
+
   }
   
 });

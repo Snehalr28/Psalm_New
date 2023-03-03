@@ -1,5 +1,8 @@
-import {confirmOTP, resendOtp} from '../../actions/UserActions';
-import {Button} from '../../components';
+import {lock, login, auth, backArrow, mail} from '../../assets';
+import {confirmOTP, resendOtp, forgotPassword} from '../../actions/UserActions';
+import {Button, TextField} from '../../components';
+import {NAVIGATION} from '../../constants';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   CodeField,
@@ -106,9 +109,9 @@ export const VerifyEmail = ({route, navigation}) => {
             />
           </View>
           <View style={styles.bottomTextView}>
-            <Text style={styles.textBottom}>I didn't receive code.</Text>
+            <Text style={styles.textBottom}>I didn't receive code. </Text>
             <TouchableOpacity onPress={() => resendOtpSubmit()}>
-              <Text style={styles.resendText}>code Resend</Text>
+              <Text style={styles.resendText}>Resend Code</Text>
             </TouchableOpacity>
           </View>
 

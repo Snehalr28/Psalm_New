@@ -1,16 +1,34 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
-
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, View, Text, Image,ActivityIndicator} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {Login} from '../Login/Login';
 
+
 function OnboardingS({navigation}) {
-  const [showRealApp, setShowRealApp] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
+  console.log("Show Intro response isss", showIntro)
+  console.log("Skip Value")
+
+  useEffect(() => {
+    AsyncStorage.getItem('first_time').then((value) => {
+      setShowIntro({ showIntro: !!value});
+    });
+    }, []);
+
+
+
   const onDone = () => {
-    setShowRealApp(true);
+    AsyncStorage.setItem('first_time', 'true').then(() => {
+      setShowIntro(true);
+      navigation.navigate('Login')
+    });
   };
   const onSkip = () => {
-    setShowRealApp(true);
+    AsyncStorage.setItem('first_time', 'true').then(() => {
+      setShowIntro(true);
+      navigation.navigate('Login')
+    });
   };
 
   const backgroundColor = isLight => (isLight ? 'blue' : 'lightblue');
@@ -70,44 +88,21 @@ function OnboardingS({navigation}) {
   const RenderItem = ({item}) => {
     return (
       <View
-        style={{
-          flex: 1,
-          backgroundColor: item.backgroundColor,
-
-          justifyContent: 'space-around',
-          paddingBottom: 80,
-        }}>
+        style={styles.mainContainer}>
         <Image style={styles.introImageStyle} source={item.image} />
-        <View style={{marginLeft: 30}}>
+        <View style={styles.subViewData}>
           <Text
-            style={{
-              marginTop: 50,
-              fontSize: 36,
-              color: 'black',
-              textAlign: 'left',
-              fontWeight: 'bold',
-            }}>
+            style={styles.titleStyle}>
             {item.title}
           </Text>
 
           <Text
-            style={{
-              fontSize: 36,
-              color: 'black',
-              textAlign: 'left',
-              fontWeight: 'bold',
-              marginBottom: 10,
-            }}>
+            style={styles.title1Style}>
             {item.title1}
           </Text>
 
           <Text
-            style={{
-              marginTop: 5,
-              fontSize: 15,
-              color: 'grey',
-              textAlign: 'left',
-            }}>
+            style={styles.textStyle}>
             {item.text}
           </Text>
         </View>
@@ -117,7 +112,7 @@ function OnboardingS({navigation}) {
 
   return (
     <>
-      {showRealApp ? (
+      {showIntro ? (
         <Login />
       ) : (
         <AppIntroSlider
@@ -129,64 +124,11 @@ function OnboardingS({navigation}) {
           onDone={onDone}
           showSkipButton={true}
           onSkip={onSkip}
-          activeDotStyle={{backgroundColor: 'red'}}
+          activeDotStyle={styles.dotStyle}
         />
       )}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    padding: 10,
-    justifyContent: 'center',
-  },
-  buttonCircle: {
-    width: 60,
-    height: 40,
-
-    backgroundColor: 'red',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  titleStyle: {
-    padding: 10,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  paragraphStyle: {
-    padding: 20,
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  introImageStyle: {
-    marginTop: 50,
-    width: 300,
-    height: 300,
-    alignSelf: 'center',
-  },
-  introTextStyle: {
-    fontSize: 13,
-    color: 'black',
-    textAlign: 'left',
-  },
-  introTitleStyle: {
-    marginTop: 100,
-    fontSize: 23,
-    color: 'black',
-
-    textAlign: 'left',
-    fontWeight: 'bold',
-  },
-});
 
 export default OnboardingS;

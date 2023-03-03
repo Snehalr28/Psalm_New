@@ -2,6 +2,8 @@ import {StyleSheet} from 'react-native';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
+import FONTS from "../../constants/fonts"
+import COLORS from "../../constants/color"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -71,11 +73,11 @@ export const styles = StyleSheet.create({
     fontFamily: globalFonts.regular,
     fontSize: RFValue(16),
   },
-  buttonText: {
-    fontSize: RFValue(18),
-    color: globalColors.white,
-    fontFamily: globalFonts.regular,
-  },
+  // buttonText: {
+  //   fontSize: RFValue(18),
+  //   color: globalColors.white,
+  //   fontFamily: globalFonts.regular,
+  // },
   accountText: {
     color: globalColors.grey,
     fontFamily: globalFonts.regular,
@@ -137,14 +139,15 @@ export const styles = StyleSheet.create({
     marginLeft: '10%',
     marginBottom: '5%',
   },
-  textForgot: {fontWeight: 'bold', fontSize: 36, color: 'black'},
+  textForgot: { fontSize: 36, fontFamily:FONTS.BOLD, color:COLORS.DARK_BLACK},
   textPassword: {
-    fontWeight: 'bold',
     fontSize: 36,
-    color: 'black',
     marginTop: -10,
+    fontFamily:FONTS.BOLD, 
+    color:COLORS.DARK_BLACK
   },
-  sentence: {color: 'black', marginTop: 2},
+  sentence: {   color: COLORS.DARK_GREY,
+    fontFamily:FONTS.REGULAR, marginTop: 2},
   emailView: {
     flex: 3,
     marginLeft: '10%',
@@ -166,14 +169,7 @@ export const styles = StyleSheet.create({
   emailIcon: {height: 20, width: 20, marginTop: 10},
   submitView: {
     flex: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 35,
-    backgroundColor: '#FE4D4D',
-    height: 50,
-    width: '100%',
-    borderRadius: 10,
+    marginTop: "10%",
   },
 });
 

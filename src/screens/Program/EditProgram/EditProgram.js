@@ -6,7 +6,8 @@ import {TextInputComponent} from '../../../components/textInputComponent/TextInp
 import {TextInput} from 'react-native-paper';
 import {Button} from '../../../components/Button';
 import {styles} from './EditProgram.styles';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {getUser} from '../../selectors/UserSelectors';
 import {useNavigation} from '@react-navigation/native';
 import {updateProgram} from '../../../actions/UserActions';
 
@@ -141,6 +142,7 @@ const EditProgram = () => {
 
           <View style={[styles.textInputView, {marginBottom: 20}]}>
             <TextInput
+              // style={{borderRadius: 10, width: '224%', height:"200%"}}
               multiline={true}
               placeholder="Program Description"
               mode="outlined"
@@ -157,6 +159,10 @@ const EditProgram = () => {
 
           <Button
           onPress={() => handleSubmitButton()}
+            // onPress={() => {
+            //   navigation.navigate('Add Bank Details');
+            //   console.log('button');
+            // }}
             title={'Save Program'}
           />
         </View>

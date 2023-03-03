@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   SafeAreaView,
   Image,
   TouchableOpacity,
-  FlatList,
+  FlatList,Alert, Modal, Pressable
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
@@ -15,14 +16,14 @@ import {getUser} from '../../selectors/UserSelectors';
 import {Button} from '../../components/Button';
 // import {styles} from './MentorMenteeProfileScreen.styles';
 // import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
+import {Dropdown} from 'react-native-element-dropdown';
 import CustomDropdown from '../../components/customDropdown';
 import CustomHeader from '../../components/customHeader';
 import {FetchProfileData, updateMentor} from '../../actions/UserActions';
 import {styles} from './MentorMenteeProfileScreen.styles';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {Alert, Modal, Pressable} from 'react-native';
-
+import DatePicker from 'react-native-date-picker';
 export const MentorMenteeProfile = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -50,7 +51,26 @@ export const MentorMenteeProfile = props => {
   const [bioError, setBioError] = useState(false);
   const [DobError, setDobError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [profileClick,setProfileClick] = useState(false)
+  const [verifyImageClick,setVerifyImageClick] = useState(false)
+  const [verifyCerificateClick,setverifyCerificateClick] = useState(false)
+
+  const [responseprofile, setResponseProfile] = useState(null);
+  const [verifyresponse, setVerifyResponse] = useState(null);
+  const [skillresponse, setSkillResponse] = useState(null);  
+  
   const [response, setResponse] = useState(null);
+  
+  const [file, setFilePath] = useState('');
+  const [picture, setPicture] = useState({uri: 'file:///data/user/0/com.psalm/cache/rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg', name: 'rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg', type: 'image/jpeg'})
+  console.log('Response of Image', response);
+  console.log("Profile pictrure picked",responseprofile,profileClick)
+  console.log("Verify pictrure picked",verifyresponse,verifyImageClick)
+  console.log("Skill pictrure picked",skillresponse,verifyCerificateClick)
+  // console.log("Response of Image --->", response.assets[0].uri)
+
+
   const actions = [
     {
       title: 'Take Image',
@@ -108,13 +128,23 @@ export const MentorMenteeProfile = props => {
         console.log('Fetch Data response data', cb);
         if (cb != false) {
           console.log('First name is', cb.data.firstName);
+          console.log('number name is', cb.data.phone);
 
           if (cb.messageID === 200) {
             setFirstName(cb.data.firstName);
             setLastName(cb.data.lastName);
             setEmail(cb.data.email);
             setRole(cb.data.role);
-            setNumber(cb.data.number);
+            setNumber(cb.data.phone);
+            setBio(cb.data.bio);
+            setLanguage(cb.data.language);
+            setAddress(cb.data.address);
+            setCity(cb.data.city);
+            setProvince(cb.data.province);
+            setPostalCode(cb.data.postalcode);
+            setCountry(cb.data.country);
+            setSkillName(cb.data.skillName);
+
             // navigation.navigate('ProgramList');
           }
         }
@@ -123,26 +153,73 @@ export const MentorMenteeProfile = props => {
   };
 
   const handleSubmitButton = () => {
-    let updateMentorOb = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      role: role,
-      phone: number,
-      bio: bio,
-      language: language,
-      address: address,
-      city: city,
-      province: province,
-      postalcode: postalCode,
-      image: '',
-      country_code: '+91',
-      _id: getuserData.response.data._id,
-    };
 
-    console.log('updateMentorOb', updateMentorOb);
+    let file = {
+      uri: response?.assets[0]?.uri,
+      name: response.assets[0].fileName,
+      type:response.assets[0].type    
+    }
+
+
+    
+    let formdata = new FormData();
+    
+    if (file != '') {
+      formdata.append('image', file);
+    }
+
+
+
+    // formdata.append('firstName', firstName);
+    // formdata.append('_id', getuserData.response.data._id);
+    // formdata.append('lastName', lastName);
+    // formdata.append('phone', number);
+    // formdata.append('validationid','');
+    // formdata.append('status', 1);
+    // formdata.append('country_code', +91);
+    // formdata.append('gender', gender);
+    // formdata.append('bio',bio);
+    // formdata.append('city', city);
+    // formdata.append('postalcode', postalCode);
+    // formdata.append('address', address);
+    // formdata.append('skillsdata', language);
+    // formdata.append('date_of_birth', Dob);
+    // formdata.append('province', province);
+
+   
+
+  
+    formdata.append('_id', getuserData.response.data._id);
+    console.log('formdata._parts', formdata._parts)
+
+
+
+
+    // let updateMentorOb = {
+    //   firstName: firstName,
+    //   _id: getuserData.response.data._id,
+    //   lastName: lastName,
+    //   status: 1,
+    //   phone: number,
+    //   validationid: '',
+    //   image: picture,
+    //   country_code: '+91',
+    //   gender: gender,
+    //   bio: bio,
+    //   city: city,
+    //   postalcode: postalCode,
+    //   address: address,
+    //   language: language,
+    //   skillsdata: '',
+    //   date_of_birth: Dob,
+    //   province: province,
+    // };
+
+    // console.log('updateMentorOb', updateMentorOb);
+    console.log('formdataobject', formdata);
     dispatch(
-      updateMentor(updateMentorOb, cb => {
+      // updateMentor(updateMentorOb, cb => {
+        updateMentor(formdata, cb => {
         console.log('update mentor data got');
         console.log('update mentor CB ', cb);
         if (cb != false) {
@@ -170,6 +247,41 @@ export const MentorMenteeProfile = props => {
     setNumber(text);
   };
 
+  const setDobChange = text => {
+    setDob(text);
+  };
+
+  const setBioChange = text => {
+    setBio(text);
+  };
+
+  const setVerificationChange = text => {
+    setVerification(text);
+  };
+
+  const setSelectLangChange = text => {
+    setSelectLang(text);
+  };
+
+  const setAddressChange = text => {
+    setAddress(text);
+  };
+
+  const setProvinceChange = text => {
+    setProvince(text);
+  };
+
+  const setCityChange = text => {
+    setCity(text);
+  };
+  const setPostalCodeChange = text => {
+    setPostalCode(text);
+  };
+
+  const setCountryChange = text => {
+    setCountry(text);
+  };
+
   const [array, setArray] = useState([
     {skillType: '', skillName: '', certificate: '', isAdded: false},
   ]);
@@ -190,6 +302,18 @@ export const MentorMenteeProfile = props => {
     let temp = Object.assign([], array);
     setArray(temp);
   };
+
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [selectedNewDate, setSelectedNewDate] = useState('');
+
+
+  const handleDateChange = newDate => {
+    setSelectedNewDate(newDate.toISOString().slice(0, 10));
+    setOpen(false);
+    setDate(newDate);
+  };
+
   const data = [
     {label: 'Male', value: 'Male'},
     {label: 'Female', value: 'Female'},
@@ -210,8 +334,14 @@ export const MentorMenteeProfile = props => {
     {label: 'Vietnamese', value: 'Vietnamese'},
     {label: 'Italian', value: 'Italian'},
   ];
-
   const [selectLang, setSelectLang] = useState(null);
+  const locale = 'en-GB';
+  const [inputDate, setInputDate] = React.useState(undefined);
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -221,7 +351,7 @@ export const MentorMenteeProfile = props => {
       />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profileStyle}>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity onPress={() => {setModalVisible(true),setProfileClick(true)}}>
             <Image
               style={styles.profileImage}
               source={require('../../assets/Icons/camera.png')}
@@ -236,40 +366,54 @@ export const MentorMenteeProfile = props => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
+              console.log('Image clicked');
               Alert.alert('Modal has been closed.');
               setModalVisible(!modalVisible);
             }}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <View style={styles.buttonContainer}>
+               {profileClick?(<View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(false);
-                      launchCamera(
-                        {
-                          storageOptions: {
-                            skipBackup: true,
-                            path: 'images',
-                          },
-                        },
-                        response => {
-                          console.log(response);
-                        },
-                      );
+                     
                     }}>
-                    <Text>Camera</Text>
+                 
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
                       launchImageLibrary(actions[1].options, setResponse)
-                    }>
+                    }
+                    >
                     <Text>Library</Text>
                   </TouchableOpacity>
-                </View>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </View>):(<View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisible(false);
+                     
+                    }}>
+                 
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      launchImageLibrary(actions[1].options, setResponse)
+                    }
+                    >
+                    <Text>Library</Text>
+                  </TouchableOpacity>
+                </View>)}
+                <Pressable onPress={() => setModalVisible(!modalVisible)}>
+                  <Text
+                    style={{
+                      marginTop: 10,
+                      backgroundColor: '#ECECEC',
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      borderRadius: 10,
+                    }}>
+                    Hide Modal
+                  </Text>
                 </Pressable>
               </View>
             </View>
@@ -319,6 +463,7 @@ export const MentorMenteeProfile = props => {
             marginTop: 15,
             justifyContent: 'flex-start',
             // marginBottom:10
+            marginRight: 10,
           }}>
           <View>
             <TextInput
@@ -349,7 +494,7 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Date of Birth'}
           label={'Date of Birth'}
-          onChangeText={setDob}
+          onChangeText={setDobChange}
           value={Dob}
           emailIconView={styles.imageView}
           emailIcon={styles.image}
@@ -377,7 +522,7 @@ export const MentorMenteeProfile = props => {
             autoCapitalize="none"
             autoCorrect={false}
             value={bio}
-            onChangeText={e => setBio(e)}
+            onChangeText={setBioChange}
           />
         </View>
 
@@ -385,11 +530,12 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Verification ID'}
           label={'Verification ID'}
-          onChangeText={setVerification}
+          onChangeText={setVerificationChange}
           value={verification}
           emailIconView={styles.imageView}
           emailIcon={styles.image}
           source={require('../../assets/Icons/Group.png')}
+          onPress={() => {setModalVisible(true),setVerifyImageClick(true)}}
         />
 
         <CustomDropdown
@@ -398,14 +544,14 @@ export const MentorMenteeProfile = props => {
           labelField="label"
           valueField="value"
           placeholder="Language"
-          onChange={item => setSelectLang(item.value)}
+          onChange={item => setSelectLangChange(item.value)}
         />
 
         <TextInputComponent
           emailView={styles.textInputView}
           placeholder={'Enter Your Address'}
           label={'Address'}
-          onChangeText={setAddress}
+          onChangeText={setAddressChange}
           value={address}
         />
 
@@ -413,7 +559,7 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Enter Your City'}
           label={'City'}
-          onChangeText={setCity}
+          onChangeText={setCityChange}
           value={city}
         />
 
@@ -421,7 +567,7 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Enter Your Province'}
           label={'Province'}
-          onChangeText={setProvince}
+          onChangeText={setProvinceChange}
           value={province}
         />
 
@@ -429,7 +575,7 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Enter Your Postal Code'}
           label={'Postal Code'}
-          onChangeText={setPostalCode}
+          onChangeText={setPostalCodeChange}
           value={postalCode}
         />
 
@@ -437,7 +583,7 @@ export const MentorMenteeProfile = props => {
           emailView={styles.textInputView}
           placeholder={'Enter Your Country'}
           label={'Country'}
-          onChangeText={setCountry}
+          onChangeText={setCountryChange}
           value={country}
         />
 
@@ -454,7 +600,7 @@ export const MentorMenteeProfile = props => {
                 <View>
                   <TextInputComponent
                     emailView={styles.textInputView}
-                    placeholder={'"Skill Type"'}
+                    placeholder={'Skill Type'}
                     label={'Skill Type'}
                     value={item.skillType}
                     onChangeText={text =>
@@ -467,7 +613,7 @@ export const MentorMenteeProfile = props => {
                   />
                   <TextInputComponent
                     emailView={styles.textInputView}
-                    placeholder={'"Skill Name"'}
+                    placeholder={'Skill Name'}
                     label={'Skill Name'}
                     value={item.skillName}
                     onChangeText={text =>
@@ -493,6 +639,7 @@ export const MentorMenteeProfile = props => {
                     emailIconView={styles.imageView}
                     emailIcon={styles.image}
                     source={require('../../assets/Icons/Group.png')}
+                    onPress={() => {setModalVisible(true),setverifyCerificateClick(true)}}
                   />
 
                   <View
@@ -500,26 +647,19 @@ export const MentorMenteeProfile = props => {
                       justifyContent: 'center',
                       alignContent: 'center',
                       alignSelf: 'flex-start',
-                      marginTop: 2,
+                      marginTop: 20,
                     }}>
                     {item.isAdded ? (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => RemoveMed(index)}>
-                        <Text style={{color: 'red', fontSize: 18}}>Remove</Text>
+                        <Text style={styles.remove}>Remove</Text>
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => AddMed(item, index)}>
-                        <Text
-                          style={{
-                            color: 'black',
-                            fontSize: 18,
-                            fontWeight: '400',
-                          }}>
-                          Add More Skills
-                        </Text>
+                        <Text style={styles.addMore}>Add More Skills</Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -529,17 +669,15 @@ export const MentorMenteeProfile = props => {
           />
         </View>
         <Button
-          style={{marginBottom: 15, marginTop: 5}}
+          style={{marginBottom: 15, marginTop: 35}}
           onPress={() => {
-            handleSubmitButton();
-            // navigation.navigate('Add Bank Details');
+            navigation.navigate('Add Bank Details');
             console.log('button');
           }}
           title={'Add Bank Account'}
         />
         <Button
-          style={{marginBottom: 35, marginTop: 5}}
-          // style={styles.button}
+          style={styles.button}
           onPress={() => {
             handleSubmitButton();
             navigation.navigate('AddProgram');

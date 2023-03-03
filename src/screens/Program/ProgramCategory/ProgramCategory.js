@@ -7,20 +7,29 @@ import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native';
-import Images from '../../../assets/Images/Sample';
+// import Images from '../../../assets/Images/Sample';
 import {styles} from './ProgramCategory.styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {TextInput} from 'react-native';
 import {getUser} from '../../../selectors/UserSelectors';
 import CustomSearch from '../../../components/customSearch';
 import CustomHeader from '../../../components/customHeader';
 import {CategoryDisplay} from '../../../actions/UserActions';
+import Images from '../../../assets/Images/Sample';
 const ProgramCategory = props => {
   const [dataNew, setData] = useState([]);
+  const [category_id, setCategory_id] = useState([]);
+  console.log("NewData",dataNew)
   let Data = useSelector(getUser);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+
+ 
+  let getuserData = useSelector(getUser);
+  console.log('Mentor/mentee Id', getuserData.response.data._id);
 
   useEffect(() => {
     Display();
@@ -32,11 +41,13 @@ const ProgramCategory = props => {
     try {
       dispatch(
         CategoryDisplay(cb => {
-          console.log('category display cb response is', cb.data.docs[0]);
+          console.log('category response check ', cb.data.docs[0]);
+          console.log('category response check Name', cb.data.docs[0].docs[0].category.categoryName);
           if (cb != false) {
             // setData(cb.data.docs)
-            console.log('checkCategory', cb.data.docs.length);
+            console.log('doc length', cb.data.docs.length);
             if (cb.messageID === 200) {
+              // setData(cb.data.docs[0].docs);
               setData(cb.data.docs);
               // navigation.navigate('ProgramList');
             }
@@ -77,22 +88,26 @@ const ProgramCategory = props => {
     setSearchTerm(text);
   };
 
-  const filteredData = data.filter(item => {
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
-  const baseURL = 'http://54.190.192.105:9192';
-  const Item = ({title, image}) => (
+  // const filteredData = dataNew.filter(item => {
+  //   return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  // });
+  const baseURL = 'http://54.190.192.105:9192/';
+  const Item = ({title, image, passId}) => (
+
     <View style={styles.itemContainer}>
       <TouchableWithoutFeedback
-        onPress={() => navigation.navigate('ProgramList')}>
+   
+        onPress={() => navigation.navigate('ProgramList',{passId:passId})}>
         <View style={styles.imageView}>
-          <Image
+          {/* <Image
             source={{
               uri: 'https://www.devteam.space/wp-content/uploads/2021/11/How-to-Build-a-Mobile-App-With-React-Native-656x369.jpg',
             }}
             style={styles.image}
-          />
-          {/* ÷ <Image source={{uri:baseURL+image}} style={styles.image} /> */}
+          /> */}
+           <Image source={{uri:baseURL+image}} style={styles.image} />
+           {/* <Image source={{image}} style={styles.image} /> */}
+           
           <Text style={styles.title}>{title}</Text>
         </View>
       </TouchableWithoutFeedback>
@@ -101,6 +116,12 @@ const ProgramCategory = props => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* <Button
+        onPress={() => {
+          navigation.navigate('ProgramList');
+          console.log('button');
+        }}
+        title='Add New Program'/> */}
       <View style={{flex: 1, padding: 5, marginRight: 20, marginLeft: 20}}>
         <CustomHeader
           title="Programs"
@@ -119,11 +140,16 @@ const ProgramCategory = props => {
           data={dataNew}
           renderItem={({item}) => 
           {
-            console.log('Item:--', item);
-           return <Item title={item.mentorship_name} image={item.image} />
+            console.log("item is--->",item.docs[0].category._id)
+            console.log("item is------>",item.docs[0].category.categoryName)
+            console.log("item is------>",item.docs[0].category.image)
+            // console.log("item is----->",item.docs[0].mentorship_name)
+           
+          //  return <Item title={item._id} />
+           return <Item title={item.docs[0].category.categoryName} image={item.docs[0].category.image} passId={item.docs[0].category._id} />
           }
         }
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
         />
       </View>
     </SafeAreaView>
