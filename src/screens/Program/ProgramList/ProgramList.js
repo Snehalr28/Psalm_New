@@ -1,7 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
-import {Text, View, Image, FlatList, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Searchbar} from 'react-native-paper';
+// import {TextInput, IconButton} from 'react-native-paper';
 import Images from '../../../assets/Images/Sample/index';
 import {styles} from '../../Program/ProgramList/ProgramList.styles';
 import {Button} from '../../../components/Button';
@@ -93,7 +105,7 @@ const ProgramList = ({route}) => {
   };
 
   const filteredData = data.filter(item => {
-    return item.mentorship_name.toLowerCase().includes(searchTerm.toLowerCase());
+    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
   const baseURL = 'http://54.190.192.105:9192/';
 
@@ -125,15 +137,12 @@ const ProgramList = ({route}) => {
               flexDirection: 'column',
               justifyContent: 'space-between',
             }}>
-            <Text style={{color: '#313131', marginLeft: 5, fontSize: 10}}>
+            <Text style={styles.totalSession}>
               Total Sessions
             </Text>
-            {/* <Text style={{color: '#313131', marginLeft: 5}}>
-              {mentee_limit}
+            {/* <Text style={styles.totalSessionNo}>
+              {totalSession}
             </Text> */}
-            <Text style={{color: '#313131', marginLeft: 5}}>
-             11
-            </Text>
           </View>
         </View>
 

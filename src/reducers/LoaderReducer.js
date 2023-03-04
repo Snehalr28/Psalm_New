@@ -13,6 +13,10 @@ export const loaderReducer = (
       return { ...state, loading: false };
     case TYPES.LOADER_FAIL:
       return { ...state, loading: false };
+
+    case TYPES.CLEAR_STORE:
+      console.log("loder of logout")
+      return state;
     default:
       return state;
   }

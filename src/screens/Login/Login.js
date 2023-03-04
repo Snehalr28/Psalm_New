@@ -13,8 +13,8 @@ import {useFocusEffect} from '@react-navigation/native';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 
 export const Login = props => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('updatementor1@yopmail.com');
+  const [password, setPassword] = useState('Admin@123');
   const [show, setShow] = useState(true);
   const [empty, setEmpty] = useState(false);
   const [emptyPassword,setEmptyPassword]=useState(false);
@@ -194,7 +194,7 @@ export const Login = props => {
 
           <View style={styles.checkboxView}>
             <View
-              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              style={styles.middleView}>
               <CheckBox
                 style={styles.checkStyle}
                 disabled={false}
@@ -202,14 +202,12 @@ export const Login = props => {
                 value={toggleCheckBox}
                 onValueChange={newValue => setToggleCheckBox(newValue)}
               />
-              <View style={{marginLeft: 1, marginTop: 2}}>
-                <Text style={{color: '#959593', fontSize: 10}}>
-                  Keep me signed in
-                </Text>
+              <View style={styles.keepMeStyle}>
+                <Text style={styles.keepMeText}>Keep me signed in</Text>
               </View>
             </View>
 
-            <View style={{marginRight: -15}}>
+            <View style={{marginRight:-15}}>
               <Text
                 onPress={() => navigation.navigate('ForgetPassword')}
                 style={styles.forgotText}>
@@ -231,14 +229,12 @@ export const Login = props => {
             </View>
 
             <View style={styles.textBottom}>
-              <Text style={{color: 'black'}}>
-                Don't have an account yet? {''}
-              </Text>
+              <Text style={styles.dontHaveText}>Don't have an account yet? {""}</Text>
               <Text
                 style={styles.signupText}
                 onPress={() => navigation.navigate('Register')}>
                 Sign up
-              </Text>
+                </Text>
             </View>
           </View>
         </View>

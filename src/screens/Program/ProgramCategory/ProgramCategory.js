@@ -6,12 +6,12 @@ import {
   Image,
   FlatList,
   TouchableWithoutFeedback,
-  Button
 } from 'react-native';
-
+// import Images from '../../../assets/Images/Sample';
 import {styles} from './ProgramCategory.styles';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {TextInput} from 'react-native';
 import {getUser} from '../../../selectors/UserSelectors';
 import CustomSearch from '../../../components/customSearch';
 import CustomHeader from '../../../components/customHeader';
@@ -88,9 +88,9 @@ const ProgramCategory = props => {
     setSearchTerm(text);
   };
 
-  const filteredData = dataNew.filter(item => {  
-    return item.docs[0].category.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  // const filteredData = dataNew.filter(item => {
+  //   return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  // });
   const baseURL = 'http://54.190.192.105:9192/';
   const Item = ({title, image, passId}) => (
 
@@ -137,7 +137,7 @@ const ProgramCategory = props => {
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={ filteredData}
+          data={dataNew}
           renderItem={({item}) => 
           {
             console.log("item is--->",item.docs[0].category._id)

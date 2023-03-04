@@ -1,32 +1,23 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
+// import { TouchableWithoutFeedback } from 'react-native';
+// import {TouchableOpacity} from 'react-native';
 import {StyleSheet} from 'react-native';
-import {logout} from '../../actions/UserActions';
 import COLORS from '../../constants/color';
 import FONTS from '../../constants/fonts';
-import {useNavigation} from '@react-navigation/native';
 
-const logoutUser = () => {
-  dispatch(logout());
-};
-
-const CustomHeader = ({title, newtitle, leftIcon, rightIcon, textStyle, onPresstitle,onPress}) => {
-  const navigation = useNavigation();
+const CustomHeader = ({title, leftIcon, rightIcon, textStyle, onPress}) => {
   return (
     <View style={styles.containerView}>
       {leftIcon && <Image style={styles.topIcon} source={leftIcon} />}
+      {/* <View style={textStyle}> */}
       <View>
         <TouchableOpacity onPress={onPress}>
-        <Text style={styles.topText}>{title}</Text>
+          <Text style={styles.topText}>{title}</Text>
         </TouchableOpacity>
       </View>
-      <View>
-      <TouchableOpacity onPress={onPresstitle}>
-        <Text style={styles.topText}>{newtitle}</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity onPress={() => logoutUser()} style={{}}>
-      </TouchableOpacity>
+
+      {/* </View> */}
 
       {rightIcon && <Image style={styles.topIcon} source={rightIcon} />}
     </View>
@@ -38,16 +29,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
+    
   },
   topIcon: {height: 25, width: 25},
   topText: {
     fontSize: 14,
-    // fontWeight: 'bold',
-    marginLeft: '-35%',
-    // marginTop: 3,
+    // marginLeft: -10,
     color: COLORS.BLACK,
-    fontFamily: FONTS.BOLD,
-    marginLeft: -1,
+    fontFamily: FONTS.MEDIUM,
+    marginLeft: -130,
   },
 });
 

@@ -5,12 +5,12 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {RootNavigator} from './navigation';
 import {persistor, store} from './store';
 import SplashScreen from 'react-native-splash-screen'; //import SplashScreen
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator();
 function App() {
   useEffect(() => {
-    SplashScreen.hide(); //hides the splash screen on app load..
+    SplashScreen.hide(); //hides the splash screen on app load
   }, []);
+  console.log("new check git");
+console.log("merging");
   return (
     <Provider store={store}>
       <PersistGate onBeforeLift={hide} persistor={persistor}>

@@ -1,7 +1,8 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   SafeAreaView,
   Image,
   TouchableOpacity,
@@ -15,12 +16,14 @@ import {getUser} from '../../selectors/UserSelectors';
 import {Button} from '../../components/Button';
 // import {styles} from './MentorMenteeProfileScreen.styles';
 // import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
+import {Dropdown} from 'react-native-element-dropdown';
 import CustomDropdown from '../../components/customDropdown';
 import CustomHeader from '../../components/customHeader';
 import {FetchProfileData, updateMentor} from '../../actions/UserActions';
 import {styles} from './MentorMenteeProfileScreen.styles';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import DatePicker from 'react-native-date-picker';
 import {Alert, Modal, Pressable} from 'react-native';
 
 export const MentorMenteeProfile = props => {
@@ -51,24 +54,25 @@ export const MentorMenteeProfile = props => {
   const [DobError, setDobError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [profileClick,setProfileClick] = useState(false)
-  const [verifyImageClick,setVerifyImageClick] = useState(false)
-  const [verifyCerificateClick,setverifyCerificateClick] = useState(false)
+  const [profileClick, setProfileClick] = useState(false);
+  const [verifyImageClick, setVerifyImageClick] = useState(false);
+  const [verifyCerificateClick, setverifyCerificateClick] = useState(false);
 
-  const [responseprofile, setResponseProfile] = useState(null);
-  const [verifyresponse, setVerifyResponse] = useState(null);
-  const [skillresponse, setSkillResponse] = useState(null);  
-  
   const [response, setResponse] = useState(null);
-  
-  const [file, setFilePath] = useState('');
-  const [picture, setPicture] = useState({uri: 'file:///data/user/0/com.psalm/cache/rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg', name: 'rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg', type: 'image/jpeg'})
-  console.log('Response of Image', response);
-  console.log("Profile pictrure picked",responseprofile,profileClick)
-  console.log("Verify pictrure picked",verifyresponse,verifyImageClick)
-  console.log("Skill pictrure picked",skillresponse,verifyCerificateClick)
-  // console.log("Response of Image --->", response.assets[0].uri)
+  const [verifyresponse, setVerifyResponse] = useState(null);
+  const [skillresponse, setSkillResponse] = useState(null);
 
+  const [file, setFilePath] = useState('');
+  const [picture, setPicture] = useState({
+    uri: 'file:///data/user/0/com.psalm/cache/rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg',
+    name: 'rn_image_picker_lib_temp_adef412a-8380-4c9d-b8ad-60269f844f85.jpg',
+    type: 'image/jpeg',
+  });
+  console.log('Response of Image', response);
+  console.log('Profile pictrure picked', response, profileClick);
+  console.log('Verify pictrure picked', verifyresponse, verifyImageClick);
+  console.log('Skill pictrure picked', skillresponse, verifyCerificateClick);
+  // console.log("Response of Image --->", response.assets[0].uri)
 
   const actions = [
     {
@@ -152,73 +156,61 @@ export const MentorMenteeProfile = props => {
   };
 
   const handleSubmitButton = () => {
-
     let file = {
       uri: response?.assets[0]?.uri,
-      name: response.assets[0].fileName,
-      type:response.assets[0].type    
-    }
+      name: response?.assets[0]?.fileName,
+      type: response?.assets[0]?.type,
+    };
 
+    // let file1 = {
+    //   uri: verifyresponse?.assets[0]?.uri,
+    //   name: verifyresponse?.assets[0]?.fileName,
+    //   type: verifyresponse?.assets[0]?.type,
+    // };
 
-    
+    // let file2 = {
+    //   uri: skillresponse?.assets[0]?.uri,
+    //   name: skillresponse?.assets[0]?.fileName,
+    //   type: skillresponse?.assets[0]?.type,
+    // };
+
     let formdata = new FormData();
-    
+
     if (file != '') {
+      console.log('file');
       formdata.append('image', file);
     }
 
+    // if (file1 != '') {
+    //   console.log("file1")
+    //   formdata.append('validationid', file1);
+    // }
 
+    // if (file2 != '') {
+    //   console.log("file2")
+    //   formdata.append('skillsdata', file2);
+    // }
 
-    // formdata.append('firstName', firstName);
-    // formdata.append('_id', getuserData.response.data._id);
-    // formdata.append('lastName', lastName);
-    // formdata.append('phone', number);
-    // formdata.append('validationid','');
-    // formdata.append('status', 1);
-    // formdata.append('country_code', +91);
-    // formdata.append('gender', gender);
-    // formdata.append('bio',bio);
-    // formdata.append('city', city);
-    // formdata.append('postalcode', postalCode);
-    // formdata.append('address', address);
-    // formdata.append('skillsdata', language);
-    // formdata.append('date_of_birth', Dob);
-    // formdata.append('province', province);
+    formdata.append('firstName', firstName);
+    formdata.append('lastName', lastName);
+    formdata.append('phone', number);
+    formdata.append('status', 1);
+    formdata.append('country_code', +91);
+    formdata.append('gender', gender);
+    formdata.append('bio', bio);
+    formdata.append('city', city);
+    formdata.append('postalcode', postalCode);
+    formdata.append('address', address);
+    formdata.append('language', language);
+    formdata.append('date_of_birth', Dob);
+    formdata.append('province', province);
 
-   
-
-  
     formdata.append('_id', getuserData.response.data._id);
-    console.log('formdata._parts', formdata._parts)
+    console.log('formdata._parts', formdata._parts);
 
-
-
-
-    // let updateMentorOb = {
-    //   firstName: firstName,
-    //   _id: getuserData.response.data._id,
-    //   lastName: lastName,
-    //   status: 1,
-    //   phone: number,
-    //   validationid: '',
-    //   image: picture,
-    //   country_code: '+91',
-    //   gender: gender,
-    //   bio: bio,
-    //   city: city,
-    //   postalcode: postalCode,
-    //   address: address,
-    //   language: language,
-    //   skillsdata: '',
-    //   date_of_birth: Dob,
-    //   province: province,
-    // };
-
-    // console.log('updateMentorOb', updateMentorOb);
     console.log('formdataobject', formdata);
     dispatch(
-      // updateMentor(updateMentorOb, cb => {
-        updateMentor(formdata, cb => {
+      updateMentor(formdata, cb => {
         console.log('update mentor data got');
         console.log('update mentor CB ', cb);
         if (cb != false) {
@@ -301,6 +293,17 @@ export const MentorMenteeProfile = props => {
     let temp = Object.assign([], array);
     setArray(temp);
   };
+
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [selectedNewDate, setSelectedNewDate] = useState('');
+
+  const handleDateChange = newDate => {
+    setSelectedNewDate(newDate.toISOString().slice(0, 10));
+    setOpen(false);
+    setDate(newDate);
+  };
+
   const data = [
     {label: 'Male', value: 'Male'},
     {label: 'Female', value: 'Female'},
@@ -321,8 +324,14 @@ export const MentorMenteeProfile = props => {
     {label: 'Vietnamese', value: 'Vietnamese'},
     {label: 'Italian', value: 'Italian'},
   ];
-  console.log('Image Response', response);
   const [selectLang, setSelectLang] = useState(null);
+  const locale = 'en-GB';
+  const [inputDate, setInputDate] = React.useState(undefined);
+  const dateFormatter = new Intl.DateTimeFormat(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -332,7 +341,10 @@ export const MentorMenteeProfile = props => {
       />
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profileStyle}>
-          <TouchableOpacity onPress={() => {setModalVisible(true),setProfileClick(true)}}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true), setProfileClick(true);
+            }}>
             <Image
               style={styles.profileImage}
               source={require('../../assets/Icons/camera.png')}
@@ -353,37 +365,34 @@ export const MentorMenteeProfile = props => {
             }}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-               {profileClick?(<View style={styles.buttonContainer}>
+                <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     onPress={() => {
                       setModalVisible(false);
-                     
-                    }}>
-                 
-                  </TouchableOpacity>
+                    }}></TouchableOpacity>
+
                   <TouchableOpacity
                     onPress={() =>
                       launchImageLibrary(actions[1].options, setResponse)
-                    }
-                    >
+                    }>
                     <Text>Library</Text>
                   </TouchableOpacity>
-                </View>):(<View style={styles.buttonContainer}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setModalVisible(false);
-                     
-                    }}>
-                 
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      launchImageLibrary(actions[1].options, setResponse)
-                    }
-                    >
-                    <Text>Library</Text>
-                  </TouchableOpacity>
-                </View>)}
+
+                  {/* <TouchableOpacity
+                      onPress={() =>
+                        launchImageLibrary(actions[1].options, setVerifyResponse)
+                      }>
+                      <Text>Library</Text>
+                    </TouchableOpacity> */}
+
+                  {/* <TouchableOpacity
+                      onPress={() =>
+                        launchImageLibrary(actions[1].options, setSkillResponse)
+                      }>
+                      <Text>Library</Text>
+                    </TouchableOpacity> */}
+                </View>
+
                 <Pressable onPress={() => setModalVisible(!modalVisible)}>
                   <Text
                     style={{
@@ -444,6 +453,7 @@ export const MentorMenteeProfile = props => {
             marginTop: 15,
             justifyContent: 'flex-start',
             // marginBottom:10
+            marginRight: 10,
           }}>
           <View>
             <TextInput
@@ -470,7 +480,7 @@ export const MentorMenteeProfile = props => {
           />
         </View>
 
-        <TextInputComponent
+        {/* <TextInputComponent
           emailView={styles.textInputView}
           placeholder={'Date of Birth'}
           label={'Date of Birth'}
@@ -480,6 +490,25 @@ export const MentorMenteeProfile = props => {
           emailIcon={styles.image}
           source={require('../../assets/Icons/Calendar.png')}
           // onPress={showDatePicker}
+        /> */}
+        <TextInputComponent
+          emailView={styles.textInputView}
+          placeholder={'Date of Birth'}
+          label={'Date of Birth'}
+          value={selectedNewDate}
+          onFocus={() => setOpen(true)}
+          onPress={() => setOpen(true)}
+          emailIconView={styles.imageViewStyle}
+          emailIcon={styles.imageIconStyle}
+          source={require('../../assets/Icons/Calendar.png')}
+        />
+        <DatePicker
+          mode="date"
+          modal
+          open={open}
+          date={date}
+          onConfirm={handleDateChange}
+          onCancel={() => setOpen(false)}
         />
         <CustomDropdown
           data={data}
@@ -515,7 +544,9 @@ export const MentorMenteeProfile = props => {
           emailIconView={styles.imageView}
           emailIcon={styles.image}
           source={require('../../assets/Icons/Group.png')}
-          onPress={() => {setModalVisible(true),setVerifyImageClick(true)}}
+          onPress={() => {
+            setModalVisible(true), setVerifyImageClick(true);
+          }}
         />
 
         <CustomDropdown
@@ -619,7 +650,9 @@ export const MentorMenteeProfile = props => {
                     emailIconView={styles.imageView}
                     emailIcon={styles.image}
                     source={require('../../assets/Icons/Group.png')}
-                    onPress={() => {setModalVisible(true),setverifyCerificateClick(true)}}
+                    onPress={() => {
+                      setModalVisible(true), setverifyCerificateClick(true);
+                    }}
                   />
 
                   <View
@@ -627,28 +660,19 @@ export const MentorMenteeProfile = props => {
                       justifyContent: 'center',
                       alignContent: 'center',
                       alignSelf: 'flex-start',
-                      marginTop: 2,
+                      marginTop: 20,
                     }}>
                     {item.isAdded ? (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => RemoveMed(index)}>
-                        <Text style={{color: 'red', fontSize: 18}}>Remove</Text>
+                        <Text style={styles.remove}>Remove</Text>
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => AddMed(item, index)}>
-                        <Text
-                          style={{
-                            color: 'black',
-                            fontSize: 18,
-                            fontWeight: '400',
-                            marginTop: 20,
-                            marginBottom: 30,
-                          }}>
-                          Add More Skills
-                        </Text>
+                        <Text style={styles.addMore}>Add More Skills</Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -657,39 +681,16 @@ export const MentorMenteeProfile = props => {
             }}
           />
         </View>
-        <View style={{marginTop: 15}}>
-          <Button
-            style={{marginBottom: 15}}
-            onPress={() => {
-              // navigation.navigate('Add Bank Details');
-              console.log('button');
-            }}
-            title={'Add Bank Account '}
-          />
-          <Button
-            buttonStyle={{backgroundColor: '#fff', marginTop: 15}}
-            onPress={() => {
-              handleSubmitButton();
-              navigation.navigate('AddProgram');
-              console.log('button');
-            }}
-            textStyle={{color: '#FE4D4D'}}
-            title={'Save'}
-          />
-        </View>
-        {/* <View style={{marginTop:30}}>
         <Button
-          style={{marginBottom: 15, marginTop: 5}}
+          style={{marginBottom: 15, marginTop: 35}}
           onPress={() => {
-            handleSubmitButton();
-            // navigation.navigate('Add Bank Details');
+            navigation.navigate('Add Bank Details');
             console.log('button');
           }}
           title={'Add Bank Account'}
         />
         <Button
-          style={{marginBottom: 35, marginTop: 5}}
-          // style={styles.button}
+          style={styles.button}
           onPress={() => {
             handleSubmitButton();
             navigation.navigate('AddProgram');
@@ -698,8 +699,6 @@ export const MentorMenteeProfile = props => {
           textStyle={styles.buttonText}
           title={'Save'}
         />
-        </View> */}
-
         {/* </View> */}
       </KeyboardAwareScrollView>
     </SafeAreaView>

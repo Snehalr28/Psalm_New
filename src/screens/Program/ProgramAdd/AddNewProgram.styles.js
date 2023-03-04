@@ -1,4 +1,6 @@
 import {StyleSheet} from "react-native";
+import FONTS from "../../../constants/fonts"
+import COLORS from "../../../constants/color"
 export const styles = StyleSheet.create({
   container:{flex: 1, backgroundColor: 'white',  },
   headerView:{
@@ -11,9 +13,10 @@ export const styles = StyleSheet.create({
   },
   addText:{
     fontSize: 14,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginLeft: '-53%',
     marginTop: 3,
+    fontFamily:FONTS.BOLD
   },
   textInputMianView:{
     height: '12%',
@@ -22,13 +25,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     // marginBottom: 15,
-    borderColor: '#E5E4E2',
+    borderColor: COLORS.HIGHLIGHT,
   },
   imageStyle:{height: 45, width: 45, alignSelf: 'center'},
   imageIcon:{height: 25, width: 25},
   textInputView: {marginTop: 15},
+  styleInput:{fontFamily:FONTS.REGULAR},
   requiredView: {marginBottom: '-8%', marginTop: 5},
   requiredText: {marginLeft: '21%', color: '#FF0000'},
   textInputField: {borderWidth: 1, borderRadius: 10, borderColor: '#313131'},
@@ -52,5 +56,5 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'black',
   },
-  uploadText:{alignSelf: 'center', fontWeight: '400'},
+  uploadText:{alignSelf: 'center', fontFamily:FONTS.REGULAR, fontSize:14},
 });

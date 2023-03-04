@@ -394,14 +394,14 @@ export const updateMentor = (data, cb) => async dispatch => {
 };
 
 
-export const addMentor = data => async dispatch => {
+export const addMentor = (data,cb) => async dispatch => {
   console.log('add program response', data);
   dispatch(addMentorRequest());
   try {
     const addMentor = await UserController.addMentor(data);
     console.log('Add program final response', addMentor);
     cb(addMentor.response)
-    dispatch(add)
+    console.log("Add Program cb",addMentor.response)
     dispatch(addMentorSuccess(addMentor));
   } catch (error) {
     console.log("add program error", error);

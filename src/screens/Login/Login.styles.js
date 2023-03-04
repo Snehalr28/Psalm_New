@@ -3,6 +3,7 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
 import COLORS from "../../constants/color"
+import FONTS from "../../constants/fonts"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -120,10 +121,10 @@ export const styles = StyleSheet.create({
   loginImage: {marginTop: '20%', marginLeft: '10%', marginBottom: '10%'},
   textView: {flex: 2, marginLeft: '10%'},
   loginText: {
-    color: 'black',
-    fontWeight: 'bold',
+    color: COLORS.DARK_BLACK,
     fontSize: 30,
     marginBottom: 5,
+    fontFamily:FONTS.BOLD
   },
   emailView: {
     flex: 3,
@@ -135,10 +136,12 @@ export const styles = StyleSheet.create({
     // alignItems:"center"
   },
   welcome:{
-   color: COLORS.GREY
+   color: COLORS.DARK_GREY,
+   fontFamily:FONTS.REGULAR
   },
   textKeep:{
-    color: COLORS.GREY
+    color: COLORS.GREY,
+    fontFamily:FONTS.REGULAR
   },
   emailInput: {
     borderWidth: 1,
@@ -211,10 +214,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
-    color: 'black',
+    // color: 'black',
     fontWeight: '600',
     alignSelf: 'center',
     marginLeft: 3,
+    fontFamily:FONTS.BOLD,
+    color:COLORS.BLACK
   },
   buttonViewnew: {marginTop: 15, flexDirection: 'row'},
   mentorButton: {
@@ -271,8 +276,13 @@ export const styles = StyleSheet.create({
     color: COLORS.BLACK,
     paddingHorizontal: 6,
     fontSize: 10,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginTop:3,
     // marginLeft:"%"
+  fontFamily:FONTS.SEMI_BOLD
   },
+  middleView:{justifyContent: 'space-between', flexDirection: 'row'},
+  keepMeStyle:{marginLeft: 1, marginTop:2, },
+  keepMeText:{color:"#959593", fontSize:10, fontFamily:FONTS.REGULAR},
+  dontHaveText:{fontFamily: FONTS.REGULAR, color:COLORS.BLACK},
 });
