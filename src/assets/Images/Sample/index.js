@@ -26,12 +26,6 @@ const Images = {
     deserunt1: require("./deserunt1.png"),
 
     dashbordImage1: require("./currentImage1.png"),
-    dashbordImage2: require("./currentImage2.png"),
-
-    sessionImage1: require("./sessionTabImage1.png"),
-    sessionImage2: require("./sessionTabImage2.png"),
-    sessionMentor1: require("./sessionMentor1.png"),
-    sessionMentor2: require("./sessionMentor2.png"),
-
+    dashbordImage2: require("./currentImage2.png")
 };
 module.exports = Images;

@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-import FONTS from "../../constants/fonts"
-import COLORS from "../../constants/color";
 
 const CustomDropdown = ({
   data,
@@ -25,7 +23,7 @@ const CustomDropdown = ({
       selectedTextStyle={styles.selectText}
       iconStyle={styles.icon}
       data={data}
-      itemTextStyle={[itemTextStyle, styles.itemTextStyle]}
+      itemTextStyle={itemTextStyle}
       maxHeight={maxHeight}
       labelField={labelField}
       valueField={valueField}
@@ -48,11 +46,8 @@ export default CustomDropdown;
     color: '#313131',
     marginTop:20
   },
-  placeholderStyle:{marginLeft: 10, color: '#313131', fontFamily:FONTS.REGULAR},
-  selectText:{marginLeft: 10, color: 'black', fontFamily:FONTS.REGULAR},
+  placeholderStyle:{marginLeft: 10, color: '#313131'},
+  selectText:{marginLeft: 10, color: '#313131'},
   icon:{marginRight: 25},
   textStyle:{color:"black"},
-  itemTextStyle:{
-    fontFamily:FONTS.REGULAR
-  }
 })

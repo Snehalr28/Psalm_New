@@ -1,8 +1,5 @@
-import {lock, login, auth, backArrow, mail} from '../../assets';
-import {confirmOTP, resendOtp, forgotPassword} from '../../actions/UserActions';
-import {Button, TextField} from '../../components';
-import {NAVIGATION} from '../../constants';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
+import {confirmOTP, resendOtp} from '../../actions/UserActions';
+import {Button} from '../../components';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   CodeField,

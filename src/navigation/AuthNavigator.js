@@ -13,14 +13,15 @@ import TermsConditions from '../screens/TermsConditions/TermsConditions';
 
 const Stack = createNativeStackNavigator();
 
+
 export function AuthNavigator() {
   return (
     <Stack.Navigator>
-       {/* <Stack.Screen
+       <Stack.Screen
         component={OnboardingS}
         name="Onboarding"
         options={{headerShown: false}}
-      /> */}
+      />
      
       <Stack.Screen
         component={Login}

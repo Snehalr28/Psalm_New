@@ -8,30 +8,35 @@ import {
   ActivityIndicator,
 } from 'react-native';
 // import { typography } from '@/theme';
-import FONTS from "../constants/fonts"
-import COLORS from "../constants/color"
 
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:COLORS.PRIMARY,
+    // borderRadius: 5,
+    // borderWidth: 0,
+    // padding: 10,
+    // width: '100%',
+
+    justifyContent: 'center',
           alignSelf: 'center',
+          borderWidth: 1,
           height: 45,
           width: '100%',
           borderRadius: 10,
-          borderColor: COLORS.PRIMARY,
+          backgroundColor: '#FE4D4D',
+          borderColor: '#FE4D4D',
   },
   textStyle:{
+      // alignSelf: 'center',
+      color: 'white',
+      fontWeight: '700',
       fontSize: 16,
-      fontFamily:FONTS.BOLD,
-      color:COLORS.WHITE
-
   }
   
 });
 
-export function Button({ style, textStyle, title,isLoading, loaderColor, ...rest }) {
+export function Button({ style, textStyle, title,isLoading, buttonStyle, loaderColor, ...rest }) {
   const { colors } = useTheme();
   return (
     // <TouchableOpacity style={[styles.button, style]} {...rest}>
@@ -41,7 +46,7 @@ export function Button({ style, textStyle, title,isLoading, loaderColor, ...rest
     //     <Text style={[{ color: colors.text }, textStyle]}>{title}</Text>
     //   )}
     // </TouchableOpacity>
-    <TouchableOpacity style={[styles.button, style]} {...rest}>
+    <TouchableOpacity style={[styles.button, buttonStyle]} {...rest}>
       <Text style={[{ color: colors.text }, styles.textStyle, textStyle]}>{title}</Text>
   </TouchableOpacity>
   );

@@ -4,7 +4,6 @@ import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
 import COLORS from "../../constants/color"
-import FONTS from "../../constants/fonts"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -12,7 +11,7 @@ export const styles = StyleSheet.create({
     marginTop: RFValue(3),
   },
   button: {
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: '#FE4D4D',
     height: RFValue(45),
     width: '100%',
     marginTop: RFValue(20),
@@ -52,7 +51,7 @@ export const styles = StyleSheet.create({
   },
   inputLbl: {
     marginLeft: RFValue(10),
-    color: COLORS.PRIMARY,
+    color: '#FE4D4D',
   },
   inputStyles: {
     height: RFValue(50),
@@ -64,7 +63,7 @@ export const styles = StyleSheet.create({
   },
   forgotpass: {
     alignSelf: 'flex-end',
-    color: COLORS.PRIMARY,
+    color: '#FE4D4D',
     marginBottom: 10,
     fontFamily: globalFonts.regular,
     fontSize: RFValue(16),
@@ -163,11 +162,11 @@ export const styles = StyleSheet.create({
   signUpTextView: {flex: 2, marginLeft: '10%'},
   signupText: {
     color: COLORS.BLACK,
+    fontWeight: 'bold',
     fontSize: 30,
     marginBottom: 5,
-    fontFamily:FONTS.BOLD
   },
-  text: {color: COLORS.DARK_GREY, fontSize:13,  fontFamily:FONTS.REGULAR},
+  text: {color: COLORS.GREY, fontSize:13},
   buttonView: {marginTop: 15, flexDirection: 'row'},
   mentorButton: {
     backgroundColor: 'black',
@@ -177,14 +176,14 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
   },
   mentorButton1: {
-    backgroundColor: COLORS.WHITE_SHADE,
+    backgroundColor: '#DDDDDD',
                   height: 35,
                   width: '25%',
                   borderBottomLeftRadius: 20,
                   borderTopLeftRadius: 20,
   },
   menteeButton: {
-    backgroundColor: COLORS.WHITE_SHADE,
+    backgroundColor: '#DDDDDD',
     height: 35,
     width: '25%',
     borderTopRightRadius: 20,
@@ -197,10 +196,10 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     borderBottomRightRadius: 20,
   },
-  menteeText: {color: COLORS.BLACK, alignSelf: 'center', padding: 5, fontFamily:FONTS.SEMI_BOLD},
-  menteeText1: {color: COLORS.WHITE, alignSelf: 'center', padding: 5, fontFamily:FONTS.SEMI_BOLD},
-  mentorText: {color: COLORS.WHITE, alignSelf: 'center', padding: 5, fontFamily:FONTS.SEMI_BOLD},
-  mentorText1: {alignSelf: 'center', padding: 5, fontFamily:FONTS.SEMI_BOLD},
+  menteeText: {color: 'black', alignSelf: 'center', padding: 5},
+  menteeText1: {color: 'white', alignSelf: 'center', padding: 5},
+  mentorText: {color: 'white', alignSelf: 'center', padding: 5},
+  mentorText1: {color: 'black', alignSelf: 'center', padding: 5},
   referalView: {
     flex: 3,
     marginTop: '7%',
@@ -231,9 +230,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
   },
   image: {height: 20, width: 20, marginTop: 10},
-  bottomText: {color: COLORS.GREY, marginTop: '8%', fontFamily:FONTS.REGULAR},
-  termsStyle:{fontFamily:FONTS.SEMI_BOLD, color:COLORS.BLACK},
-  andStyle:{ marginLeft: 2, color: COLORS.GREY, fontFamily:FONTS.REGULAR},
+  bottomText: {color: COLORS.GREY, marginTop: '8%'},
   ContinueButton: {
     flex: 4,
     justifyContent: 'center',
@@ -242,7 +239,7 @@ export const styles = StyleSheet.create({
     marginBottom: 35,
     marginLeft: '10%',
     marginRight: '10%',
-    backgroundColor: COLORS.PRIMARY,
+    backgroundColor: '#FE4D4D',
     height: 50,
     width: '80%',
     borderRadius: 10,
@@ -254,7 +251,6 @@ export const styles = StyleSheet.create({
     marginTop: '-5%',
     marginBottom: 20,
   },
-  joinText: {fontFamily: FONTS.REGULAR, color:COLORS.BLACK},
-  login: { fontFamily:FONTS.BOLD,
-    color:COLORS.BLACK},
+  joinText: {color: 'black'},
+  login: {color: 'black', fontWeight: '600'},
 });

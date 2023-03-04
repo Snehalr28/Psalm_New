@@ -2,8 +2,6 @@ import {StyleSheet} from 'react-native';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 // import { globalFonts } from '../../theme/globalFonts';
 import {globalColors} from '../../theme/globalColors';
-import FONTS from "../../constants/fonts"
-import COLORS from "../../constants/color"
 export const styles = StyleSheet.create({
   icons: {
     height: RFValue(15),
@@ -140,16 +138,14 @@ export const styles = StyleSheet.create({
     marginLeft: '10%',
     marginBottom: '5%',
   },
-  resetText: {color: COLORS.DARK_BLACK, fontFamily:FONTS.BOLD, fontSize: 36, },
+  resetText: {fontWeight: 'bold', fontSize: 36, color: 'black'},
   passwordText: {
+    fontWeight: 'bold',
     fontSize: 36,
+    color: 'black',
     marginTop: -10,
-    color: COLORS.DARK_BLACK,
-    marginBottom: 5,
-    fontFamily:FONTS.BOLD
   },
-  newPasswordText: {   color: COLORS.DARK_GREY,
-    fontFamily:FONTS.REGULAR, marginTop: 2},
+  newPasswordText: {color: 'grey', marginTop: 2},
   prePasswordText: {color: 'black', marginTop: 2},
   inputfieldView: {
     flex: 3,

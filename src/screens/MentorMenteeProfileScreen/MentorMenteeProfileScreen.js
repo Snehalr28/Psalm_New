@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   Image,
   TouchableOpacity,
-  FlatList,Alert, Modal, Pressable
+  FlatList,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native-paper';
@@ -16,14 +15,14 @@ import {getUser} from '../../selectors/UserSelectors';
 import {Button} from '../../components/Button';
 // import {styles} from './MentorMenteeProfileScreen.styles';
 // import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
-import {Dropdown} from 'react-native-element-dropdown';
 import CustomDropdown from '../../components/customDropdown';
 import CustomHeader from '../../components/customHeader';
 import {FetchProfileData, updateMentor} from '../../actions/UserActions';
 import {styles} from './MentorMenteeProfileScreen.styles';
 import {TextInputComponent} from '../../components/textInputComponent/TextInputComponent';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import DatePicker from 'react-native-date-picker';
+import {Alert, Modal, Pressable} from 'react-native';
+
 export const MentorMenteeProfile = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -302,18 +301,6 @@ export const MentorMenteeProfile = props => {
     let temp = Object.assign([], array);
     setArray(temp);
   };
-
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [selectedNewDate, setSelectedNewDate] = useState('');
-
-
-  const handleDateChange = newDate => {
-    setSelectedNewDate(newDate.toISOString().slice(0, 10));
-    setOpen(false);
-    setDate(newDate);
-  };
-
   const data = [
     {label: 'Male', value: 'Male'},
     {label: 'Female', value: 'Female'},
@@ -334,14 +321,8 @@ export const MentorMenteeProfile = props => {
     {label: 'Vietnamese', value: 'Vietnamese'},
     {label: 'Italian', value: 'Italian'},
   ];
+  console.log('Image Response', response);
   const [selectLang, setSelectLang] = useState(null);
-  const locale = 'en-GB';
-  const [inputDate, setInputDate] = React.useState(undefined);
-  const dateFormatter = new Intl.DateTimeFormat(undefined, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -463,7 +444,6 @@ export const MentorMenteeProfile = props => {
             marginTop: 15,
             justifyContent: 'flex-start',
             // marginBottom:10
-            marginRight: 10,
           }}>
           <View>
             <TextInput
@@ -647,19 +627,28 @@ export const MentorMenteeProfile = props => {
                       justifyContent: 'center',
                       alignContent: 'center',
                       alignSelf: 'flex-start',
-                      marginTop: 20,
+                      marginTop: 2,
                     }}>
                     {item.isAdded ? (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => RemoveMed(index)}>
-                        <Text style={styles.remove}>Remove</Text>
+                        <Text style={{color: 'red', fontSize: 18}}>Remove</Text>
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
                         style={{}}
                         onPress={() => AddMed(item, index)}>
-                        <Text style={styles.addMore}>Add More Skills</Text>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 18,
+                            fontWeight: '400',
+                            marginTop: 20,
+                            marginBottom: 30,
+                          }}>
+                          Add More Skills
+                        </Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -668,16 +657,39 @@ export const MentorMenteeProfile = props => {
             }}
           />
         </View>
+        <View style={{marginTop: 15}}>
+          <Button
+            style={{marginBottom: 15}}
+            onPress={() => {
+              // navigation.navigate('Add Bank Details');
+              console.log('button');
+            }}
+            title={'Add Bank Account '}
+          />
+          <Button
+            buttonStyle={{backgroundColor: '#fff', marginTop: 15}}
+            onPress={() => {
+              handleSubmitButton();
+              navigation.navigate('AddProgram');
+              console.log('button');
+            }}
+            textStyle={{color: '#FE4D4D'}}
+            title={'Save'}
+          />
+        </View>
+        {/* <View style={{marginTop:30}}>
         <Button
-          style={{marginBottom: 15, marginTop: 35}}
+          style={{marginBottom: 15, marginTop: 5}}
           onPress={() => {
-            navigation.navigate('Add Bank Details');
+            handleSubmitButton();
+            // navigation.navigate('Add Bank Details');
             console.log('button');
           }}
           title={'Add Bank Account'}
         />
         <Button
-          style={styles.button}
+          style={{marginBottom: 35, marginTop: 5}}
+          // style={styles.button}
           onPress={() => {
             handleSubmitButton();
             navigation.navigate('AddProgram');
@@ -686,6 +698,8 @@ export const MentorMenteeProfile = props => {
           textStyle={styles.buttonText}
           title={'Save'}
         />
+        </View> */}
+
         {/* </View> */}
       </KeyboardAwareScrollView>
     </SafeAreaView>

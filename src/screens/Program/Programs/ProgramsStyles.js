@@ -1,10 +1,8 @@
 import {StyleSheet} from 'react-native';
-import FONTS from '../../../constants/fonts';
-import COLORS from '../../../constants/color';
 export const styles = StyleSheet.create({
   mainContainer: {
     borderWidth: 1,
-    borderColor: COLORS.HIGHLIGHT,
+    borderColor: '#E5E4E2',
     borderRadius: 10,
     marginTop: 20,
     // marginBottom:10
@@ -13,7 +11,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     padding: 25,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: '#fff',
   },
   topContainer: {
     flexDirection: 'row',
@@ -25,26 +23,13 @@ export const styles = StyleSheet.create({
   },
   programText: {
     fontSize: 14,
-    // fontWeight: 'bold',
+    fontWeight: 'bold',
     marginLeft: '-63%',
     marginTop: 3,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.BOLD,
   },
   topBack: {height: 20, width: 20, marginTop: 4},
-  descriptionText: {
-    fontSize: 14,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.REGULAR,
-  },
-  topText: {
-    fontSize: 16,
-    // fontWeight: '500',
-    // color: '#313131',
-    marginBottom: 10,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.MEDIUM,
-  },
+  descriptionText: {fontSize: 14, fontWeight: '400', color: '#313131'},
+
   textViewStyel: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -55,8 +40,8 @@ export const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderRadius: 10,
-    // backgroundColor: '#f8f9fa',
-    borderColor: COLORS.HIGHLIGHT,
+    backgroundColor: '#f8f9fa',
+    borderColor: '#E8E8E8',
   },
   Button: {
     justifyContent: 'center',
@@ -64,27 +49,22 @@ export const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: COLORS.PRIMARY,
-    borderColor: COLORS.PRIMARY,
+    backgroundColor: '#FE4D4D',
+    borderColor: '#FE4D4D',
   },
   nextImage: {marginLeft: '45%', marginTop: 5},
   nextButtonText: {
     marginLeft: 10,
-    // fontWeight: '400',
+    fontWeight: '400',
     fontSize: 16,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.REGULAR
+    color: '#313131',
   },
   nextButtonView: {flexDirection: 'row', marginTop: 8, marginLeft: 15},
   ButtonView: {justifyContent: 'center'},
   textContainer: {flexDirection: 'column', marginTop: 10},
-  textMode: {fontSize: 12, fontWeight: '400', color: COLORS.BLACK,  fontFamily: FONTS.REGULAR,},
-  textOnline: {fontSize: 14, fontWeight: '500', color: COLORS.BLACK,  fontFamily: FONTS.MEDIUM,},
-  timeTextStyle: {
-    fontSize: 14,
-    fontFamily: FONTS.MEDIUM,
-    color: COLORS.BLACK,
-  },
+  textMode: {fontSize: 12, fontWeight: '400', color: '#313131'},
+  textOnline: {fontSize: 14, fontWeight: '500', color: '#313131'},
+  timeTextStyle: {fontSize: 14, fontWeight: '500', color: '#313131'},
   viewAvailablity: {flexDirection: 'column', marginTop: 10, marginRight: '40%'},
   container: {
     flex: 1,
@@ -101,28 +81,9 @@ export const styles = StyleSheet.create({
   sequence: {
     // paddingHorizontal: 16,
     fontSize: 16,
-    // fontWeight: '500',
-    color: COLORS.BLACK,
-    fontFamily: FONTS.MEDIUM,
+    fontWeight: '500',
+    color: '#313131',
   },
-  tabsContainerStyle: {
-    borderColor: COLORS.BLACK,
-  },
-  tabStyle: {
-    marginRight: '50%',
-    borderColor: 'white',
-  },
-  activeTabStyle: {
-    backgroundColor: 'white',
-    marginTop: 2,
-    borderColor: 'black',
-    borderTopColor: 'white',
-    borderEndColor: 'white',
-    borderStartColor: 'white',
-  },
-  tabTextStyle: {color: COLORS.BLACK, fontFamily: FONTS.REGULAR, fontSize: 14},
-  activeTabTextStyle: {color: COLORS.BLACK,  fontFamily: FONTS.BOLD, },
-  lineView: {height: 1, backgroundColor: COLORS.HIGHLIGHT},
   image: {
     width: 80,
     height: 80,
@@ -144,50 +105,25 @@ export const styles = StyleSheet.create({
   },
   sessionDuration: {
     fontSize: 12,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.REGULAR,
+    color: '#313131',
+    fontWeight: '400',
+    // marginLeft:10
   },
   date: {
     fontSize: 12,
-    color: COLORS.BLACK,
-    // fontWeight: '400',
+    color: '#313131',
+    fontWeight: '400',
     marginLeft: 20,
-    fontFamily: FONTS.REGULAR,
   },
   scheduledTime: {
     fontSize: 12,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.REGULAR,
-  },
-  incomingSession: {
-    marginLeft: 5,
-    // fontWeight: '500',
-    fontSize: 14,
-    color: COLORS.BLACK,
-    fontFamily: FONTS.SEMI_BOLD,
-  },
-  incomingTime: {
-    marginLeft: '4%',
-    color: COLORS.BLACK,
-    fontFamily: FONTS.SEMI_BOLD,
-    fontSize: 14,
-  },
-  program: {marginBottom: 5, color: COLORS.BLACK, fontFamily: FONTS.REGULAR},
-  incomingDate: {
-    marginLeft: '19%',
-    // fontWeight: '500',
-    color: COLORS.BLACK,
-    fontFamily: FONTS.MEDIUM,
-    fontSize: 14,
+    color: '#313131',
+    fontWeight: '400',
   },
   textStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 10,
     marginRight: 20,
-  },
-  programDescription: {color: COLORS.BLACK, 
-    fontFamily: FONTS.REGULAR,
-    fontSize:14
   },
 });

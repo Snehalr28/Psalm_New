@@ -343,7 +343,7 @@ export const Register = props => {
                 marginBottom: '6%',
               }}>
               <TextInputComponent
-                emailView={{width: 225}}
+                emailView={{width: 245}}
                 placeholder={'Mobile No.'}
                 label={'Mobile Number'}
                 onChangeText={numberChange}
@@ -354,34 +354,48 @@ export const Register = props => {
                 TextMessage={'Mobile no. is required'}
                 condtionText={{color: 'red'}}
                 checkCondtion={mobileNumberError}
-                emailIconView={[styles.imageView, {marginRight: '15%',}]}
-                emailIcon={styles.image}
+                emailIconView={[styles.imageView, {marginRight: '15%'}]}
+                emailIcon={[styles.image, {height: 15, width: 15,marginTop: 13,}]}
                 source={require('../../assets/Icons/call.png')}
               />
             </View>
           </View>
 
-          <TextInputComponent
-            emailView={styles.inputTextView}
-            placeholder={'Password'}
-            label={'Password'}
-            onChangeText={passwordChange}
-            value={password}
-            empty={empty}
-            secureTextEntry={show}
-            TextMessageAlert={'Password must be at least 6 characters'}
-            TextMessage={'Password is required'}
-            condtionText={{color: 'red'}}
-            checkCondtion={passwordError}
-            error={empty}
-            emailIconView={styles.imageView}
-            emailIcon={styles.image}
-            source={require('../../assets/assets/eyeicon.png')}
-            eyeImageView={props.eyeImageView}
-          />
-
-
-          
+          <View>
+            <TextInputComponent
+              emailView={styles.inputTextView}
+              placeholder={'Password'}
+              label={'Password'}
+              onChangeText={passwordChange}
+              value={password}
+              empty={empty}
+              secureTextEntry={show}
+              TextMessageAlert={'Password must be at least 6 characters'}
+              TextMessage={'Password is required'}
+              condtionText={{color: 'red'}}
+              checkCondtion={passwordError}
+              error={empty}
+              // emailIconView={styles.imageView}
+              // emailIcon={styles.image}
+              // source={require('../../assets/assets/eyeicon.png')}
+              // eyeImageView={props.eyeImageView}
+            />
+            <View style={[styles.imageView, {marginLeft: '13%'}]}>
+              <TouchableOpacity onPress={() => setShow(!show)}>
+                {show ? (
+                  <Image
+                    style={styles.image}
+                    source={require('../../assets/assets/eyeicon.png')}
+                  />
+                ) : (
+                  <Image
+                    style={styles.image}
+                    source={require('../../assets/assets/eye.png')}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <View style={styles.inputTextView}>
             <Text style={styles.bottomText}>
@@ -390,11 +404,11 @@ export const Register = props => {
             <View style={{flexDirection: 'row'}}>
               <Text
                 onPress={() => navigation.navigate('Terms & Conditions')}
-                style={styles.termsStyle}>
-                Terms & Conditions 
+                style={{color: 'black'}}>
+                Terms & Conditions
               </Text>
-              <Text style={styles.andStyle}> and </Text>
-              <Text style={styles.termsStyle}>
+              <Text style={{color: 'grey', marginLeft: 2}}>and</Text>
+              <Text style={{color: 'black', marginLeft: 2}}>
                 Privacy Policy
               </Text>
             </View>
@@ -415,7 +429,7 @@ export const Register = props => {
             <Text
               onPress={() => navigation.navigate('Login')}
               style={styles.login}>
-              Log in
+              Login
             </Text>
           </View>
         </View>

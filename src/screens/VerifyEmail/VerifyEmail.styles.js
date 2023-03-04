@@ -2,8 +2,6 @@ import {StyleSheet} from 'react-native';
 import {RFPercentage, RFValue} from 'react-native-responsive-fontsize';
 import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
-import FONTS from "../../constants/fonts"
-import COLORS from "../../constants/color"
 
 export const styles = StyleSheet.create({
   icons: {
@@ -145,16 +143,13 @@ export const styles = StyleSheet.create({
     marginLeft: '10%',
     marginBottom: '5%',
   },
-  otpText: { fontSize: 36,     fontFamily:FONTS.BOLD, 
-    color:COLORS.DARK_BLACK},
-  otpDigitText: {marginTop: 2,  color: COLORS.BLACK,
-    fontFamily:FONTS.REGULAR},
-  yourEmailText: {fontFamily:FONTS.SEMI_BOLD, marginTop: 2, color:COLORS.BLACK},
+  otpText: {fontWeight: 'bold', fontSize: 36, color: 'black'},
+  otpDigitText: {color: 'black', marginTop: 2},
+  yourEmailText: {color: 'black', marginTop: 2},
   codeFieldView: {marginRight:"10%"},
   bottomTextView: {flexDirection:"row", marginTop:20},
-  textBottom: {fontFamily: FONTS.REGULAR, color:COLORS.BLACK},
-  resendText:{    fontFamily:FONTS.BOLD,
-    color:COLORS.BLACK},
+  textBottom: {color:"black"},
+  resendText:{color:"black", fontWeight:"800"},
   buttonView:  {
     // flex: 4,
     // justifyContent: 'center',

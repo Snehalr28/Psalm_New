@@ -4,30 +4,27 @@ import {globalColors} from "../../theme/globalColors"
 
 // import {globalColors} from '../../theme/globalColors';
 import {globalFonts} from '../../theme/globalFonts';
-import FONTS from "../../../constants/fonts"
-import COLORS from "../../../constants/color"
+
 
 export const styles = StyleSheet.create({
     container: {flex: 1, backgroundColor: 'white'},
     textInputView: {marginTop: 10},
     mainView: {marginLeft: 20, marginTop: 20, marginRight: 20},
     bankDetailText: {
-      // color: 'black',
-      // fontWeight: '400',
+      color: 'black',
+      fontWeight: '400',
       fontSize: 18,
       marginBottom: 30,
-      fontFamily:FONTS.REGULAR,
-      color: COLORS.BLACK
     },
     belongText: {
-      fontFamily:FONTS.SEMI_BOLD,
-      color: COLORS.BLACK,
+      color: 'black',
+      fontWeight: '500',
       fontSize: 20,
       marginBottom: 10,
     },
     cameronText: {
-      fontFamily:FONTS.BOLD,
-      color: COLORS.BLACK,
+      color: 'black',
+      fontWeight: '500',
       fontSize: 16,
       marginBottom: 30,
     },
