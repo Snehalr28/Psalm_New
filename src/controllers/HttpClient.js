@@ -1,11 +1,8 @@
 import axios from 'axios';
-import { Config } from 'react-native-config';
-import { strings } from '../localization';
+import {Config} from 'react-native-config';
+import {strings} from '../localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
-import {NAVIGATION} from '@/constants/navigation'
-import { logout } from '../actions/UserActions';
-import { useDispatch } from 'react-redux';
+
 const client = axios.create({
   // baseURL: 'http://54.190.192.105:9121/',
   baseURL: 'http://54.190.192.105:9192/',
@@ -14,18 +11,23 @@ const client = axios.create({
   },
 });
 
-
 // console.log(window.routeNavigation,'chhhhhh')
 client.interceptors.response.use(
   // (response) => response.data,
   // (response) => { console.log('responseßDetails<<<',response); return response.data },
-  (response) => {
+  response => {
     // console.log(response?.data?.code,'00datacheck>>')
-    if (response?.data?.code == 400 || response?.data?.code == 401 || response?.data?.code == 403 ){
+    if (
+      response?.data?.code == 400 ||
+      response?.data?.code == 401 ||
+      response?.data?.code == 403
+    ) {
       console.log('useDispatchNav(logout())');
       // window.useDispatchNav(logout());
-  } return response.data},
-  (error) => {
+    }
+    return response.data;
+  },
+  error => {
     if (error.response) {
       return Promise.reject(error.response.data);
     } else if (error.request) {
@@ -33,22 +35,25 @@ client.interceptors.response.use(
     } else {
       return Promise.reject(error);
     }
-  }
+  },
 );
 
-
-
-const setAuthorization = async (token) => {
-  console.log('token<<<<setaut',token)
+export const setAuthorization = async token => {
+  console.log('token<<<<setaut', token);
   // debugger;
   let newToken = token;
   client.defaults.headers.common.authorization = newToken;
-  console.log('New Token<<<<',newToken)
+  console.log('New Token<<<<', newToken);
 };
-const clearAuthorization  = async () => {
-   await AsyncStorage.removeItem('userToken');
+
+const clearAuthorization = async () => {
+  await AsyncStorage.removeItem('userToken');
   delete client.defaults.headers.common.authorization;
 };
-export const HttpClient = { ...client, setAuthorization, clearAuthorization, };
-console.log("HTTP client response",HttpClient)
-
+const setContentType = async multipart => {
+  client.defaults.headers.post['Content-Type'] = multipart
+    ? 'multipart/form-data'
+    : 'application/json';
+};
+export const HttpClient = {...client, setAuthorization, clearAuthorization};
+console.log('HTTP client response', HttpClient);

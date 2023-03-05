@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -21,13 +21,16 @@ import Images from '../../assets/Images/Sample/index';
 import CustomSearch from '../../components/customSearch';
 import CustomHeader from '../../components/customHeader';
 import CustomSegmentedTab from '../../components/segmentedTab/';
+import {useSelector} from 'react-redux';
+import {getUser} from '../../selectors/UserSelectors';
+import { setAuthorization } from '../../controllers/HttpClient';
 
 export const Dashboard = props => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
   const {colors} = useTheme();
-  // const user = useSelector(getUser);
+  const user = useSelector(getUser);
 
   const logoutUser = () => {
     dispatch(logout());
@@ -48,7 +51,10 @@ export const Dashboard = props => {
   const handleCustomIndexSelect = index => {
     setCustomStyleIndex(index);
   };
-
+  useEffect(() => {
+    console.log('user.response.token', user.response.data.token);
+    setAuthorization(user.response.data.token);
+  }, []);
   const data = [
     {
       id: 0,

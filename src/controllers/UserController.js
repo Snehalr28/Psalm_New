@@ -21,7 +21,6 @@ import {
 import {Alert} from 'react-native';
 import {getUser} from '../../selectors/UserSelectors';
 import {useSelector, useDispatch} from 'react-redux';
-import { HttpClientMultipart } from './HttpClientMultipart';
 
 export class UserController {
   static login(data) {
@@ -165,7 +164,7 @@ export class UserController {
   }
   static updateMentor(data) {
     return new Promise((resolve, reject) => {
-      HttpClientMultipart.put(updateMentorUrl, data)
+      HttpClient.put(updateMentorUrl, data)
         .then(response => {
           console.log('Update Mentor/add program Response', response);
           if (response.status == 'Success') {
