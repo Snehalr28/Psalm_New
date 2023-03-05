@@ -51,7 +51,7 @@ const clearAuthorization = async () => {
   delete client.defaults.headers.common.authorization;
 };
 export const setContentType = async multipart => {
-  client.defaults.headers.post['Content-Type'] = multipart
+  client.defaults.headers['Content-Type'] = multipart
     ? 'multipart/form-data'
     : 'application/json';
 };

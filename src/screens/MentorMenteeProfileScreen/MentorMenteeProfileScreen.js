@@ -25,6 +25,8 @@ import {TextInputComponent} from '../../components/textInputComponent/TextInputC
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DatePicker from 'react-native-date-picker';
 import {Alert, Modal, Pressable} from 'react-native';
+import {setContentType} from '../../controllers/HttpClient';
+import { baseURL } from '../../controllers/ApiList';
 
 export const MentorMenteeProfile = props => {
   const [firstName, setFirstName] = useState('');
@@ -59,7 +61,10 @@ export const MentorMenteeProfile = props => {
   const [verifyCerificateClick, setverifyCerificateClick] = useState(false);
 
   const [response, setResponse] = useState(null);
+  const [profileUri, setProfileUri] = useState(null);
   const [verifyresponse, setVerifyResponse] = useState(null);
+  const [verifyName, setVerifyName] = useState(null);
+
   const [skillresponse, setSkillResponse] = useState(null);
 
   const [file, setFilePath] = useState('');
@@ -147,7 +152,7 @@ export const MentorMenteeProfile = props => {
             setPostalCode(cb.data.postalcode);
             setCountry(cb.data.country);
             setSkillName(cb.data.skillName);
-
+            setProfileUri(baseURL + cb.data.image);
             // navigation.navigate('ProgramList');
           }
         }
@@ -156,11 +161,13 @@ export const MentorMenteeProfile = props => {
   };
 
   const handleSubmitButton = () => {
-    let file = {
-      uri: response?.assets[0]?.uri,
-      name: response?.assets[0]?.fileName,
-      type: response?.assets[0]?.type,
-    };
+    let file = response
+      ? {
+          uri: response?.assets[0]?.uri,
+          name: response?.assets[0]?.fileName,
+          type: response?.assets[0]?.type,
+        }
+      : null;
 
     // let file1 = {
     //   uri: verifyresponse?.assets[0]?.uri,
@@ -168,28 +175,23 @@ export const MentorMenteeProfile = props => {
     //   type: verifyresponse?.assets[0]?.type,
     // };
 
-    // let file2 = {
-    //   uri: skillresponse?.assets[0]?.uri,
-    //   name: skillresponse?.assets[0]?.fileName,
-    //   type: skillresponse?.assets[0]?.type,
-    // };
+    let file2 = verifyresponse
+      ? {
+          uri: verifyresponse?.assets[0]?.uri,
+          name: verifyresponse?.assets[0]?.fileName,
+          type: verifyresponse?.assets[0]?.type
+        }
+      : null;
 
     let formdata = new FormData();
 
-    if (file != '') {
-      console.log('file');
+    if (file != null) {
       formdata.append('image', file);
     }
 
-    // if (file1 != '') {
-    //   console.log("file1")
-    //   formdata.append('validationid', file1);
-    // }
-
-    // if (file2 != '') {
-    //   console.log("file2")
-    //   formdata.append('skillsdata', file2);
-    // }
+    if (file2 != null) {
+      formdata.append('validationid', file2);
+    }
 
     formdata.append('firstName', firstName);
     formdata.append('lastName', lastName);
@@ -208,7 +210,7 @@ export const MentorMenteeProfile = props => {
     formdata.append('_id', getuserData.response.data._id);
     console.log('formdata._parts', formdata._parts);
 
-    console.log('formdataobject', formdata);
+    console.log('formdataobject', JSON.stringify(formdata));
     dispatch(
       updateMentor(formdata, cb => {
         console.log('update mentor data got');
@@ -343,11 +345,17 @@ export const MentorMenteeProfile = props => {
         <View style={styles.profileStyle}>
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(true), setProfileClick(true);
+              setModalVisible(true);
+              setVerifyImageClick(false);
+              setProfileClick(true);
             }}>
             <Image
               style={styles.profileImage}
-              source={require('../../assets/Icons/camera.png')}
+              source={
+                profileUri
+                  ? {uri:profileUri}
+                  : require('../../assets/Icons/camera.png')
+              }
             />
           </TouchableOpacity>
         </View>
@@ -373,7 +381,18 @@ export const MentorMenteeProfile = props => {
 
                   <TouchableOpacity
                     onPress={() =>
-                      launchImageLibrary(actions[1].options, setResponse)
+                      launchImageLibrary(actions[1].options, response => {
+                        if (verifyImageClick) {
+                          console.log('verification modal')
+                          setVerifyResponse(response);
+                          setVerifyName(response?.assets[0]?.fileName);
+                        } else if (profileClick) {
+                          console.log('profile modal')
+                          setResponse(response);
+                          setProfileUri(response?.assets[0]?.uri);
+                        }
+                        setModalVisible(false);
+                      })
                     }>
                     <Text>Library</Text>
                   </TouchableOpacity>
@@ -540,12 +559,13 @@ export const MentorMenteeProfile = props => {
           placeholder={'Verification ID'}
           label={'Verification ID'}
           onChangeText={setVerificationChange}
-          value={verification}
+          value={verifyName}
           emailIconView={styles.imageView}
           emailIcon={styles.image}
           source={require('../../assets/Icons/Group.png')}
           onPress={() => {
             setModalVisible(true), setVerifyImageClick(true);
+            setProfileClick(false);
           }}
         />
 

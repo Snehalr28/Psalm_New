@@ -11,3 +11,4 @@ export const addProgram = 'mentorship/add';
 export const fetchProfileurl = 'mentor/getUser';
 export const ProgramListurl = 'mentorship/getMentorshipById';
 export const ProgramDetailsurl = 'mentorship/getwholeProgramdetail';
+export const baseURL = 'http://54.190.192.105:9192/';

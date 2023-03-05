@@ -21,6 +21,7 @@ import {
 import {Alert} from 'react-native';
 import {getUser} from '../../selectors/UserSelectors';
 import {useSelector, useDispatch} from 'react-redux';
+import { setContentType } from './HttpClient';
 
 export class UserController {
   static login(data) {
@@ -163,7 +164,9 @@ export class UserController {
     });
   }
   static updateMentor(data) {
+    console.log('datadata', JSON.stringify(data));
     return new Promise((resolve, reject) => {
+      setContentType(true);
       HttpClient.put(updateMentorUrl, data)
         .then(response => {
           console.log('Update Mentor/add program Response', response);
