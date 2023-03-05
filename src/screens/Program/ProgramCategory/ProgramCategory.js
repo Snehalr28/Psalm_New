@@ -88,9 +88,9 @@ const ProgramCategory = props => {
     setSearchTerm(text);
   };
 
-  // const filteredData = dataNew.filter(item => {
-  //   return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  // });
+  const filteredData = dataNew.filter(item => {
+    return item.docs[0].category.categoryName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
   const baseURL = 'http://54.190.192.105:9192/';
   const Item = ({title, image, passId}) => (
 
@@ -137,7 +137,8 @@ const ProgramCategory = props => {
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={dataNew}
+          // data={dataNew}
+          data={filteredData}
           renderItem={({item}) => 
           {
             console.log("item is--->",item.docs[0].category._id)

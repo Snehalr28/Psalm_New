@@ -209,7 +209,9 @@ export class UserController {
 
 
   static FetchData(data) {
+    console.log("fetch data call",data)
     return new Promise((resolve, reject) => {
+      console.log("fetch data call---")
       HttpClient.get(fetchProfileurl,data)
         .then(response => {
           console.log('fetch response response<<>>', response);

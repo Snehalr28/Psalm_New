@@ -104,8 +104,8 @@ const ProgramList = ({route}) => {
     setSearchTerm(text);
   };
 
-  const filteredData = data.filter(item => {
-    return item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredData = dataNew.filter(item => {
+    return item.mentorship_name.toLowerCase().includes(searchTerm.toLowerCase());
   });
   const baseURL = 'http://54.190.192.105:9192/';
 
@@ -181,8 +181,8 @@ const ProgramList = ({route}) => {
         </View>
       </View>
       <FlatList
-        data={dataNew}
-        // data={filteredData}
+        // data={dataNew}
+        data={filteredData}
         renderItem={({item}) => 
         {
           console.log('Item Data:--->>>', item,item.mentorship_name,item.image,item.price,item.availibility_from,item.start_date);
