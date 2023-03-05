@@ -211,7 +211,7 @@ export class UserController {
     console.log("fetch data call",data)
     return new Promise((resolve, reject) => {
       console.log("fetch data call---")
-      HttpClient.get(fetchProfileurl,data)
+      HttpClient.get(`mentor/getUser?user_id=${data.user_id}`)
         .then(response => {
           console.log('fetch response response<<>>', response);
           if (response.messageID === 200) {

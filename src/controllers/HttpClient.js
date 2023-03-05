@@ -50,7 +50,7 @@ const clearAuthorization = async () => {
   await AsyncStorage.removeItem('userToken');
   delete client.defaults.headers.common.authorization;
 };
-const setContentType = async multipart => {
+export const setContentType = async multipart => {
   client.defaults.headers.post['Content-Type'] = multipart
     ? 'multipart/form-data'
     : 'application/json';

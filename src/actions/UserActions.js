@@ -489,7 +489,7 @@ export const ProgramDetails = (data,cb)  => async dispatch => {
 
 
 export const FetchProfileData = (data, cb)=> async dispatch => {
-  console.log('fetch User action inside');
+  console.log('fetch User action inside',data);
   dispatch(FetchProfileRequest());
   try {
     console.log("fetch profile fetch",data);
