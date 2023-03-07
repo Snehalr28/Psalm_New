@@ -97,7 +97,7 @@ const ProgramCategory = props => {
     <View style={styles.itemContainer}>
       <TouchableWithoutFeedback
    
-        onPress={() => navigation.navigate('ProgramList',{passId:passId})}>
+        onPress={() => navigation.navigate('ProgramList',{passId:passId,title})}>
         <View style={styles.imageView}>
           {/* <Image
             source={{

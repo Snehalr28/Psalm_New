@@ -29,8 +29,10 @@ const ProgramList = ({route}) => {
   let getuserData = useSelector(getUser);
   console.log('Get userId for program list', getuserData.response.data._id);
   const {passId} = route.params;
+  const {title} = route.params;
 
-  console.log('Id get from Program Category', passId);
+  console.log('program list Id get from Program Category', passId);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [dataNew, setData] = useState([]);
   console.log("response of program list",dataNew)
@@ -167,7 +169,7 @@ const ProgramList = ({route}) => {
       </View>
 
       <View style={styles.topHeading}>
-        <Text style={styles.headingText}>Career Consultation</Text>
+        <Text style={styles.headingText}>{title}</Text>
         <View
           style={{
             marginBottom: 10,

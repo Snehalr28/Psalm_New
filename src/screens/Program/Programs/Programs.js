@@ -10,7 +10,9 @@ import {styles} from './ProgramsStyles';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from '../../../components/Button';
 import CustomHeader from "../../../components/customHeader"
-const Programs = props => {
+const Programs = ({route}) => {
+  const {passId} = route.params;
+  console.log("Add New Program Category ID", passId)
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = index => {
     setCustomStyleIndex(index);
@@ -290,7 +292,8 @@ const Programs = props => {
             <View style={styles.Button}>
               <Button
                 onPress={() => {
-                  navigation.navigate('Edit Program');
+                  navigation.navigate('Edit Program',{passId:passId});
+                  // navigation.navigate('Edit Program');
                   console.log('button');
                 }}
                 title={'Edit Program'}

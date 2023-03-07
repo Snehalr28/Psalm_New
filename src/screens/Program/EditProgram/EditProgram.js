@@ -7,11 +7,12 @@ import {TextInput} from 'react-native-paper';
 import {Button} from '../../../components/Button';
 import {styles} from './EditProgram.styles';
 import {useSelector, useDispatch} from 'react-redux';
-import {getUser} from '../../selectors/UserSelectors';
+
 import {useNavigation} from '@react-navigation/native';
 import {updateProgram} from '../../../actions/UserActions';
+import { getUser } from '../../../selectors/UserSelectors';
 
-const EditProgram = () => {
+const EditProgram = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [programName, setProgramName] = useState('');
@@ -22,22 +23,25 @@ const EditProgram = () => {
   const [mentee, setMentee] = useState('');
   const [availablity, setAvailablity] = useState('');
   const [description, setDescription] = useState('');
-
+  const {passId} = route.params;
+  console.log("edit program Category ID", passId)
+  let getuserData = useSelector(getUser);
+  console.log('edit Program User ID', getuserData.response.data._id);
   const handleSubmitButton = () => {
     console.log('edit Program');
     let updateProgramObj = {
       category_id: '63c936090a9a959d9ed369d3',
-      mentorship_name: 'React Native Development',
-      description: 'React Native classes',
+      mentorship_name: programName,
+      description: description,
       mentorship_mode: 1,
-      start_date: '12/11/1981',
-      expiry_date: '12/11/1991',
+      start_date: '12/03/2023',
+      expiry_date: '12/04/2024',
       duration: '1',
-      experience: '10',
-      price: '1500',
+      experience: exp,
+      price: price,
       payment_mode: 'card',
       mentee_limit: '20',
-      user_id: '63f5af8c247174c71f3e2133',
+      user_id: getuserData.response.data._id,
     };
 
     console.log('updateProgramOb', updateProgramObj);

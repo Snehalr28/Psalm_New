@@ -235,6 +235,7 @@ export class UserController {
     console.log("//Inside show")
     return new Promise((resolve, reject) => {
       HttpClient.get(ProgramListurl, data)
+      HttpClient.get(`mentorship/getMentorshipById?mentorid=${data.mentorid}&category_id=${data.category_id}`)
         .then(response => {
           console.log('show program response<<>>', response);
           if (response.messageID === 200) {

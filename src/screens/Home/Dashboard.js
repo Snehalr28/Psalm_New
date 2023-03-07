@@ -132,8 +132,10 @@ export const Dashboard = props => {
           // }}
           onPress={() => navigation.navigate('MentorMenteeProfileScreen')}
         /> 
+
+        
         <TouchableOpacity  onPress={logoutUser}>
-        <Text>Logout</Text>
+        <Text style={{marginBottom:20}}>Logout</Text>
       </TouchableOpacity>
 
         <View style={styles.searchView}>

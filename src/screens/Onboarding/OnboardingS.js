@@ -144,7 +144,9 @@ function OnboardingS({navigation}) {
 
   return (
     <>
-      {isLoading && showLoder()}
+
+
+{isLoading && showLoder()}
       {showIntro ? (
         <Login />
       ) : (
@@ -160,6 +162,25 @@ function OnboardingS({navigation}) {
           activeDotStyle={{backgroundColor: 'red'}}
         />
        )} 
+
+
+
+      {/* {isLoading && showLoder()}
+      {showIntro ? (
+        <Login />
+      ) : (
+        <AppIntroSlider
+          data={slides}
+          renderItem={RenderItem}
+          renderDoneButton={renderDoneButton}
+          renderNextButton={renderNextButton}
+          renderSkipButton={renderSkipButton}
+          showSkipButton={true}
+          onDone={onDone}
+          onSkip={onSkip}
+          activeDotStyle={{backgroundColor: 'red'}}
+        />
+       )}  */}
     </>
   );
 }
@@ -219,7 +240,8 @@ const styles = StyleSheet.create({
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 80
+    height: 80,
+    backgroundColor:"white"
  }
 });
 

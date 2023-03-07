@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     // marginLeft: 10,
     // marginBottom:5
   },
-  profileImage:{height: 50, width: 50},
+  profileImage:{height: 72, width: 72},
   // textMentor:{flexDirection: 'row', marginTop: 25, marginBottom: 15},
   // container: {
     //   flex: 1,

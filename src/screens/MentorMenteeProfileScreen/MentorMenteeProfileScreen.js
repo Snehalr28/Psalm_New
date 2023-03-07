@@ -26,13 +26,16 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DatePicker from 'react-native-date-picker';
 import {Alert, Modal, Pressable} from 'react-native';
 import {setContentType} from '../../controllers/HttpClient';
-import { baseURL } from '../../controllers/ApiList';
+import {baseURL} from '../../controllers/ApiList';
 
 export const MentorMenteeProfile = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  
+
+  const [skillImages, setSkillImages] = useState([{uri:"",type:"",name:""}]);
   const [number, setNumber] = useState('');
   const [gender, setGender] = useState('');
   const [bio, setBio] = useState('');
@@ -64,7 +67,8 @@ export const MentorMenteeProfile = props => {
   const [profileUri, setProfileUri] = useState(null);
   const [verifyresponse, setVerifyResponse] = useState(null);
   const [verifyName, setVerifyName] = useState(null);
-
+  const [skillcertificateName, setskillcertificateName] = useState(null);
+  console.log('verify image name', verifyName);
   const [skillresponse, setSkillResponse] = useState(null);
 
   const [file, setFilePath] = useState('');
@@ -137,7 +141,6 @@ export const MentorMenteeProfile = props => {
         if (cb != false) {
           console.log('First name is', cb.data.firstName);
           console.log('number name is', cb.data.phone);
-
           if (cb.messageID === 200) {
             setFirstName(cb.data.firstName);
             setLastName(cb.data.lastName);
@@ -153,7 +156,7 @@ export const MentorMenteeProfile = props => {
             setCountry(cb.data.country);
             setSkillName(cb.data.skillName);
             setProfileUri(baseURL + cb.data.image);
-            // navigation.navigate('ProgramList');
+            
           }
         }
       }),
@@ -179,9 +182,21 @@ export const MentorMenteeProfile = props => {
       ? {
           uri: verifyresponse?.assets[0]?.uri,
           name: verifyresponse?.assets[0]?.fileName,
-          type: verifyresponse?.assets[0]?.type
+          type: verifyresponse?.assets[0]?.type,
         }
       : null;
+
+    let file1 = skillresponse
+      ? {
+          uri: skillresponse?.assets[0]?.uri,
+          name: skillresponse?.assets[0]?.fileName,
+          type: skillresponse?.assets[0]?.type,
+        }
+      : null;
+
+
+
+
 
     let formdata = new FormData();
 
@@ -191,6 +206,10 @@ export const MentorMenteeProfile = props => {
 
     if (file2 != null) {
       formdata.append('validationid', file2);
+    }
+
+    if (file1 != null) {
+      formdata.append('skills', file1);
     }
 
     formdata.append('firstName', firstName);
@@ -206,22 +225,35 @@ export const MentorMenteeProfile = props => {
     formdata.append('language', language);
     formdata.append('date_of_birth', Dob);
     formdata.append('province', province);
+    formdata.append('skillsdata',JSON.stringify(array))
 
     formdata.append('_id', getuserData.response.data._id);
     console.log('formdata._parts', formdata._parts);
 
     console.log('formdataobject', JSON.stringify(formdata));
-    dispatch(
-      updateMentor(formdata, cb => {
-        console.log('update mentor data got');
-        console.log('update mentor CB ', cb);
-        if (cb != false) {
-          if (cb.messageID == 200) {
-            alert('Profile Updated successfully');
+
+    // if (firstName != '') {
+    //   console.log('first name add');
+    // } else if (email != '') {
+    //   console.log('email add');
+    // } else {
+    //   console.log('else called');
+
+      dispatch(
+        updateMentor(formdata, cb => {
+          console.log('update mentor data got');
+          console.log('update mentor CB ', cb);
+          if (cb != false) {
+            if (cb.messageID == 200) {
+              alert('Profile Updated successfully');
+            }
           }
-        }
-      }),
-    );
+        }),
+      );
+    // }
+
+
+   
   };
 
   const firstNameChange = text => {
@@ -296,6 +328,10 @@ export const MentorMenteeProfile = props => {
     setArray(temp);
   };
 
+
+console.log("array value check",array)
+
+
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedNewDate, setSelectedNewDate] = useState('');
@@ -348,13 +384,15 @@ export const MentorMenteeProfile = props => {
               setModalVisible(true);
               setVerifyImageClick(false);
               setProfileClick(true);
+              setverifyCerificateClick(false);
             }}>
             <Image
               style={styles.profileImage}
               source={
                 profileUri
-                  ? {uri:profileUri}
-                  : require('../../assets/Icons/camera.png')
+                  ? {uri: profileUri}
+                  // : require('../../assets/Icons/camera.png')
+                  : null
               }
             />
           </TouchableOpacity>
@@ -383,15 +421,28 @@ export const MentorMenteeProfile = props => {
                     onPress={() =>
                       launchImageLibrary(actions[1].options, response => {
                         if (verifyImageClick) {
-                          console.log('verification modal')
+                          console.log('verification modal');
                           setVerifyResponse(response);
                           setVerifyName(response?.assets[0]?.fileName);
                         } else if (profileClick) {
-                          console.log('profile modal')
+                          console.log('profile modal');
                           setResponse(response);
                           setProfileUri(response?.assets[0]?.uri);
+                        } else if (verifyCerificateClick) {
+                          console.log('profile modal');
+                          setSkillResponse(response)
+                           // skillImages[0]={uri:""}
+                          //  if (array.count == assets.count){
+                          //   for (let arrayIndex = 0; arrayIndex < arrayIndex.length; index++) {
+                          //     setskillcertificateName(response?.assets[arrayIndex]?.uri);
+                          //   }
+
+                          //  }
                         }
-                        setModalVisible(false);
+                        
+                        else {
+                          setModalVisible(false);
+                        }
                       })
                     }>
                     <Text>Library</Text>
@@ -566,6 +617,7 @@ export const MentorMenteeProfile = props => {
           onPress={() => {
             setModalVisible(true), setVerifyImageClick(true);
             setProfileClick(false);
+            setverifyCerificateClick(false);
           }}
         />
 
@@ -627,6 +679,7 @@ export const MentorMenteeProfile = props => {
           <FlatList
             data={array}
             renderItem={({item, index}) => {
+              console.log("item data iss",item)
               return (
                 <View>
                   <TextInputComponent
@@ -671,7 +724,10 @@ export const MentorMenteeProfile = props => {
                     emailIcon={styles.image}
                     source={require('../../assets/Icons/Group.png')}
                     onPress={() => {
-                      setModalVisible(true), setverifyCerificateClick(true);
+                      setModalVisible(true);
+                      setVerifyImageClick(false);
+                      setProfileClick(false);
+                      setverifyCerificateClick(true);
                     }}
                   />
 
@@ -713,7 +769,6 @@ export const MentorMenteeProfile = props => {
           style={styles.button}
           onPress={() => {
             handleSubmitButton();
-            navigation.navigate('AddProgram');
             console.log('button');
           }}
           textStyle={styles.buttonText}

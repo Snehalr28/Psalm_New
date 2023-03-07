@@ -40,10 +40,17 @@ export function AddNewProgram({route}) {
   const [newStartDate, setNewStartDate] = useState(new Date());
   const [openStart, setOpenStart] = useState(false);
   const [selectedNewStartDate, setSelectedNewStartDate] = useState('');
+  const [selectedEndDate, setSelectedEndDate] = useState('');
+  console.log("New start date",selectedNewStartDate)
+  console.log("New end date",selectedEndDate)
+
+  
 
   const [endDate, setEndDate] = useState(new Date());
   const [openEnd, setOpenEnd] = useState(false);
-  const [selectedEndDate, setSelectedEndDate] = useState('');
+  
+  console.log("Date check",endDate,openEnd)
+  console.log("Date check//",openEnd)
 
   const [from, setFrom] = useState(new Date());
   const [openTimeFrom, setOpenTimeFrom] = useState(false);
@@ -80,28 +87,32 @@ export function AddNewProgram({route}) {
   const navigation = useNavigation();
   let getuserData = useSelector(getUser);
   console.log('Add New Program User ID', getuserData.response.data._id);
+
   const {passId} = route.params;
   console.log("Add New Program Category ID", passId)
 
   const handleSubmitButton = props => {
     const addMentorObj = {
-      // category_id: passId,
-      category_id: '63c936090a9a959d9ed369d3',
+      category_id: passId,
       mentorship_name: programName,
       description: description,
-      mentorship_mode: 1,
-      start_date: openEnd,
-      expiry_date: endDate,
+      mentorship_mode: value,
+      start_date: selectedNewStartDate,
+      expiry_date: selectedEndDate,
       duration: '1',
-      experience: '10',
-      price: '1500',
+      experience: exp,
+      price: price,
       payment_mode: 'card',
-      mentee_limit: '20',
-      // user_id: getuserData.response.data._id,
-      user_id: '63f5b3af247174c71f3e219a',
+      mentee_limit: allow,
+      availibility_from: "01:15",
+      availibility_to: "05:15",
+      image: " ",
+      skills: " ",
+      user_id: getuserData.response.data._id,
+     
     };
 
-    console.log('Add new program data', addMentorObj);
+    console.log('Add new program all data', addMentorObj);
     try {
     dispatch(
       addMentor(addMentorObj, cb => {
@@ -361,7 +372,8 @@ export function AddNewProgram({route}) {
           <Button
             onPress={() => {
               handleSubmitButton();
-              navigation.navigate('programs');
+              navigation.navigate('programs',{passId:passId});
+              // navigation.navigate('programs');
               console.log('button Clicked');
             }}
             title={'Add Program'}
