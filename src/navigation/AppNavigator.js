@@ -4,15 +4,14 @@ import React from 'react';
 import {TabBarIcon} from '../components';
 import {NAVIGATION} from '../constants';
 import {HomeNavigator} from '../navigation/HomeNavigator';
-import { ProgramNavigator } from './ProgramNavigator';
-import { SessionNavigator } from './SessionNavigator';
-import { ChatNavigator } from './ChatNavigator';
+import {ProgramNavigator} from './ProgramNavigator';
+import {SessionNavigator} from './SessionNavigator';
+import {ChatNavigator} from './ChatNavigator';
 const Tab = createBottomTabNavigator();
 
-export function 
-AppNavigator() {
+export function AppNavigator() {
   const {colors} = useTheme();
-  
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -25,8 +24,7 @@ AppNavigator() {
       tabBarOptions={{
         activeTintColor: colors.activeTab,
         inactiveTintColor: colors.inactiveTab,
-      }}
-      >
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeNavigator}
@@ -34,19 +32,19 @@ AppNavigator() {
       />
       <Tab.Screen
         name="Program"
-        component={ProgramNavigator }
+        component={ProgramNavigator}
         options={{headerShown: false}}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="Session"
         component={SessionNavigator}
         options={{headerShown: false}}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="Chat"
         component={ChatNavigator}
         options={{headerShown: false}}
-      /> 
+      />
     </Tab.Navigator>
   );
 }

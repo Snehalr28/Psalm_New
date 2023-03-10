@@ -12,7 +12,10 @@ import {Button} from '../../../components/Button';
 import CustomHeader from "../../../components/customHeader"
 const Programs = ({route}) => {
   const {passId} = route.params;
-  console.log("Add New Program Category ID", passId)
+  const {title} = route.params;
+
+  console.log('program Id for progarms', passId);
+  console.log("Title for add programs ",title);
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleCustomIndexSelect = index => {
     setCustomStyleIndex(index);

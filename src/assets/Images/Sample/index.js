@@ -33,5 +33,10 @@ const Images = {
     sessionMentor1: require("./sessionMentor1.png"),
     sessionMentor2: require("./sessionMentor2.png"),
 
+    homeSession1:require("./HomeSession1.png"),
+    homeSession2:require("./HomeSession2.png"),
+    homeSession3:require("./HomeSession3.png"),
+    homeSession4:require("./HomeSession4.png"),
+
 };
 module.exports = Images;

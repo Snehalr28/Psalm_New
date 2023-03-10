@@ -385,10 +385,12 @@ export const updateMentor = (data, cb) => async dispatch => {
 
     cb(UMdata.response);
     dispatch(updateMentorSuccess(UMdata));
+    // dispatch(loaderSuccess(UMdata));
     console.log('Update mentor success call');
   } catch (error) {
     console.log('update mentor error', error);
     dispatch(updateMentorError(error));
+    // dispatch(loaderError());
     alert(error.response.message);
   }
 };
@@ -399,7 +401,7 @@ export const addMentor = (data,cb) => async dispatch => {
   dispatch(addMentorRequest());
   try {
     const addMentor = await UserController.addMentor(data);
-    console.log('Add program final response', addMentor);
+    console.log('Addprogram final response', addMentor);
     cb(addMentor.response)
     console.log("Add Program cb",addMentor.response)
     dispatch(addMentorSuccess(addMentor));

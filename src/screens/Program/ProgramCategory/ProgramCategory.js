@@ -20,7 +20,7 @@ import Images from '../../../assets/Images/Sample';
 const ProgramCategory = props => {
   const [dataNew, setData] = useState([]);
   const [category_id, setCategory_id] = useState([]);
-  console.log("NewData",dataNew)
+  console.log("NewData",JSON.stringify(dataNew))
   let Data = useSelector(getUser);
 
   const dispatch = useDispatch();
@@ -97,7 +97,7 @@ const ProgramCategory = props => {
     <View style={styles.itemContainer}>
       <TouchableWithoutFeedback
    
-        onPress={() => navigation.navigate('ProgramList',{passId:passId,title})}>
+        onPress={() => navigation.navigate('ProgramList',{passId:passId,title:title})}>
         <View style={styles.imageView}>
           {/* <Image
             source={{

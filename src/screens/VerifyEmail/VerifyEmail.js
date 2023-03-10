@@ -1,5 +1,5 @@
 import {lock, login, auth, backArrow, mail} from '../../assets';
-import {confirmOTP, resendOtp, forgotPassword} from '../../actions/UserActions';
+import {confirmOTP, resendOtp, forgotPassword, loginUser} from '../../actions/UserActions';
 import {Button, TextField} from '../../components';
 import {NAVIGATION} from '../../constants';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
@@ -27,6 +27,8 @@ export const VerifyEmail = ({route, navigation}) => {
 
   console.log('routedataisssss', route);
   const {email} = route.params;
+  const {password} = route.params
+  
   const {type} = route.params;
 
   const dispatch = useDispatch();
@@ -54,6 +56,13 @@ export const VerifyEmail = ({route, navigation}) => {
           confirmOTP({otp: value}, cb => {
             console.log('otp cb', cb);
             if (cb.responseCode == 200) {
+              dispatch(
+                loginUser({
+                  email: email,
+                  password: password,
+                }),
+              );
+
               //  navigation.navigate('Dashbord');
             }
           }),
@@ -67,7 +76,7 @@ export const VerifyEmail = ({route, navigation}) => {
       resendOtp({}, cb => {
         if (cb != false)
           if (cb.responseCode == 200) {
-            Alert.alert('Otp sent successfully');
+            alert('Otp sent successfully');
           }
       }),
     );

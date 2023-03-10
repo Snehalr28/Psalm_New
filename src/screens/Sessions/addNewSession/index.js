@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Image, SafeAreaView} from 'react-native';
 import COLORS from '../../../constants/color';
 import moment from 'moment';
-import {SafeAreaView} from 'react-native';
 import FONTS from '../../../constants/fonts';
 import {TextInputComponent} from '../../../components/textInputComponent/TextInputComponent';
 import DatePicker from 'react-native-date-picker';
@@ -18,17 +17,29 @@ const AddNewSession = ({navigation}) => {
   const [openTime, setOpenTime] = useState(false);
   const [selectedNewTime, setSelectedNewTime] = useState('');
 
-  const handleDateChange = newDate => {
-    setSelectedNewDate(newDate.toISOString().slice(0, 10));
-    setOpen(false);
-    setDate(newDate);
-  };
-
+  // const handleDateChange = newDate => {
+  //   setSelectedNewDate(newDate.toISOString().slice(0, 10));
+  //   setOpen(false);
+  //   setDate(newDate);
+  // };
   const handleTimeChange = newDate => {
-    setSelectedNewTime(newDate.toLocaleTimeString());
+    const hours = newDate.getHours();
+    const minutes = newDate.getMinutes();
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedTime = `${formattedHours}:${formattedMinutes} ${period}`;
+  
+    setSelectedNewTime(formattedTime);
     setOpenTime(false);
     setTime(newDate);
   };
+
+  // const handleTimeChange = newDate => {
+  //   setSelectedNewTime(newDate.toLocaleTimeString());
+  //   setOpenTime(false);
+  //   setTime(newDate);
+  // };
 
   const [idate, setDate] = useState(date);
 
@@ -112,6 +123,7 @@ const AddNewSession = ({navigation}) => {
           style={{borderWidth: 1, borderColor: COLORS.HIGHLIGHT, elevation: 1}}>
           <View style={{padding: 10}}>
             <CalendarPicker
+              //  markingType={'period'}
               onDateChange={date => onDateChange(date)}
               selectedDayColor="#FE4D4D"
               selectedDayTextStyle={{color: 'white'}}
@@ -127,6 +139,8 @@ const AddNewSession = ({navigation}) => {
               previousTitleStyle={styles.nextTitleStyle}
               todayBackgroundColor="#000"
               todayTextStyle={{color: 'red'}}
+              previousTitle={<Image source={require('../../../assets/Icons/previous.png')} style={styles.arrow} />}
+              nextTitle={<Image source={require('../../../assets/Icons/next.png')} style={styles.arrow} />}
             />
           </View>
         </View>
@@ -137,9 +151,9 @@ const AddNewSession = ({navigation}) => {
           <TextInputComponent
             emailView={styles.textInputView}
             styleInput={{fontFamily:FONTS.REGULAR, color:COLORS.BLACK}}
-            placeholder={'Select Time'}
+            // placeholder={'Select Time'}
             label={'Select Time'}
-            value={selectedNewTime}
+            value={selectedNewTime || 'Select Time'}
             onFocus={() => setOpenTime(true)}
             emailIconView={styles.imageView}
             emailIcon={[styles.image, {height: 16, width: 16}]}
@@ -210,4 +224,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   image: {height: 20, width: 20, marginTop: 10},
+  arrow: {
+    // width: 25,
+    // height: 25,
+  },
 });

@@ -94,16 +94,17 @@ export const Register = props => {
                   if (cb != false) {
                     console.log('check', cb.responseCode);
                     if (cb.responseCode == 200) {
-                      Alert.alert('Otp sent successfully');
+                      alert('Otp sent successfully');
                       navigation.navigate('VerifyEmail', {
                         email: email,
+                        password: password,
                       });
                     }
                   }
                 }),
               );
             } catch (error) {
-              Alert.alert('Mobile no. is invalid');
+              alert('Mobile no. is invalid');
             }
             'User Register successfully', 1000;
           }
@@ -343,7 +344,7 @@ export const Register = props => {
                 marginBottom: '6%',
               }}>
               <TextInputComponent
-                emailView={{width: 225}}
+                emailView={{width: 245}}
                 placeholder={'Mobile No.'}
                 label={'Mobile Number'}
                 onChangeText={numberChange}
@@ -354,14 +355,14 @@ export const Register = props => {
                 TextMessage={'Mobile no. is required'}
                 condtionText={{color: 'red'}}
                 checkCondtion={mobileNumberError}
-                emailIconView={[styles.imageView, {marginRight: '15%',}]}
+                emailIconView={[styles.imageView, {marginRight: '15%'}]}
                 emailIcon={styles.image}
                 source={require('../../assets/Icons/call.png')}
               />
             </View>
           </View>
 
-          <TextInputComponent
+          {/* <TextInputComponent
             emailView={styles.inputTextView}
             placeholder={'Password'}
             label={'Password'}
@@ -378,10 +379,44 @@ export const Register = props => {
             emailIcon={styles.image}
             source={require('../../assets/assets/eyeicon.png')}
             eyeImageView={props.eyeImageView}
-          />
+          /> */}
 
+          <View>
+            <TextInputComponent
+              emailView={styles.inputTextView}
+              placeholder={'Password'}
+              label={'Password'}
+              styleInput={styles.materialView}
+              onChangeText={passwordChange}
+              value={password}
+              empty={empty}
+              secureTextEntry={show}
+              TextMessageAlert={'Password must be at least 6 characters'}
+              TextMessage={'Password is required'}
+              condtionText={{color: 'red'}}
+              checkCondtion={passwordError}
+              // checkCondtion={checkPassword}
+              // checkemail={checkemail}
+              error={empty}
+              // emailIconView={styles.imageView}
+            />
 
-          
+            <View style={[styles.imageView, {marginLeft: '13%'}]}>
+              <TouchableOpacity onPress={() => setShow(!show)}>
+                {show ? (
+                  <Image
+                    style={styles.image}
+                    source={require('../../assets/assets/eyeicon.png')}
+                  />
+                ) : (
+                  <Image
+                    style={styles.image}
+                    source={require('../../assets/assets/eye.png')}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
 
           <View style={styles.inputTextView}>
             <Text style={styles.bottomText}>
@@ -391,12 +426,10 @@ export const Register = props => {
               <Text
                 onPress={() => navigation.navigate('Terms & Conditions')}
                 style={styles.termsStyle}>
-                Terms & Conditions 
+                Terms & Conditions
               </Text>
               <Text style={styles.andStyle}> and </Text>
-              <Text style={styles.termsStyle}>
-                Privacy Policy
-              </Text>
+              <Text style={styles.termsStyle}>Privacy Policy</Text>
             </View>
           </View>
           <View style={styles.ContinueButton}>
@@ -415,7 +448,7 @@ export const Register = props => {
             <Text
               onPress={() => navigation.navigate('Login')}
               style={styles.login}>
-              Log in
+              Login
             </Text>
           </View>
         </View>

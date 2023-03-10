@@ -9,6 +9,7 @@ import {theme} from '../theme';
 import {StyleSheet, View, Text} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {navigationRef} from './NavigationService';
+import DrawerNavigation from './drawer';
 export function RootNavigator() {
   const user = useSelector(getUser);
   const userConfirm = useSelector(getUserConfirm);
@@ -20,8 +21,11 @@ export function RootNavigator() {
 
   return (
     // <NavigationContainer theme={theme[scheme]}>
+    // <NavigationContainer>
+    //   {userConfirm ? <AppNavigator /> : <AuthNavigator />}
+    // </NavigationContainer>
     <NavigationContainer>
-      {userConfirm ? <AppNavigator /> : <AuthNavigator />}
-    </NavigationContainer>
+    {userConfirm ? <DrawerNavigation /> : <AuthNavigator />}
+  </NavigationContainer>
   );
 }

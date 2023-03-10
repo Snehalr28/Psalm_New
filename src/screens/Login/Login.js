@@ -134,7 +134,7 @@ export const Login = props => {
             <Image source={require('../../assets/assets/Login1.png')} />
           </View>
           <View style={styles.textView}>
-            <Text style={styles.loginText}>Let’s Log in</Text>
+            <Text style={styles.loginText}>Let’s Login</Text>
             <Text style={styles.welcome}>
               Welcome Back, you’ve been missed!
             </Text>

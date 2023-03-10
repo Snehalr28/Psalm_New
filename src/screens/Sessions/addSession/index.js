@@ -83,7 +83,7 @@ const AddSession = ({navigation}) => {
             <Button
               onPress={() => {
                 //   handleSubmitButton();
-                navigation.navigate('programs');
+                // navigation.navigate('programs');
                 console.log('button Clicked');
               }}
               title={'Add Program'}

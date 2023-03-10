@@ -1,4 +1,4 @@
-import { TYPES } from '../actions/UserActions';
+import {TYPES} from '../actions/UserActions';
 
 export const loaderReducer = (
   state = {
@@ -15,7 +15,6 @@ export const loaderReducer = (
       return { ...state, loading: false };
 
     case TYPES.CLEAR_STORE:
-      console.log("loder of logout")
       return state;
     default:
       return state;

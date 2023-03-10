@@ -2,11 +2,12 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NAVIGATION} from '../navigation';
 import {Dashboard} from '../screens/Home/Dashboard';
-import ProgramDetails from '../screens/Sessions/ProgramDetails';
-import AddSession from "../screens/Sessions/addSession";
-import AddNewSession from "../screens/Sessions/addNewSession/"
-import EditSession from '../screens/Sessions/editSession';
-
+import ProgramDetails from '../screens/Sessions/sessionHome/ProgramDetails';
+// import AddSession from "../screens/Sessions/sessionHome/addSession";
+import AddSession from "../screens/Sessions/addSession"
+// import AddNewSession from "../screens/Sessions/sessionHome/addNewSession/"
+import AddNewSession from "../screens/Sessions/addNewSession"
+import EditSession from "../screens/Sessions/editSession/"
 
 const Stack = createNativeStackNavigator();
 export function SessionNavigator() {

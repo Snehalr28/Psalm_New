@@ -10,6 +10,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
 import {updateProgram} from '../../../actions/UserActions';
+import DatePicker from 'react-native-date-picker';
 import { getUser } from '../../../selectors/UserSelectors';
 
 const EditProgram = ({route}) => {
@@ -23,6 +24,16 @@ const EditProgram = ({route}) => {
   const [mentee, setMentee] = useState('');
   const [availablity, setAvailablity] = useState('');
   const [description, setDescription] = useState('');
+
+  const [newStartDate, setNewStartDate] = useState(new Date());
+  const [openStart, setOpenStart] = useState(false);
+  const [selectedNewStartDate, setSelectedNewStartDate] = useState('');
+  const handleStartChange = newDate => {
+    setSelectedNewStartDate(newDate.toISOString().slice(0, 10));
+    setOpenStart(false);
+    setNewStartDate(newDate);
+  };
+
   const {passId} = route.params;
   console.log("edit program Category ID", passId)
   let getuserData = useSelector(getUser);
@@ -116,8 +127,24 @@ const EditProgram = ({route}) => {
             emailView={styles.textInputView}
             placeholder={'Start Date'}
             label={'Start Date'}
-            value={date}
-            onChangeText={setDate}
+            value={selectedNewStartDate}
+            onFocus={() => setOpenStart(true)}
+            onPress={() => setOpenStart(true)}
+            // value={date}
+            // onChangeText={setDate}
+            emailIconView={styles.imageViewStyle}
+            emailIcon={styles.imageIconStyle}
+            source={require('../../../assets/Icons/Calendar.png')}
+          />
+          <DatePicker
+            mode="date"
+            modal
+            open={openStart}
+            date={newStartDate}
+            onConfirm={handleStartChange}
+            onCancel={() => setOpenStart(false)}
+            minimumDate={new Date()}
+            // maximumDate={new Date('2023-12-31')}
           />
 
           <TextInputComponent
@@ -126,6 +153,7 @@ const EditProgram = ({route}) => {
             label={'Price'}
             value={price}
             onChangeText={setPrice}
+            keyboardType="numeric"
           />
 
           <TextInputComponent
@@ -134,6 +162,7 @@ const EditProgram = ({route}) => {
             label={'Mentee allowed'}
             value={mentee}
             onChangeText={setMentee}
+            keyboardType="numeric"
           />
 
           <TextInputComponent
@@ -162,7 +191,7 @@ const EditProgram = ({route}) => {
           </View>
 
           <Button
-          onPress={() => handleSubmitButton()}
+            onPress={() => handleSubmitButton()}
             // onPress={() => {
             //   navigation.navigate('Add Bank Details');
             //   console.log('button');

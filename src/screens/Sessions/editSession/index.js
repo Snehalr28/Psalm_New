@@ -37,7 +37,14 @@ const EditSession = () => {
   };
 
   const handleTimeChange = newDate => {
-    setSelectedNewTime(newDate.toLocaleTimeString());
+    const hours = newDate.getHours();
+    const minutes = newDate.getMinutes();
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedTime = `${formattedHours}:${formattedMinutes} ${period}`;
+    
+    setSelectedNewTime(formattedTime);
     setOpenTime(false);
     setTime(newDate);
   };
@@ -94,6 +101,8 @@ const EditSession = () => {
             date={date}
             onConfirm={handleDateChange}
             onCancel={() => setOpen(false)}
+            minimumDate={new Date()}
+            // maximumDate={new Date('2023-12-31')}
           />
 
           <TextInputComponent
@@ -122,7 +131,7 @@ const EditSession = () => {
             label={'Session duration'}
             onChangeText={setSessionDuration}
             value={sessionDuration}
-            keyboardType="numeric"
+            // keyboardType="numeric"
           />
 
           <TextInputComponent
@@ -131,7 +140,6 @@ const EditSession = () => {
             label={'Location'}
             onChangeText={setLocation}
             value={location}
-            keyboardType="numeric"
           />
           <View style={[styles.textInputView, {marginBottom: 20}]}>
             <TextInput

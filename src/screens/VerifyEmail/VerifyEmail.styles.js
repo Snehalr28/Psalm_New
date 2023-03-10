@@ -153,7 +153,7 @@ export const styles = StyleSheet.create({
   codeFieldView: {marginRight:"10%"},
   bottomTextView: {flexDirection:"row", marginTop:20},
   textBottom: {fontFamily: FONTS.REGULAR, color:COLORS.BLACK},
-  resendText:{    fontFamily:FONTS.BOLD,
+  resendText:{marginLeft:1, fontFamily:FONTS.BOLD,
     color:COLORS.BLACK},
   buttonView:  {
     // flex: 4,

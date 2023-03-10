@@ -23,4 +23,11 @@ export const styles = StyleSheet.create({
       },
       imageIcon:{height: 25, width: 25},
       playIcon:{alignSelf: 'flex-end', marginTop: -25, marginRight: 20},
+      imageViewStyle: {
+        alignSelf: 'flex-end',
+        marginTop: 9,
+        marginRight: '8%',
+        position: 'absolute',
+      },
+      imageIconStyle: {height: 17, width: 19, marginTop: 13},
   });

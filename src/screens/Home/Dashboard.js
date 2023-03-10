@@ -31,6 +31,7 @@ export const Dashboard = props => {
   const navigation = useNavigation();
   const {colors} = useTheme();
   const user = useSelector(getUser);
+  console.log("getuser response on dashboard",user.response.data.name)
 
   const logoutUser = () => {
     dispatch(logout());
@@ -52,7 +53,6 @@ export const Dashboard = props => {
     setCustomStyleIndex(index);
   };
   useEffect(() => {
-    console.log('user.response.token', user.response.data.token);
     setAuthorization(user.response.data.token);
   }, []);
   const data = [
@@ -124,7 +124,10 @@ export const Dashboard = props => {
     <>
       <SafeAreaView style={styles.container}>
         <CustomHeader
-          title="Hello, Cameron"
+        title={user.response.data.name}
+        newtitle="logout"
+        onPresstitle={() => logoutUser()}
+          // title="Hello, Cameron"
           leftIcon={require('../../assets/Icons/userProfile.png')}
           rightIcon={require('../../assets/Icons/Notification1.png')}
           // onPress={() => {
@@ -133,10 +136,7 @@ export const Dashboard = props => {
           onPress={() => navigation.navigate('MentorMenteeProfileScreen')}
         /> 
 
-        
-        <TouchableOpacity  onPress={logoutUser}>
-        <Text style={{marginBottom:20}}>Logout</Text>
-      </TouchableOpacity>
+  
 
         <View style={styles.searchView}>
           <CustomSearch

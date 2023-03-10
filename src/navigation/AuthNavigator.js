@@ -10,6 +10,7 @@ import VerifyEmail from '../screens/VerifyEmail/VerifyEmail';
 import BiometricLogin from '../screens/Biometric/BiometricLogin';
 import Register from '../screens/Register/Register';
 import TermsConditions from '../screens/TermsConditions/TermsConditions';
+import DrawerNavigation from './drawer';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,6 +57,11 @@ export function AuthNavigator() {
        <Stack.Screen
         name="Terms & Conditions"
         component={TermsConditions}
+        options={{headerShown: true}}
+      />
+         <Stack.Screen
+        name="Home"
+        component={DrawerNavigation}
         options={{headerShown: true}}
       />
     </Stack.Navigator>

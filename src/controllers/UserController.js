@@ -188,7 +188,10 @@ export class UserController {
   }
 
   static addMentor(data) {
+    console.log('addmentordata', JSON.stringify(data));
     return new Promise((resolve, reject) => {
+      setContentType(true);
+      // setContentType(false);
       console.log("add mentor inside")
       HttpClient.post(addProgram, data)
         .then((response) => {

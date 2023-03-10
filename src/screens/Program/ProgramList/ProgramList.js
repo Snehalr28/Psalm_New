@@ -31,7 +31,8 @@ const ProgramList = ({route}) => {
   const {passId} = route.params;
   const {title} = route.params;
 
-  console.log('program list Id get from Program Category', passId);
+  console.log('program Id iss', passId);
+  console.log("Title name iss",title);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [dataNew, setData] = useState([]);
@@ -205,7 +206,7 @@ const ProgramList = ({route}) => {
       />
       <Button
         onPress={() => {
-          navigation.navigate('Add New Program',{passId:passId});
+          navigation.navigate('Add New Program',{passId:passId, title:title});
           console.log('button');
         }}
         title={'Add New Program'}

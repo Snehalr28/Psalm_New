@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     // marginLeft: 10,
     // marginBottom:5
   },
-  profileImage:{height: 72, width: 72},
+  profileImage:{height: 80, width: 80},
   // textMentor:{flexDirection: 'row', marginTop: 25, marginBottom: 15},
   // container: {
     //   flex: 1,
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     },
     modalView: {
       margin: 20,
-      backgroundColor: 'white',
+      backgroundColor: '#f1fdf9',
       borderRadius: 20,
       padding: 35,
       alignItems: 'center',

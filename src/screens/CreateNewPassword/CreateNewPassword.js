@@ -2,13 +2,7 @@ import {resetPassword} from '../../actions/UserActions';
 import {Button, TextField} from '../../components';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  Alert,
-} from 'react-native';
+import {Image, Text, TouchableOpacity, View,Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {styles} from '../../screens/CreateNewPassword/CreateNewPassword.styles';
@@ -35,31 +29,44 @@ export const CreateNewPassword = ({route, navigation}) => {
     state => state.user.passwordResetRequest,
   );
   const submitPressed = () => {
-    if (password.length < 8) {
-    } else if (newpassword.length < 8) {
-    } else if (newpassword != password) {
+    if (newpassword.length < 6) {
+      // console.log('check password validation');
+    } else if (newpassword != password){
       alert('Password & confirm password does not match');
-    } else {
+
+    }else {
       console.log('password, newpassword', password, newpassword);
-      dispatch(
-        resetPassword(
-          {
-            password: newpassword,
-          },
-          cb => {
-            if (cb != false) {
-              if (cb.responseCode == 200) {
-                console.log('login called successfullly');
-                alert('Password changed successfully');
-                navigation.navigate('Login');
-                // navigation.goBack();
-                console.log('navigate to login');
+      try {
+        dispatch(
+          resetPassword(
+            {
+              password: newpassword,
+            },
+            cb => {
+              if (cb != false) {
+                if (cb.responseCode == 200) {
+                  console.log('login called successfullly');
+                  alert('Password changed successfully');
+                  navigation.navigate('Login');
+                  // navigation.goBack();
+                  console.log('navigate to login');
+                }
               }
-            }
-          },
-        ),
-      );
+            },
+          ),
+        );
+      } catch (error) {
+        // alert('Check - Invalid password ');
+        console("reset password error",error)
+      }
     }
+
+    // else if (newpassword.length < 6) {
+    // } else if (newpassword != password) {
+    //   alert('Password & confirm password does not match');
+    // } else if(!validatePassword(password)){
+    //   alert('please enter valid password');
+    // }
   };
   const validatePassword = password => {
     let reg = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,50}$/;
@@ -125,7 +132,7 @@ export const CreateNewPassword = ({route, navigation}) => {
               Your new password must be different
             </Text>
             <Text style={styles.newPasswordText}>
-              from previous used passwords.
+              from the previously used passwords.
             </Text>
           </View>
           <View style={styles.inputfieldView}>
@@ -138,7 +145,7 @@ export const CreateNewPassword = ({route, navigation}) => {
               empty={empty}
               secureTextEntry={show}
               TextMessageAlert={
-                'Password must contains Special Characters,[A-Z],[a-z],[0-9]'
+                'Password must be at least 6 characters'
               }
               TextMessage={'Password is required'}
               condtionText={{color: 'red'}}
@@ -154,7 +161,7 @@ export const CreateNewPassword = ({route, navigation}) => {
                   />
                 ) : (
                   <Image
-                  style={styles.eyeIconImage}
+                    style={styles.eyeIconImage}
                     // style={{height: 20, width: 20, marginTop: 20}}
                     source={require('../../assets/assets/eye.png')}
                   />
@@ -172,7 +179,7 @@ export const CreateNewPassword = ({route, navigation}) => {
               empty={empty}
               secureTextEntry={shownext}
               TextMessageAlert={
-                'Password must contains Special Characters,[A-Z],[a-z],[0-9]'
+                'Password must be at least 6 characters'
               }
               TextMessage={'Password is required'}
               condtionText={{color: 'red'}}

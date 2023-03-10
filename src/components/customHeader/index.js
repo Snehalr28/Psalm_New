@@ -6,21 +6,25 @@ import {StyleSheet} from 'react-native';
 import COLORS from '../../constants/color';
 import FONTS from '../../constants/fonts';
 
-const CustomHeader = ({title, leftIcon, rightIcon, textStyle, onPress}) => {
+const CustomHeader = ({title,newtitle,onPresstitle, leftIcon, rightIcon, textStyle, onPress}) => {
   return (
     <View style={styles.containerView}>
-      {leftIcon && <Image style={styles.topIcon} source={leftIcon} />}
-      {/* <View style={textStyle}> */}
-      <View>
-        <TouchableOpacity onPress={onPress}>
-          <Text style={styles.topText}>{title}</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* </View> */}
-
-      {rightIcon && <Image style={styles.topIcon} source={rightIcon} />}
+    {leftIcon && <Image style={styles.topIcon} source={leftIcon} />}
+    <View>
+      <TouchableOpacity onPress={onPress}>
+      <Text style={styles.topText}>{title}</Text>
+      </TouchableOpacity>
     </View>
+
+    <TouchableOpacity onPress={onPresstitle}>
+      <Text style={styles.topText}>{newtitle}</Text>
+      </TouchableOpacity>
+
+    <TouchableOpacity onPress={() => logoutUser()} style={{}}>
+    </TouchableOpacity>
+
+    {rightIcon && <Image style={styles.topIcon} source={rightIcon} />}
+  </View>
   );
 };
 
@@ -34,10 +38,10 @@ const styles = StyleSheet.create({
   topIcon: {height: 25, width: 25},
   topText: {
     fontSize: 14,
-    // marginLeft: -10,
+
     color: COLORS.BLACK,
     fontFamily: FONTS.MEDIUM,
-    marginLeft: -130,
+    // marginLeft: -130,
   },
 });
 
