@@ -4,8 +4,9 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Images from '../../../assets/Images/Sample';
 import COLORS from '../../../constants/color';
 import FONTS from '../../../constants/fonts';
+import { baseURL } from '../../../controllers/ApiList';
 
-const AllSessionsList = () => {
+const AllSessionsList = props => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleSelectedIndex = index => {
     setSelectedIndex(index);
@@ -46,12 +47,11 @@ const AllSessionsList = () => {
     },
   ];
 
-
   //-----------------Upcoming Screen Data-----------------------
   const upcoming = [
     {
       id: 0,
-      day:"Wednesday",
+      day: 'Wednesday',
       upcomingDate: '01-18-2022',
       subData: [
         {
@@ -83,41 +83,50 @@ const AllSessionsList = () => {
       ],
     },
     {
-        id: 1,
-        day:"Sunday",
-        upcomingDate: '01-18-2022',
-        subData: [
-          {
-            id: 0,
-            image: Images.homeSession2,
-            time: '11:30 PM',
-            category: 'Career Consultation',
-            description: 'Aliqua id fugiat nostrud',
-            type: 'Economics Nature',
-          },
-          {
-            id: 1,
-            image: Images.homeSession1,
-            time: '11:30 PM',
-            category: 'Education',
-            description:
-              'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt.',
-            type: 'Deserunt ullamco est',
-          },
-          {
-            id: 2,
-            image: Images.homeSession3,
-            time: '11:30 PM',
-            category: 'Investment or Business',
-            description:
-              'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt.',
-            type: 'Deserunt ullamco est',
-          },
-        ],
-      },
+      id: 1,
+      day: 'Sunday',
+      upcomingDate: '01-18-2022',
+      subData: [
+        {
+          id: 0,
+          image: Images.homeSession2,
+          time: '11:30 PM',
+          category: 'Career Consultation',
+          description: 'Aliqua id fugiat nostrud',
+          type: 'Economics Nature',
+        },
+        {
+          id: 1,
+          image: Images.homeSession1,
+          time: '11:30 PM',
+          category: 'Education',
+          description:
+            'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt.',
+          type: 'Deserunt ullamco est',
+        },
+        {
+          id: 2,
+          image: Images.homeSession3,
+          time: '11:30 PM',
+          category: 'Investment or Business',
+          description:
+            'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt.',
+          type: 'Deserunt ullamco est',
+        },
+      ],
+    },
   ];
+  const getCurrentDate=()=>{
+ 
+    var date = new Date().getDate();
+    var month = new Date().getMonth() + 1;
+    var year = new Date().getFullYear();
 
-    //---------------Today data---------------------
+    //Alert.alert(date + '-' + month + '-' + year);
+    // You can turn it in to your desired format
+    return date + '-' + month + '-' + year;//format: d-m-y;
+}
+  //---------------Today data---------------------
   const renderItem = ({item}) => {
     return (
       <View style={{}}>
@@ -137,20 +146,30 @@ const AllSessionsList = () => {
               color: COLORS.BLACK,
               marginTop: 5,
             }}>
-            {item.todayDate}
+            {getCurrentDate()}
           </Text>
         </View>
         {/* <View */}
-        <FlatList 
-          data={item.subData}
-          keyExtractor={subItem => subItem.id.toString()}
-          renderItem={({item: subItem}) => (
+        <FlatList
+          data={props.sessionData}
+          keyExtractor={subItem => subItem._id}
+          renderItem={({item}) => (
             <View style={{marginBottom: 15}}>
               <View style={{flexDirection: 'row'}}>
                 <View>
                   <Image
-                    style={{height: 110, width: 110, borderRadius: 10}}
-                    source={subItem.image}
+                    style={{
+                      height: 110,
+                      width: 110,
+                      borderRadius: 10,
+                      backgroundColor: 'green',
+                    }}
+                    source={{
+                      uri:
+                        item.image === undefined
+                          ? 'http://54.190.192.105:9192/public/profile_picture/1678444605470-download.jpeg'
+                          : baseURL + item.image,
+                    }}
                   />
                 </View>
 
@@ -170,9 +189,9 @@ const AllSessionsList = () => {
                         fontFamily: FONTS.MEDIUM,
                         color: COLORS.BLACK,
                         fontSize: 12,
-                        alignSelf:"center"
+                        alignSelf: 'center',
                       }}>
-                      {subItem.time}
+                      {item.session_data.start_date}
                     </Text>
                   </View>
 
@@ -184,7 +203,7 @@ const AllSessionsList = () => {
                       textTransform: 'uppercase',
                       marginBottom: 5,
                     }}>
-                    {subItem.category}
+                    {item.session_data.mentorship_name}
                   </Text>
                   <Text
                     style={{
@@ -193,7 +212,7 @@ const AllSessionsList = () => {
                       color: COLORS.BLACK,
                       marginBottom: 5,
                     }}>
-                    {subItem.description}
+                    {item.description}
                   </Text>
                   <Text
                     style={{
@@ -201,7 +220,9 @@ const AllSessionsList = () => {
                       color: COLORS.BLACK,
                       fontSize: 14,
                     }}>
-                    {subItem.type}
+                    {item.category_data[0] !== undefined
+                ? item.category_data[0].categoryName
+                : ''}
                   </Text>
                 </View>
               </View>
@@ -210,7 +231,7 @@ const AllSessionsList = () => {
                   borderWidth: 1,
                   borderColor: COLORS.HIGHLIGHT,
                   marginTop: 15,
-                  marginBottom:10
+                  marginBottom: 10,
                 }}></View>
             </View>
           )}
@@ -233,11 +254,14 @@ const AllSessionsList = () => {
             {/* Wednesday -{' '} */}
             {item.day}
           </Text>
-          <Text     style={{
+          <Text
+            style={{
               fontFamily: FONTS.MEDIUM,
               fontSize: 20,
               color: COLORS.BLACK,
-            }}>{" - "}</Text>
+            }}>
+            {' - '}
+          </Text>
           <Text
             style={{
               fontSize: 16,
@@ -249,7 +273,8 @@ const AllSessionsList = () => {
           </Text>
         </View>
         {/* <View */}
-        <FlatList showsHorizontalScrollIndicator={false}
+        <FlatList
+          showsHorizontalScrollIndicator={false}
           data={item.subData}
           keyExtractor={subItem => subItem.id.toString()}
           renderItem={({item: subItem}) => (
@@ -278,7 +303,7 @@ const AllSessionsList = () => {
                         fontFamily: FONTS.MEDIUM,
                         color: COLORS.BLACK,
                         fontSize: 12,
-                        alignSelf:"center"
+                        alignSelf: 'center',
                       }}>
                       {subItem.time}
                     </Text>
@@ -318,7 +343,7 @@ const AllSessionsList = () => {
                   borderWidth: 1,
                   borderColor: COLORS.HIGHLIGHT,
                   marginTop: 15,
-                  marginBottom:10
+                  marginBottom: 10,
                 }}></View>
             </View>
           )}
@@ -341,32 +366,32 @@ const AllSessionsList = () => {
       />
 
       {selectedIndex === 0 && (
-        <FlatList 
+        <FlatList
           data={today}
           keyExtractor={item => item.id.toString()}
           renderItem={renderItem}
         />
       )}
       {selectedIndex === 1 && (
-         <FlatList
-         data={upcoming}
-         keyExtractor={item => item.id.toString()}
-         renderItem={renderUpcomingItem}
-       />
+        <FlatList
+          data={today}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+        />
       )}
       {selectedIndex === 2 && (
-         <FlatList
-         data={upcoming}
-         keyExtractor={item => item.id.toString()}
-         renderItem={renderUpcomingItem}
-       />
+        <FlatList
+          data={today}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+        />
       )}
       {selectedIndex === 3 && (
-         <FlatList
-         data={upcoming}
-         keyExtractor={item => item.id.toString()}
-         renderItem={renderUpcomingItem}
-       />
+        <FlatList
+          data={today}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderItem}
+        />
       )}
     </View>
   );

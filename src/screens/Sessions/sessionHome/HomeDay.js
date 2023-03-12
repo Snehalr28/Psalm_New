@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -9,13 +9,11 @@ import moment from 'moment';
 import CalendarPicker from 'react-native-calendar-picker';
 import AllSessionsList from './AllSessionsList';
 
-const DayHomeWeek = () => {
+const HomeDay = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleSelectedIndex = index => {
     setSelectedIndex(index);
   };
-
- 
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -138,7 +136,9 @@ const DayHomeWeek = () => {
   const onDateChange = date => {
     setDate(date.format());
   };
-
+  useEffect(() => {
+    console.log('DayHomeWeek', props);
+  }, []);
   let fetchedDates = ['2023-03-10', '2023-03-11', '2023-03-11', '2023-03-12'];
   let markedDatesArray = [];
 
@@ -196,7 +196,9 @@ const DayHomeWeek = () => {
       },
     });
   }
-
+  useEffect(() => {
+    console.log('transferred Session data', props.sessionData);
+  }, []);
   return (
     <SafeAreaView style={{}}>
       <View>
@@ -318,14 +320,14 @@ const DayHomeWeek = () => {
         </View>
 
         <View>
-          <AllSessionsList />
+          <AllSessionsList sessionData={props.sessionData} />
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default DayHomeWeek;
+export default HomeDay;
 
 const styles = StyleSheet.create({
   tabsContainerStyle: {

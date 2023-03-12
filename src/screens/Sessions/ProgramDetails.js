@@ -199,7 +199,7 @@ const ProgramDetails = ({navigation}) => {
                   {/* <Text>online</Text> */}
                   {currentIndex === 0 && (
                     <View>
-                      <Text style={{}}>Scheduled Sessions</Text>
+                      <Text style={{}}>Scheduled Sessions 2</Text>
                       {/* <View> */}
 
                       <FlatList

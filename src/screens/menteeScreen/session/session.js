@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useDispatch,} from 'react';
 import {SafeAreaView} from 'react-native';
 import {
   View,
@@ -9,12 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import SegmentedControl from './SegmentedControl';
-import CustomSegmentedTab from '../../components/segmentedTab/';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Images from '../../assets/Images/Sample/';
 import {ScrollView} from 'react-native-gesture-handler';
 import FONTS from '../../constants/fonts';
 import COLORS from '../../constants/color';
+import { FetchSessionData } from '../../../actions/UserActions';
+import {useSelector, useDispatch} from 'react-redux';
+import {getUser} from '../../selectors/UserSelectors';
 
 const menu = require('../../assets/Icons/menuTab.png');
 const calender = require('../../assets/Icons/calenderTabIcon.png');
@@ -23,6 +25,7 @@ const calender = require('../../assets/Icons/calenderTabIcon.png');
 
 const ProgramDetails = ({navigation}) => {
   conts = [selectImage, setSelectImage] = useState('');
+  const dispatch = useDispatch();
 
   const [customStyleIndex, setCustomStyleIndex] = useState(0);
   const handleIndexSelect = index => {
@@ -64,7 +67,7 @@ const ProgramDetails = ({navigation}) => {
       title: 'Career Consultation',
       description: 'Amet minim mollit non deserunt',
       type: 'Economics Nature',
-      
+
       profile: [
         {
           id: 0,
@@ -113,10 +116,10 @@ const ProgramDetails = ({navigation}) => {
           source={item.image}
         />
         <View style={{marginLeft: 10}}>
-        <Text>{item.sessionStart}</Text>
+          <Text>{item.sessionStart}</Text>
           <Text>{item.title}</Text>
           <Text>{item.description}</Text>
-      
+
           <Text>{item.type}</Text>
         </View>
         <View
@@ -202,8 +205,15 @@ const ProgramDetails = ({navigation}) => {
                   </View>
                   {/* <Text>online</Text> */}
                   {currentIndex === 0 && (
-                    <View style={{marginTop:15}}>
-                      <Text style={{fontFamily:FONTS.MEDIUM, fontSize:20, color:COLORS.BLACK}}>Scheduled Sessions</Text>
+                    <View style={{marginTop: 15}}>
+                      <Text
+                        style={{
+                          fontFamily: FONTS.MEDIUM,
+                          fontSize: 20,
+                          color: COLORS.BLACK,
+                        }}>
+                        Scheduled Sessions 1
+                      </Text>
                       {/* <View> */}
 
                       <FlatList
@@ -219,7 +229,10 @@ const ProgramDetails = ({navigation}) => {
                   {currentIndex === 1 && (
                     <View>
                       {/* <Text style={{}}>textTab2</Text> */}
-                      <TouchableOpacity onPress={() =>{navigation.navigate("Edit Session")}}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate('Edit Session');
+                        }}>
                         <Text>Navigate to the Edit Session</Text>
                       </TouchableOpacity>
                     </View>

@@ -233,6 +233,25 @@ export class UserController {
     });
   }
 
+  static FetchSessionData(data) {
+    console.log("fetch data call",data)
+    return new Promise((resolve, reject) => {
+      console.log("fetch data call---")
+      HttpClient.get(`/mentorship/getAllDaywise?mentorid=${data.mentorid}&page=1&filter=`)
+        .then(response => {
+          console.log('fetch response response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('fetch session error ::', error);
+          reject(error);
+        });
+    });
+  }
 
   static ShowProgram(data) {
     console.log("//Inside show")

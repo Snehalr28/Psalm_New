@@ -63,6 +63,10 @@ export const TYPES = {
   FETCH_PROFILE_REQUEST: 'FETCH_PROFILE_REQUEST',
   FETCH_PROFILE_SUCCESS: 'FETCH_PROFILE_SUCCESS',
   FETCH_PROFILE_ERROR: 'FETCH_PROFILE_ERROR',
+
+  FETCH_SESSION_DATA: 'FETCH_SESSION_DATA',
+  FETCH_SESSION_SUCCESS: 'FETCH_SESSION_SUCCESS',
+  FETCH_SESSION_ERROR: 'FETCH_SESSION_ERROR',
 };
 
 const loginRequest = () => ({
@@ -265,9 +269,18 @@ const FetchProfileError = () => ({
   payload: {error}
 })
 
-
-
-
+const FetchSessionActionData= () =>({
+  type:TYPES.FETCH_SESSION_DATA,
+  payload: null
+});
+const SuccessSessionData= (sessionData) =>({
+  type:TYPES.FETCH_SESSION_SUCCESS,
+  payload: sessionData
+});
+const FetchSessionError = (error) => ({
+  type:TYPES.FETCH_SESSION_ERROR,
+  payload: {error}
+});
 export const loginUser = data => async dispatch => {
   console.log('Login Email and password Data', data);
   dispatch(loginRequest());
@@ -506,3 +519,21 @@ export const FetchProfileData = (data, cb)=> async dispatch => {
     dispatch(FetchProfileError(error));
   }
 };
+
+export const FetchSessionData = (data, cb)=> async dispatch => {
+  console.log('fetch User action inside',data);
+  dispatch(FetchSessionData());
+  try {
+    console.log("fetch profile fetch",data);
+    const profiledata = await UserController.FetchSessionData(data);
+    console.log('fetch User data',profiledata);
+    dispatch(SuccessSessionData(profiledata));
+    cb(profiledata.response);
+
+    console.log('fetch success',profiledata.response);
+  } catch (error) {
+    console.log(error);
+    dispatch(FetchSessionError(error));
+  }
+};
+
