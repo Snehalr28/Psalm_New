@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, FlatList, Image} from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import Images from '../../../assets/Images/Sample';
 import COLORS from '../../../constants/color';
 import FONTS from '../../../constants/fonts';
-import { baseURL } from '../../../controllers/ApiList';
+import {baseURL} from '../../../controllers/ApiList';
 
 const AllSessionsList = props => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [sortedSessions, setSortedSession] = useState([]);
   const handleSelectedIndex = index => {
     setSelectedIndex(index);
   };
@@ -116,16 +117,54 @@ const AllSessionsList = props => {
       ],
     },
   ];
-  const getCurrentDate=()=>{
- 
+  const getCurrentDate = () => {
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
-
-    //Alert.alert(date + '-' + month + '-' + year);
-    // You can turn it in to your desired format
-    return date + '-' + month + '-' + year;//format: d-m-y;
-}
+    return date + '-' + month + '-' + year; //format: d-m-y;
+  };
+  function compareDate(inputDateString){
+    var inputDate, now;
+    inputDate = new Date(inputDateString);
+    now = new Date();
+    if (inputDate < now) {
+      console.log('You entered past date');
+      return 'PastDate';
+    } else if (inputDate > now) {
+      console.log('You entered future date');
+    } else if (inputDate === now) {
+      console.log('You entered present date');
+    } else {
+      console.log('please enter a date');
+    }
+  }
+  function process(date) {
+    var parts = date.split('-');
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+  }
+  useEffect(() => {
+    if (selectedIndex === 0) {
+      const filterData = props.sessionData.filter((item: any) => {
+        return new Date(item.session_data.start_date) === new Date();
+      });
+      setSortedSession(filterData);
+    } else if (selectedIndex === 1) {
+      const filterData = props.sessionData.filter((item: any) => {
+        return new Date(item.session_data.start_date) > new Date();
+      });
+      setSortedSession(filterData);
+    } else if (selectedIndex === 2) {
+      const filterData = props.sessionData.filter((item: any) => {
+        return new Date(item.session_data.start_date) < new Date();
+      });
+      setSortedSession(filterData);
+    } else if (selectedIndex === 3) {
+      const filterData = props.sessionData.filter((item: any) => {
+        return new Date(item.session_data.start_date) > new Date();
+      });
+      setSortedSession(filterData);
+    }
+  }, [selectedIndex, props.sessionData]);
   //---------------Today data---------------------
   const renderItem = ({item}) => {
     return (
@@ -151,7 +190,7 @@ const AllSessionsList = props => {
         </View>
         {/* <View */}
         <FlatList
-          data={props.sessionData}
+          data={sortedSessions}
           keyExtractor={subItem => subItem._id}
           renderItem={({item}) => (
             <View style={{marginBottom: 15}}>
@@ -221,8 +260,8 @@ const AllSessionsList = props => {
                       fontSize: 14,
                     }}>
                     {item.category_data[0] !== undefined
-                ? item.category_data[0].categoryName
-                : ''}
+                      ? item.category_data[0].categoryName
+                      : ''}
                   </Text>
                 </View>
               </View>
