@@ -25,9 +25,6 @@ const ProgramCategory = props => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
-
- 
   let getuserData = useSelector(getUser);
   console.log('Mentor/mentee Id', getuserData.response.data._id);
 
@@ -105,6 +102,7 @@ const ProgramCategory = props => {
             }}
             style={styles.image}
           /> */}
+          
            <Image source={{uri:baseURL+image}} style={styles.image} />
            {/* <Image source={{image}} style={styles.image} /> */}
            

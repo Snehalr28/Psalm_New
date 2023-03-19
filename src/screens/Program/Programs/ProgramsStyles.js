@@ -174,7 +174,8 @@ export const styles = StyleSheet.create({
   },
   program: {marginBottom: 5, color: COLORS.BLACK, fontFamily: FONTS.REGULAR},
   incomingDate: {
-    marginLeft: '19%',
+    marginLeft: '35%',
+    marginRight:10,
     // fontWeight: '500',
     color: COLORS.BLACK,
     fontFamily: FONTS.MEDIUM,

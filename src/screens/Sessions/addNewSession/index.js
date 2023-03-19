@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
-import {StyleSheet, View, Text, Image, SafeAreaView} from 'react-native';
+import {StyleSheet, View, Text, Image, SafeAreaView, Alert} from 'react-native';
 import COLORS from '../../../constants/color';
 import moment from 'moment';
 import FONTS from '../../../constants/fonts';
@@ -9,19 +9,40 @@ import DatePicker from 'react-native-date-picker';
 import {Button} from '../../../components/Button';
 import CustomDropdown from '../../../components/customDropdown/';
 import {ScrollView} from 'react-native-gesture-handler';
+import {createUnparsedSourceFile} from 'typescript';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUser} from '../../../selectors/UserSelectors';
+import {ListShow} from '../../../actions/UserActions';
+import {useFocusEffect} from '@react-navigation/native';
 
 const AddNewSession = ({navigation}) => {
-  const [selectProgram, setSelectProgram] = useState(null);
+  // const {passId} = route.params;
 
+  let getuserData = useSelector(getUser);
+  console.log('Get userId add new session', getuserData.response.data._id);
+  const [selectProgram, setSelectProgram] = useState(null);
+  const [selectId, setSelectID] = useState('');
   const [time, setTime] = useState(new Date());
   const [openTime, setOpenTime] = useState(false);
   const [selectedNewTime, setSelectedNewTime] = useState('');
-
+  const [idate, setDate] = useState(date);
+  const [Newdata, setData] = useState([]);
+  console.log('New Data isss====>>', Newdata);
+  console.log('session expiry date', Newdata.expiry_date);
+  console.log('session start date', Newdata.start_date);
+  console.log('selectProgram issss check===>>', selectProgram);
+  // console.log("time issss",time)
+  console.log('selectedNewTime time issss', selectedNewTime);
+  // console.log("I iss  date issss",idate)
+  console.log('selected session/Program ID isss', selectProgram);
+  console.log('Selected ID==>>', selectId);
+  const dispatch = useDispatch();
   // const handleDateChange = newDate => {
   //   setSelectedNewDate(newDate.toISOString().slice(0, 10));
   //   setOpen(false);
   //   setDate(newDate);
   // };
+
   const handleTimeChange = newDate => {
     const hours = newDate.getHours();
     const minutes = newDate.getMinutes();
@@ -29,11 +50,59 @@ const AddNewSession = ({navigation}) => {
     const formattedHours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const formattedTime = `${formattedHours}:${formattedMinutes} ${period}`;
-  
+
     setSelectedNewTime(formattedTime);
     setOpenTime(false);
     setTime(newDate);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setSelectProgram(null);
+        setTime(new Date());
+        setOpenTime(false);
+        setSelectedNewTime('');
+        setDate(date);
+        setData([]);
+      };
+    }, []),
+  );
+  useEffect(() => {
+    // if (selectProgram != null) {
+    //   console.log('Selected time iss', selectedNewTime);
+    //   console.log('time form program', selectProgram.availibility_from);
+    //   console.log('time to program', selectProgram.availibility_to);
+    //   if (new Date(selectedNewTime) > new Date(selectProgram.availibility_to)) {
+    //     Alert.alert('Session time is beyond program time');
+    //   }
+    // }
+    if (selectProgram != null) {
+      console.log('Check expiry datesss==>', new Date(selectProgram.expiry_date));
+      let customdate = moment(idate).format('YYYY-MM-DD');
+      console.log('Check Customdate date', new Date(customdate));
+      if (new Date(customdate) > new Date(selectProgram.expiry_date)) {
+        alert('Session date is beyond program date');
+      }
+    }
+    if (selectProgram != null) {
+      console.log('Check start datesss==>', new Date(selectProgram.start_date));
+      let customdate = moment(idate).format('YYYY-MM-DD');
+      console.log('Check Customdate date', new Date(customdate));
+      if (new Date(customdate) < new Date(selectProgram.start_date)) {
+        alert('Session date is beyond program date');
+      }
+    }
+
+    console.log('Idate value', idate);
+  }, [idate, selectedNewTime]);
+
+  const data = [
+    {label: 'Java', value: 'Immigration'},
+    {label: 'AI', value: 'Career Consultation'},
+    {label: 'Scrum Master', value: 'Investment or Business'},
+    {label: 'Machine learning', value: 'Education'},
+  ];
 
   // const handleTimeChange = newDate => {
   //   setSelectedNewTime(newDate.toLocaleTimeString());
@@ -41,10 +110,43 @@ const AddNewSession = ({navigation}) => {
   //   setTime(newDate);
   // };
 
-  const [idate, setDate] = useState(date);
+  useEffect(() => {
+    DisplayList();
+  }, []);
+
+  const DisplayList = async () => {
+    console.log('display category list');
+    let SessionListOb = {
+      mentorid: getuserData.response.data._id,
+    };
+    try {
+      dispatch(
+        ListShow(SessionListOb, cb => {
+          console.log('MentorIDiss', SessionListOb);
+          console.log('list cb response check', cb);
+          console.log('cb list response check', cb.data[0]);
+
+          if (cb != false) {
+            // setData(cb.data.docs)
+            console.log('doc length true');
+            if (cb.messageID === 200) {
+              // setData(cb.data.docs[0].docs);
+              setData(cb.data);
+              // navigation.navigate('ProgramList');
+            }
+          }
+        }),
+      );
+    } catch (error) {
+      Alert.alert('Invalid Data');
+    }
+  };
 
   const date = new Date();
-  let customdate = moment(idate).format('Do MMMM, YY');
+  // let customdate = moment(idate).format('Do MMMM, YY');
+  let customdate = moment(date).format('MM/DD/YYYY');
+
+  console.log('Custom date check', customdate);
 
   const onDateChange = date => {
     setDate(date.format());
@@ -108,26 +210,57 @@ const AddNewSession = ({navigation}) => {
     },
   ];
 
-  const data = [
-    {label: 'Immigration', value: 'Immigration'},
-    {label: 'Career Consultation', value: 'Career Consultation'},
-    {label: 'Investment or Business', value: 'Investment or Business'},
-    {label: 'Education', value: 'Education'},
-  ];
-
+  const navigateBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white', padding: 20}}>
       {/* <View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/* 
+        { NewpassId!=null?(<View>
+
+<CustomDropdown
+ data={Newdata}
+//  value={programname}
+ labelField="mentorship_name"
+ valueField="_id"
+ placeholder="Select Program"
+ onChange={item =>{ setSelectProgram(item), setSelectID(item._id)}}
+/> 
+</View>):(<View>
+
+<CustomDropdown
+ data={Newdata}
+ value={selectProgram}
+ labelField="mentorship_name"
+ valueField="_id"
+ placeholder="Select Program"
+ onChange={item =>{ setSelectProgram(item), setSelectID(item._id)}}
+/> 
+</View>)} */}
+        <View>
+          <CustomDropdown
+            data={Newdata}
+            value={selectProgram}
+            labelField="mentorship_name"
+            valueField="_id"
+            placeholder="Select Program"
+            onChange={item => {
+              setSelectProgram(item), setSelectID(item._id);
+            }}
+          />
+        </View>
         <View
           style={{borderWidth: 1, borderColor: COLORS.HIGHLIGHT, elevation: 1}}>
           <View style={{padding: 10}}>
             <CalendarPicker
               //  markingType={'period'}
               onDateChange={date => onDateChange(date)}
+              selectedDay={customdate}
               selectedDayColor="#FE4D4D"
               selectedDayTextStyle={{color: 'white'}}
-              initialDate="2023-01-18"
+              initialDate={new Date()}
               width={350}
               customDatesStyles={customDatesStyles}
               textStyle={{
@@ -139,21 +272,34 @@ const AddNewSession = ({navigation}) => {
               previousTitleStyle={styles.nextTitleStyle}
               todayBackgroundColor="#000"
               todayTextStyle={{color: 'red'}}
-              previousTitle={<Image source={require('../../../assets/Icons/previous.png')} style={styles.arrow} />}
-              nextTitle={<Image source={require('../../../assets/Icons/next.png')} style={styles.arrow} />}
+              previousTitle={
+                <Image
+                  source={require('../../../assets/Icons/previous.png')}
+                  style={styles.arrow}
+                />
+              }
+              nextTitle={
+                <Image
+                  source={require('../../../assets/Icons/next.png')}
+                  style={styles.arrow}
+                />
+              }
             />
           </View>
         </View>
         {/* <View style={styles.dateview}>
           <Text style={styles.date}>{customdate} </Text>
         </View> */}
-        <View style={{marginTop:20, marginBottom:"30%"}}>
+        <View style={{marginTop: 20, marginBottom: '30%'}}>
           <TextInputComponent
             emailView={styles.textInputView}
-            styleInput={{fontFamily:FONTS.REGULAR, color:COLORS.BLACK}}
+            styleInput={{fontFamily: FONTS.REGULAR, color: COLORS.BLACK}}
             // placeholder={'Select Time'}
             label={'Select Time'}
             value={selectedNewTime || 'Select Time'}
+            empty={empty && !selectedNewTime}
+            error={false}
+            TextMessage={'Time is required'}
             onFocus={() => setOpenTime(true)}
             emailIconView={styles.imageView}
             emailIcon={[styles.image, {height: 16, width: 16}]}
@@ -168,21 +314,16 @@ const AddNewSession = ({navigation}) => {
             onConfirm={handleTimeChange}
             onCancel={() => setOpenTime(false)}
           />
-
-          <CustomDropdown
-            data={data}
-            value={selectProgram}
-            labelField="label"
-            valueField="value"
-            placeholder="Select Program"
-            onChange={item => setSelectProgram(item.value)}
-          />
         </View>
         <View>
           <Button
             style={styles.button}
             onPress={() => {
-              navigation.navigate('Add Session');
+              navigation.navigate('Add Session', {
+                Time: selectedNewTime,
+                ProID: selectId,
+                ProDate: customdate,
+              });
               console.log('button');
             }}
             textStyle={styles.buttonText}

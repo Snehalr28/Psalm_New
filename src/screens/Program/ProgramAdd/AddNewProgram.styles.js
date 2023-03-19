@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
     // marginBottom: 15,
     borderColor: COLORS.HIGHLIGHT,
   },
-  imageStyle:{height: 45, width: 45, alignSelf: 'center'},
+  imageStyle:{height: 50, width: 100, alignSelf: 'center'},
   imageIcon:{height: 25, width: 25},
   textInputView: {marginTop: 15},
   styleInput:{fontFamily:FONTS.REGULAR},

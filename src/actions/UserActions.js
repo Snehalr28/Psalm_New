@@ -13,7 +13,6 @@ export const TYPES = {
   UPDATE_MENTOR_ERROR: 'UPDATE_MENTOR_ERROR',
   UPDATE_MENTOR_SUCCESS: 'UPDATE_MENTOR_SUCCESS',
 
- 
   PROGRAM_LIST_REQUEST: 'PROGRAM_LIST_REQUEST',
   PROGRAM_LIST_ERROR: 'PROGRAM_LIST_ERROR',
   PROGRAM_LIST_SUCCESS: 'PROGRAM_LIST_SUCCESS',
@@ -30,9 +29,21 @@ export const TYPES = {
   ADD_MENTOR_ERROR: 'ADD_MENTOR_ERROR',
   ADD_MENTOR_SUCCESS: 'ADD_MENTOR_SUCCESS',
 
+  ADD_SESSION_REQUEST: 'ADD_SESSION_REQUEST',
+  ADD_SESSION_ERROR: 'ADD_SESSION_ERROR',
+  ADD_SESSION_SUCCESS: 'ADD_SESSION_SUCCESS',
+
+
   CATEGORY_DISPLAY_REQUEST: 'CATEGORY_DISPLAY_REQUEST',
   CATEGORY_DISPLAY_ERROR: ' CATEGORY_DISPLAY_ERROR',
   CATEGORY_DISPLAY_SUCCESS: 'CATEGORY_DISPLAY_SUCCESS',
+
+
+
+  MENTORS_DISPLAY_REQUEST: 'MENTORS_DISPLAY_REQUEST',
+  MENTORS_DISPLAY_ERROR: ' MENTORS_DISPLAY_ERROR',
+  MENTORS_DISPLAY_SUCCESS: 'MENTORS_DISPLAY_SUCCESS',
+
 
   REGISTER_REQUEST: 'REGISTER_REQUEST',
   REGISTER_ERROR: 'REGISTER_ERROR',
@@ -64,9 +75,18 @@ export const TYPES = {
   FETCH_PROFILE_SUCCESS: 'FETCH_PROFILE_SUCCESS',
   FETCH_PROFILE_ERROR: 'FETCH_PROFILE_ERROR',
 
-  FETCH_SESSION_DATA: 'FETCH_SESSION_DATA',
-  FETCH_SESSION_SUCCESS: 'FETCH_SESSION_SUCCESS',
-  FETCH_SESSION_ERROR: 'FETCH_SESSION_ERROR',
+  SINGLE_PROGRAM_REQUEST: 'FETCH_PROFILE_REQUEST',
+  SINGLE_PROGRAM_SUCCESS: 'FETCH_PROFILE_SUCCESS',
+  SINGLE_PROGRAM_ERROR: 'FETCH_PROFILE_ERROR',
+
+   LIST_REQUEST: 'LIST_REQUEST',
+  LIST_SUCCESS: 'LIST_SUCCESS',
+  LIST_ERROR: 'LIST_ERROR',
+
+ DISPLAY_SESSION_REQUEST: 'DISPLAY_SESSION_REQUEST',
+ DISPLAY_SESSION_SUCCESS: 'DISPLAY_SESSION_SUCCESS',
+ DISPLAY_SESSION_ERROR: ' DISPLAY_SESSION_ERROR',
+
 };
 
 const loginRequest = () => ({
@@ -187,6 +207,21 @@ const updateMentorError = error => ({
   payload: {error},
 });
 
+const addSessionRequest = () => ({
+  type: TYPES.ADD_SESSION_REQUEST,
+  payload: null,
+});
+const addSessionSuccess = addSession => ({
+  type: TYPES.ADD_SESSION_SUCCESS,
+  payload: {addSession},
+});
+const addSessionError = error => ({
+  type: TYPES.ADD_SESSION_ERROR,
+  payload: {error},
+});
+
+/// SESSION ADD
+
 const addMentorRequest = () => ({
   type: TYPES.ADD_MENTOR_REQUEST,
   payload: null,
@@ -227,6 +262,21 @@ const categoryDisplayError = error => ({
 });
 
 
+
+// mentor list actions
+const mentorsDisplayRequest = () => ({
+  type: TYPES.MENTORS_DISPLAY_REQUEST,
+  payload: null,
+});
+const mentorsDisplaySuccess =  mentorlist => ({
+  type: TYPES.MENTORS_DISPLAY_SUCCESS,
+  payload: {mentorlist},
+});
+const mentorsDisplayError = error => ({
+  type: TYPES. MENTORS_DISPLAY_ERROR,
+  payload: {error},
+});
+
 const ProgramListShowRequest = () => ({
   type: TYPES.PROGRAM_LIST_REQUEST,
   payload: null,
@@ -244,7 +294,7 @@ const PrograDetailsRequest = () => ({
   type: TYPES.PROGRAM_DETAILS_REQUEST,
   payload: null,
 });
-const ProgramDetailsSuccess= ProgramDetailsShow => ({
+const ProgramDetailsSuccess = ProgramDetailsShow => ({
   type: TYPES.PROGRAM_DETAILS_SUCCESS,
   payload: {ProgramDetailsShow},
 });
@@ -253,34 +303,67 @@ const ProgramDetailsError = error => ({
   payload: {error},
 });
 
-
-
 const FetchProfileRequest = () => ({
-  type:TYPES.FETCH_PROFILE_REQUEST,
-  payload: null
-})
+  type: TYPES.FETCH_PROFILE_REQUEST,
+  payload: null,
+});
 
-const FetchProfileSuccess = (profiledata) => ({
-  type:TYPES.FETCH_PROFILE_SUCCESS,
-  payload: profiledata
-})
+const FetchProfileSuccess = profiledata => ({
+  type: TYPES.FETCH_PROFILE_SUCCESS,
+  payload: profiledata,
+});
 const FetchProfileError = () => ({
-  type:TYPES.FETCH_PROFILE_ERROR,
-  payload: {error}
-})
+  type: TYPES.FETCH_PROFILE_ERROR,
+  payload: {error},
+});
 
-const FetchSessionActionData= () =>({
-  type:TYPES.FETCH_SESSION_DATA,
-  payload: null
+const SingleProgramDetailsRequest = () => ({
+  type: TYPES.SINGLE_PROGRAM_REQUEST,
+  payload: null,
 });
-const SuccessSessionData= (sessionData) =>({
-  type:TYPES.FETCH_SESSION_SUCCESS,
-  payload: sessionData
+
+const SingleProgramDetailsSuccess = singleprogramdata => ({
+  type: TYPES.SINGLE_PROGRAM_SUCCESS,
+  payload: {singleprogramdata},
 });
-const FetchSessionError = (error) => ({
-  type:TYPES.FETCH_SESSION_ERROR,
-  payload: {error}
+const SingleProgramDetailsError = () => ({
+  type: TYPES.SINGLE_PROGRAM_ERROR,
+  payload: {error},
 });
+
+/// session display
+
+const DisplaySessionRequest = () => ({
+  type: TYPES.DISPLAY_SESSION_REQUEST,
+  payload: null,
+});
+
+const DisplaySessionSuccess = sessiondata => ({
+  type: TYPES.DISPLAY_SESSION_SUCCESS,
+  payload: {sessiondata},
+});
+const DisplaySessionError = () => ({
+  type: TYPES.DISPLAY_SESSION_ERROR,
+  payload: {error},
+});
+
+
+const listRequest = () => ({
+  type: TYPES.LIST_REQUEST,
+  payload: null,
+});
+const listSuccess = list => ({
+  type: TYPES.LIST_SUCCESS,
+  payload: {list},
+});
+const listError = error => ({
+  type: TYPES.LIST_ERROR,
+  payload: {error},
+});
+
+
+
+
 export const loginUser = data => async dispatch => {
   console.log('Login Email and password Data', data);
   dispatch(loginRequest());
@@ -328,7 +411,7 @@ export const resendOtp = (data, cb) => async dispatch => {
   }
 };
 export const confirmOTP = (data, cb) => async dispatch => {
-  console.log("confirm OTP")
+  console.log('confirm OTP');
   dispatch(confirmOTPRequest());
   try {
     const user = await UserController.confirmOtp(data);
@@ -352,7 +435,7 @@ export const resetPassword = (data, cb) => async dispatch => {
   dispatch(resetPassRequest());
   try {
     const user = await UserController.resetPassword(data);
-    console.log('üserdata',user);
+    console.log('üserdata', user);
     alert(user.response.message);
     cb(user.response);
     dispatch(resetPassSuccess(user.response));
@@ -408,21 +491,36 @@ export const updateMentor = (data, cb) => async dispatch => {
   }
 };
 
-
-export const addMentor = (data,cb) => async dispatch => {
+export const addMentor = (data, cb) => async dispatch => {
   console.log('add program response', data);
   dispatch(addMentorRequest());
   try {
     const addMentor = await UserController.addMentor(data);
     console.log('Addprogram final response', addMentor);
-    cb(addMentor.response)
-    console.log("Add Program cb",addMentor.response)
+    cb(addMentor.response);
+    console.log('Add Program cb', addMentor.response);
     dispatch(addMentorSuccess(addMentor));
   } catch (error) {
-    console.log("add program error", error);
+    console.log('add program error', error);
     dispatch(addMentorError(error));
   }
 };
+
+export const addSession = (data, cb) => async dispatch => {
+  console.log('add session response', data);
+  dispatch(addSessionRequest());
+  try {
+    const addSession = await UserController.addSession(data);
+    console.log('Addprogram final response', addSession);
+    cb(addSession.response);
+    console.log('Add Program cb', addSession.response);
+    dispatch(addSessionSuccess(addSession));
+  } catch (error) {
+    console.log('add program error', error);
+    dispatch(addSessionError(error));
+  }
+};
+
 
 export const updateProgram = (data, cb) => async dispatch => {
   console.log('update program data isss', data);
@@ -432,9 +530,8 @@ export const updateProgram = (data, cb) => async dispatch => {
     const UpProgram = await UserController.updateProgram(data);
     console.log('update program user------>', UpProgram);
     dispatch(updateProgramSuccess(UpProgram));
-    console.log("check update program",UpProgram.response)
+    console.log('check update program', UpProgram.response);
     cb(UpProgram.response);
-   
 
     dispatch(loaderSuccess());
     console.log('Loder success call');
@@ -453,87 +550,160 @@ export const CategoryDisplay = cb => async dispatch => {
     console.log('/////Inside category try::');
     const category = await UserController.CategoryDisplay();
     // var data = JSON.stringify(category)
-   
-    console.log('category response is',category);
+
+    console.log('category response is', category);
     dispatch(categoryDisplaySuccess(category));
     cb(category.response);
 
-    console.log('display category success',category.response);
+    console.log('display category success', category.response);
   } catch (error) {
     console.log(error);
     dispatch(categoryDisplayError(error));
   }
 };
 
-export const ProgramListShow = (data,cb)  => async dispatch => {
-  console.log("::Inside Program")
-  console.log('Show list of program',data);
-  dispatch(ProgramListShowRequest());
-  console.log("Program list call")
-  try {
-    console.log('/////Inside Show program try::');
-    const showlist = await UserController.ShowProgram(data);
-    console.log('Show Program List',showlist);
-    dispatch(ProgramListShowSuccess(showlist));
-    cb(showlist.response);
 
-  
+//mentors display
+export const MentorsDisplay = (data,cb) => async dispatch => {
+  console.log('mentor list display action',data);
+  dispatch(mentorsDisplayRequest());
+  try {
+    console.log('/////Inside mentorlist try::');
+    const mentorlist = await UserController.mentorsDisplay(data);
+    // var data = JSON.stringify(category)
+
+    console.log('mentorlist response', mentorlist);
+    dispatch(mentorsDisplaySuccess(mentorlist));
+    cb(mentorlist.response);
+
+    console.log('display category success', mentorlist.response);
   } catch (error) {
-    console.log("program list error",error);
-    dispatch((error));
+    console.log(error);
+    dispatch(mentorsDisplayError(error));
   }
 };
 
-export const ProgramDetails = (data,cb)  => async dispatch => {
+
+export const ListShow = (data,cb) => async dispatch => {
+  console.log('list display action',data);
+  dispatch(listRequest());
+  try {
+    console.log('/////Inside list  try::');
+    const list = await UserController.ListShowNew(data);
+    // var data = JSON.stringify(category)
+
+    console.log('category response isisss', list);
+    dispatch(listSuccess(list));
+    cb(list.response);
+
+    console.log('display list success issss', list.response);
+  } catch (error) {
+    console.log("Show list error",error);
+    dispatch(listError(error));
+  }
+};
+
+export const ProgramListShow = (data, cb) => async dispatch => {
+  console.log('::Inside Program');
+  console.log('Show list of program', data);
+  dispatch(ProgramListShowRequest());
+  console.log('Program list call');
+  try {
+    console.log('/////Inside Show program try::');
+    const showlist = await UserController.ShowProgram(data);
+    console.log('Show Program List', showlist);
+    dispatch(ProgramListShowSuccess(showlist));
+    cb(showlist.response);
+  } catch (error) {
+    console.log('program list error', error);
+    dispatch(ProgramListShowError(error));
+  }
+};
+
+export const ProgramDetails = (data, cb) => async dispatch => {
   console.log('Show list of program');
   dispatch(PrograDetailsRequest());
   try {
     console.log('/////Inside program Details try::');
     const ProgramDetailsShow = await UserController.ShowDetails(data);
-    console.log('Show Program Details',ProgramDetailsShow);
+    console.log('Show Program Details', ProgramDetailsShow);
     dispatch(ProgramDetailsSuccess(ProgramDetailsShow));
     cb(ProgramDetailsShow.response);
-
-  
   } catch (error) {
     console.log(error);
-    dispatch(ProgramDetailsError(error));ProgramListShowError
+    dispatch(ProgramDetailsError(error));
   }
 };
 
-
-
-export const FetchProfileData = (data, cb)=> async dispatch => {
-  console.log('fetch User action inside',data);
+export const FetchProfileData = (data, cb) => async dispatch => {
+  console.log('fetch User action inside', data);
   dispatch(FetchProfileRequest());
   try {
-    console.log("fetch profile fetch",data);
+    console.log('fetch profile fetch', data);
     const profiledata = await UserController.FetchData(data);
-    console.log('fetch User data',profiledata);
+    console.log('fetch User data', profiledata);
     dispatch(FetchProfileSuccess(profiledata));
     cb(profiledata.response);
 
-    console.log('fetch success',profiledata.response);
+    console.log('fetch success', profiledata.response);
   } catch (error) {
     console.log(error);
     dispatch(FetchProfileError(error));
   }
 };
 
-export const FetchSessionData = (data, cb)=> async dispatch => {
-  console.log('fetch User action inside',data);
-  dispatch(FetchSessionData());
+
+//edit Program
+export const  FetchProgramData = (data, cb) => async dispatch => {
+  console.log('fetch User action inside', data);
+  dispatch(FetchProfileRequest());
   try {
-    console.log("fetch profile fetch",data);
-    const profiledata = await UserController.FetchSessionData(data);
-    console.log('fetch User data',profiledata);
-    dispatch(SuccessSessionData(profiledata));
+    console.log('fetch profile fetch', data);
+    const profiledata = await UserController.FetchData(data);
+    console.log('fetch User data', profiledata);
+    dispatch(FetchProfileSuccess(profiledata));
     cb(profiledata.response);
 
-    console.log('fetch success',profiledata.response);
+    console.log('fetch success', profiledata.response);
   } catch (error) {
     console.log(error);
-    dispatch(FetchSessionError(error));
+    dispatch(FetchProfileError(error));
   }
 };
 
+
+
+export const SingleProgramDetails = (data, cb) => async dispatch => {
+  console.log('show User action inside', data);
+  dispatch(SingleProgramDetailsRequest());
+  try {
+    console.log('fetch single program', data);
+    const singleprogramdata = await UserController.SingleData(data);
+    console.log('single program data', singleprogramdata);
+    dispatch(SingleProgramDetailsSuccess(singleprogramdata));
+    cb(singleprogramdata.response);
+
+    console.log('single program isss', singleprogramdata.response);
+  } catch (error) {
+    console.log(error);
+    dispatch(SingleProgramDetailsError(error));
+  }
+};
+
+// session details
+export const DisplaySession = (data, cb) => async dispatch => {
+  console.log('show User action inside issss', data);
+  dispatch(DisplaySessionRequest());
+  try {
+    console.log('fetch single program', data);
+    const sessiondata = await UserController.SessionDisplayData(data);
+    console.log('single session data', sessiondata);
+    dispatch(DisplaySessionSuccess(sessiondata));
+    cb(sessiondata.response);
+
+    console.log('single session isss', sessiondata.response);
+  } catch (error) {
+    console.log(error);
+    dispatch(DisplaySessionError(error));
+  }
+};

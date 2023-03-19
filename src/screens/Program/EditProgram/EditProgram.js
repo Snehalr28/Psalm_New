@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {Text, View, Image, TouchableOpacity} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -9,11 +9,12 @@ import {styles} from './EditProgram.styles';
 import {useSelector, useDispatch} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
-import {updateProgram} from '../../../actions/UserActions';
+import {FetchProgramData, updateProgram} from '../../../actions/UserActions';
 import DatePicker from 'react-native-date-picker';
 import { getUser } from '../../../selectors/UserSelectors';
 
 const EditProgram = ({route}) => {
+  const {passId} = route.params;
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [programName, setProgramName] = useState('');
@@ -34,14 +35,54 @@ const EditProgram = ({route}) => {
     setNewStartDate(newDate);
   };
 
-  const {passId} = route.params;
+  useEffect(() => {
+    FetchAllDataProgramData();
+    return () => {
+
+    };
+  }, []);
+
+  const FetchAllDataProgramData = id_Param => {
+    let DataOb = {_id: passId};
+    console.log('Fetch function edit program and ID', DataOb );
+    dispatch(
+      FetchProgramData(DataOb, cb => {
+        console.log('Fetch edit Data response data', cb);
+        if (cb != false) {
+          console.log('mentor ship name is', cb.data.mentorship_name);
+         
+          if (cb.messageID === 200) {
+            setProgramName(cb.data.mentorship_name)
+            setExp(cb.data.experience)
+            setPrice(cb.data.price)
+            setMentee(cb.data.mentee_limit)
+            setAvailablity(cb.data.availibility_from)
+            setDescription(cb.data.description)
+            
+            // setSkillName(cb.data.skillName);
+            // setProfileUri(baseURL + cb.data.image);
+        
+            // setArray(cb.data.skills)
+          }
+        }
+        setisLoading(false);
+      }),
+    );
+  };
+
+
+
+
+
+
+
   console.log("edit program Category ID", passId)
   let getuserData = useSelector(getUser);
   console.log('edit Program User ID', getuserData.response.data._id);
   const handleSubmitButton = () => {
     console.log('edit Program');
     let updateProgramObj = {
-      category_id: '63c936090a9a959d9ed369d3',
+      category_id: '63c935fe0a9a959d9ed369d0',
       mentorship_name: programName,
       description: description,
       mentorship_mode: 1,
@@ -52,7 +93,7 @@ const EditProgram = ({route}) => {
       price: price,
       payment_mode: 'card',
       mentee_limit: '20',
-      user_id: getuserData.response.data._id,
+      _id: '640eaad03cefe4295072c141',
     };
 
     console.log('updateProgramOb', updateProgramObj);

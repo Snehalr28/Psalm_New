@@ -10,6 +10,10 @@ import ProgramCategory from '../screens/Program/ProgramCategory/ProgramCategory'
 import Programs from '../screens/Program/Programs/Programs';
 import ProgramDetails from '../screens/Program/ProgramDetails/ProgramDetails';
 import EditProgram from '../screens/Program/EditProgram/EditProgram';
+import { SessionNavigator } from './SessionNavigator';
+import AddSession from '../screens/Sessions/addSession';
+import AddNewSession from '../screens/Sessions/addNewSession';
+import AddNewSessionS from '../screens/Sessions/addNewSessionDefault.js';
 const Stack = createNativeStackNavigator();
 export function ProgramNavigator() {
   return (
@@ -33,7 +37,7 @@ export function ProgramNavigator() {
       <Stack.Screen
         name="programs"
         component={Programs}
-        options={{headerShown: false}}
+        // options={{headerShown: false}}
       />
       <Stack.Screen
         name="Program Details"
@@ -45,6 +49,15 @@ export function ProgramNavigator() {
         component={EditProgram}
         options={{headerShown: false}}
       />
+ <Stack.Screen name="Add Session" component={AddSession} />
+      <Stack.Screen name="Add New Session" component={AddNewSession}/>
+      <Stack.Screen name="Add New Sessions" component={AddNewSessionS}/>
+{/* <Stack.Screen
+        name="session navigator"
+        component={SessionNavigator}
+        options={{headerShown: false}}
+      /> */}
+
     </Stack.Navigator>
   );
 }

@@ -22,8 +22,8 @@ import CustomSearch from '../../components/customSearch';
 import CustomHeader from '../../components/customHeader';
 import CustomSegmentedTab from '../../components/segmentedTab/';
 import {useSelector} from 'react-redux';
-import {getUser} from '../../selectors/UserSelectors';
-import { setAuthorization } from '../../controllers/HttpClient';
+import {getUser, getUserProfilepic} from '../../selectors/UserSelectors';
+import {setAuthorization} from '../../controllers/HttpClient';
 
 export const Dashboard = props => {
   const dispatch = useDispatch();
@@ -31,8 +31,9 @@ export const Dashboard = props => {
   const navigation = useNavigation();
   const {colors} = useTheme();
   const user = useSelector(getUser);
-  console.log("getuser response on dashboard",user.response.data.name)
-
+  console.log('getuser response on dashboard', user.response.data.name);
+  // const userprofilePic = useSelector(getUserProfilepic)
+  // console.log("get user profile pic data",userprofilePic)
   const logoutUser = () => {
     dispatch(logout());
   };
@@ -124,19 +125,17 @@ export const Dashboard = props => {
     <>
       <SafeAreaView style={styles.container}>
         <CustomHeader
-        title={user.response.data.name}
-        newtitle="logout"
-        onPresstitle={() => logoutUser()}
+          title={user.response.data.name}
+          newtitle="logout"
+          onPresstitle={() => logoutUser()}
           // title="Hello, Cameron"
-          leftIcon={require('../../assets/Icons/userProfile.png')}
+          leftIcon={require('../../assets/Icons/camera.png')}
           rightIcon={require('../../assets/Icons/Notification1.png')}
           // onPress={() => {
           //   console.log('touch on user name');
           // }}
           onPress={() => navigation.navigate('MentorMenteeProfileScreen')}
-        /> 
-
-  
+        />
 
         <View style={styles.searchView}>
           <CustomSearch

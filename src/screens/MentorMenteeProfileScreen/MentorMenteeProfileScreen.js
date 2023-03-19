@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {getUser} from '../../selectors/UserSelectors';
 import {Button} from '../../components/Button';
+
 // import {styles} from './MentorMenteeProfileScreen.styles';
 // import {DateTimePickerModal} from 'react-native-modal-datetime-picker';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -30,11 +31,13 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DatePicker from 'react-native-date-picker';
 import {setContentType} from '../../controllers/HttpClient';
 import {baseURL} from '../../controllers/ApiList';
-
+import ImageViewing from "react-native-image-viewing"
+import Pdf from 'react-native-file-viewer'
 export const MentorMenteeProfile = props => {
   const [isLoading, setisLoading] = useState(true);
   const [showscreen, setShowScreen] = useState(false);
   console.log('isloading true', isLoading);
+ 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -67,7 +70,6 @@ export const MentorMenteeProfile = props => {
   const [DobError, setDobError] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [skills, setskills] = useState([]);
-  
 
   const [profileClick, setProfileClick] = useState(false);
   const [verifyImageClick, setVerifyImageClick] = useState(false);
@@ -82,7 +84,9 @@ export const MentorMenteeProfile = props => {
   console.log('uploading program response check', verifyresponse);
   const [skillresponse, setSkillResponse] = useState([]);
 
-  const [file, setFilePath] = useState('');
+  const [verificationuri, setVerificationURI] = useState(null);
+  console.log('Uri responsr===>>>', verificationuri);
+  console.log('verification id Uriiiii--------', verificationuri);
 
   console.log('Response of Image', response);
   console.log('Profile pictrure picked', response, profileClick);
@@ -144,7 +148,7 @@ export const MentorMenteeProfile = props => {
     console.log('Fetch function call and ID', id_Param);
     dispatch(
       FetchProfileData(DataOb, cb => {
-        console.log('Fetch Data response data', cb);
+        console.log('Fetch Data response data===>>>', cb);
         if (cb != false) {
           console.log('First name is', cb.data.firstName);
           console.log('number name is', cb.data.phone);
@@ -166,6 +170,7 @@ export const MentorMenteeProfile = props => {
             setSkillName(cb.data.skillName);
             setProfileUri(baseURL + cb.data.image);
             setskills(cb.data.skills);
+            setVerificationURI(baseURL + cb.data.validationid);
             // setArray(cb.data.skills)
           }
         }
@@ -372,7 +377,185 @@ export const MentorMenteeProfile = props => {
     month: 'long',
     year: 'numeric',
   });
-  console.log('isloading valueee', isLoading);
+  // console.log('isloading valueee', isLoading);
+
+  // const [pdfFile, setPdfFile] = useState(null);
+  // // console.log('*******pdfFile***********', pdfFile);
+  // useEffect(() => {
+  //   fetch('https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf')
+  //     .then(response => response.blob())
+  //     .then(blob => setPdfFile(blob));
+  // }, []);
+  const [isFileModalView, setFileModalView] = useState(false);
+
+  const toggleModal = () => {
+    setFileModalView(!isFileModalView);
+  };
+
+  const closeModal = () => {
+    setFileModalView(false);
+  };
+
+  const [error, setError] = useState(null);
+  const handleError = error => {
+    setError(error);
+  };
+  // const path = baseURL + item.certificates;
+  // console.log("path is here", path);
+
+  // const handlePress = async (item) => {
+  //   alert.alert("fileExists ****")
+  //   console.log("itemmmmmmm++++", item.certificates);
+  //   console.log(`${baseURL}${item.certificates}`, "--------itemmmmmmmmm");
+  //   const granted = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  //   );console.log('feles are shown here:', item);
+  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //     const fileExists = await RNFS.exists(item); // add this line
+  //     console.log('fileExists:', fileExists); // add this line
+  //     if (fileExists) {
+  //       FileViewer.open(`${baseURL}${item.certificates}`, { showOpenWithDialog: true })
+  //         .then(() => {
+  //           console.log('File opened successfully');
+  //         })
+  //         .catch((error) => {
+  //           console.error('Error opening file: ', error);
+  //         });
+  //     } else {
+  //       console.log('File does not exist at path:', path); // add this line
+  //     }
+  //   } else {
+  //     console.log('Permission denied');
+  //   }
+  // };
+
+  // const handlePress = async (path) => {
+  //   const granted = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  //   ); console.log("granted_______", granted);
+  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //     FileViewer.open(path, {showOpenWithDialog: true})
+  //       .then(() => {
+  //         // something useful here
+  //       })
+  //       .catch((err) => {
+  //         console.log('err: ', err);
+  //       });
+  //   } else {
+  //     console.log('Permission denied');
+  //   }
+  //   }
+  // console.log(item?.survey?.pdfFilePath, 'item????')
+
+  //   const handlePress = async (item) => {
+  //     console.log("itemmmmmmm++++", item.certificates);
+
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+  //       FileViewer.open(`${baseURL}${item.certificates}`, {showOpenWithDialog: true})
+  //         .then(() => {
+  //           console.log(`${baseURL}${item.certificates}`, "--------itemmmmmmmmm");
+  //           // something useful here
+  //         })
+  //         .catch((err) => {
+  //           console.log('err: ', err);
+  //         });
+  //     } else {
+  //       console.log('Permission denied');
+  //     }
+  // }
+
+  const [filePathNew, setfilePath] = useState(null);
+  console.log('filePath valu++++++', filePathNew);
+
+  // const handlePress = async item => {
+  //   console.log('item is 1111----', item);
+  //   const granted = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+  //   );
+  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //     const filePath = `${baseURL}${item.certificates}`;
+  //     setfilePath(filePath);
+  //     console.log('-----------baseurl---------', filePath);
+  //     // const fileExists = await RNFS.exists(filePath);
+  //     // console.log("***fileExists*****", fileExists);
+  //     if (filePath) {
+  //       console.log('new file path is 000000----', filePath);
+  //       try {
+  //         await FileViewer.open(filePath, {showOpenWithDialog: true});
+  //       } catch (error) {
+  //         console.error('Error opening file: ', error);
+  //       }
+  //     } else {
+  //       console.log('File does not exist at path:', filePath);
+  //     }
+  //   } else {
+  //     console.log('Permission denied');
+  //   }
+  // };
+  function getUrlExtension(url) {
+    return url.split('.').pop();
+  }
+
+  const handlePress = async item => {
+    console.log('item is 1111----', item);
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      const url = `${baseURL}${item.certificates}`;
+      const extension = getUrlExtension(url);
+      const localFile = `${RNFS.DocumentDirectoryPath}/temporaryfile.${extension}`;
+      const options = {
+        fromUrl: url,
+        toFile: localFile,
+      };
+      RNFS.downloadFile(options)
+        .promise.then(() => FileViewer.open(localFile))
+        .then(() => {
+          // success
+        })
+        .catch(error => {
+          console.error('Error opening file: ', error);
+        });
+    } else {
+      console.log('Permission denied');
+    }
+  };
+
+  const launchLibrary = () => {
+    // setModalVisible(true);
+    launchImageLibrary(actions[1].options, response => {
+      if (verifyImageClick) {
+        // console.log('verification modal');
+        setVerifyResponse(response);
+        setVerifyName(response?.assets[0]?.fileName);
+        setVerificationURI(response?.assets[0]?.uri);
+      } else if (profileClick) {
+        // console.log('profile modal');
+        setResponse(response);
+        setProfileUri(response?.assets[0]?.uri);
+      } else if (verifyCerificateClick) {
+        // console.log('profile modal');
+        // setSkillResponse(response)
+
+        setSkillResponse([...skillresponse, response]);
+        // skillImages[0]={uri:""}
+        //  if (array.count == assets.count){
+        //   for (let arrayIndex = 0; arrayIndex < arrayIndex.length; index++) {
+        //     setskillcertificateName(response?.assets[arrayIndex]?.uri);
+        //   }
+        //  }
+      } else {
+        // setModalVisible(false);
+        console.log('failed to open library');
+      }
+    });
+  };
+  const [modalFileView, setModalFileView] = useState(false);
   return (
     <>
       {isLoading && showLoder()}
@@ -387,7 +570,7 @@ export const MentorMenteeProfile = props => {
             <View style={styles.profileStyle}>
               <TouchableOpacity
                 onPress={() => {
-                  setModalVisible(true);
+                  launchLibrary();
                   setVerifyImageClick(false);
                   setProfileClick(true);
                   setverifyCerificateClick(false);
@@ -438,6 +621,7 @@ export const MentorMenteeProfile = props => {
                               console.log('verification modal');
                               setVerifyResponse(response);
                               setVerifyName(response?.assets[0]?.fileName);
+                              setVerificationURI(response?.assets[0]?.uri);
                             } else if (profileClick) {
                               console.log('profile modal');
                               setResponse(response);
@@ -597,21 +781,74 @@ export const MentorMenteeProfile = props => {
               />
             </View>
 
-            <TextInputComponent
-              emailView={styles.textInputView}
-              placeholder={'Verification ID'}
-              label={'Verification ID'}
-              onChangeText={setVerificationChange}
-              value={verifyName}
-              emailIconView={styles.imageView}
-              emailIcon={styles.image}
-              source={require('../../assets/Icons/Group.png')}
-              onPress={() => {
-                setModalVisible(true), setVerifyImageClick(true);
-                setProfileClick(false);
-                setverifyCerificateClick(false);
-              }}
-            />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: -15,
+              }}>
+              <TextInputComponent
+                editable={false}
+                styleInput={{width: 300}}
+                emailView={styles.textInputView}
+                placeholder={'Verification ID'}
+                label={'Verification ID'}
+                onChangeText={setVerificationChange}
+                // value={verifyName}
+                emailIconView={styles.imageView}
+                emailIcon={styles.image}
+                source={require('../../assets/Icons/Group.png')}
+                onPress={() => {
+                  launchLibrary();
+                  // setModalVisible(true),
+                  setVerifyImageClick(true);
+                  setProfileClick(false);
+                  setverifyCerificateClick(false);
+                }}
+              />
+              <View style={{marginTop: 35, marginLeft: 15}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    // handlePdfPress(item);
+                    setModalFileView(true);
+                  }}>
+                  <View>
+                    <Image
+                      style={{height: 25, width: 25, borderRadius: 5}}
+                      source={{
+                        uri: verificationuri,
+                        // uri: 'https://reactnative.dev/img/tiny_logo.png',
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <ImageViewing
+                images={[{uri: verificationuri}]}
+                visible={modalFileView}
+                onRequestClose={() => setModalFileView(false)}
+              />
+            </View>
+
+            {/* <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.uploadText}>Upload Verification ID</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    // setModalVisible(true),
+                    launchLibrary();
+                    setVerifyImageClick(true);
+                    setProfileClick(false);
+                    setverifyCerificateClick(false);
+                  }}>
+                  <Image
+                    style={{height: 20, width: 20, marginLeft: 5}}
+                    source={require('../../assets/Icons/Group.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View> */}
 
             <CustomDropdown
               data={LanguageData}
@@ -675,7 +912,7 @@ export const MentorMenteeProfile = props => {
                   console.log('skill typeiss', item.skillType);
                   console.log('Skill Nameiss', item.skillName);
                   return (
-                    <View>
+                    <View >
                       <TextInputComponent
                         emailView={styles.textInputView}
                         placeholder={'Skill Type'}
@@ -702,29 +939,139 @@ export const MentorMenteeProfile = props => {
                           )
                         }
                       />
-                      <TextInputComponent
-                        emailView={styles.textInputView}
-                        placeholder={'"Upload Certificate"'}
-                        label={'Upload Certificate'}
-                        value={item.certificates}
-                        onChangeText={text =>
-                          setskills(
-                            Object.assign([], skills, {
-                              [index]: {...item, certificate: text},
-                            }),
-                          )
-                        }
-                        emailIconView={styles.imageView}
-                        emailIcon={styles.image}
-                        source={require('../../assets/Icons/Group.png')}
-                        onPress={() => {
-                          setModalVisible(true);
-                          setVerifyImageClick(false);
-                          setProfileClick(false);
-                          setverifyCerificateClick(true);
-                          console.log('Index isss', index);
-                        }}
-                      />
+                      <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+                        <TextInputComponent
+                          editable={false}
+                          styleInput={{width: 300}}
+                          emailView={styles.textInputView}
+                          placeholder={'"Upload Certificate"'}
+                          label={'Upload Certificate'}
+                          // value={item.certificates}
+                          onChangeText={text =>
+                            setskills(
+                              Object.assign([], skills, {
+                                [index]: {...item, certificate: text},
+                              }),
+                            )
+                          }
+                          emailIconView={styles.imageView}
+                          emailIcon={styles.image}
+                          source={require('../../assets/Icons/Group.png')}
+                          onPress={() => {
+                            // setModalVisible(true);
+                            launchLibrary();
+                            setVerifyImageClick(false);
+                            setProfileClick(false);
+                            setverifyCerificateClick(true);
+                            console.log('Index isss', index);
+                          }}
+                        />
+
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 15,
+                            justifyContent: 'space-between',
+                            marginTop:35
+                          }}>
+                          {/* <Text style={styles.uploadText}>Upload Certificate</Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            launchLibrary()
+                            // setModalVisible(true);
+                            setVerifyImageClick(false);
+                            setProfileClick(false);
+                            setverifyCerificateClick(true);
+                          }}>
+                          <Image
+                            style={{height: 20, width: 20}}
+                            source={require('../../assets/Icons/Group.png')}
+                          />
+                        </TouchableOpacity> */}
+                          <TouchableOpacity
+                            style={{
+                              justifyContent: 'flex-start',
+                              alignItems: 'flex-start',
+                            }}
+                            onPress={() => {
+                              // handlePress(item);
+                              // setModalVisible(true);
+                            }}>
+                            {item.certificates.endsWith('.pdf') ? (
+                              <View
+                                style={{
+                                  flex: 1,
+                                  justifyContent: 'flex-start',
+                                  alignItems: 'center',
+                                  backgroundColor: 'grey',
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    handlePress(item);
+                                    // setModalVisible(true);
+                                  }}>
+                                  <Pdf
+                                    trustAllCerts={false}
+                                    source={{uri: baseURL + item.certificates}}
+                                    style={{flex: 1, height: 20, width: 20}}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <View
+                                styel={{
+                                  flex: 1,
+                                  backgroundColor: 'black',
+                                  width: 20,
+                                  height: 20,
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    // handlePdfPress(item);
+                                    setModalFileView(true);
+                                  }}>
+                                  <Image
+                                    source={{uri: baseURL + item.certificates}}
+                                    style={{width: 20, height: 20}}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+
+                          <ImageViewing
+                            images={[{uri: baseURL + item.certificates}]}
+                            visible={modalFileView}
+                            onRequestClose={() => setModalFileView(false)}
+                          />
+                        </View>
+                      </View>
+
+                      {/* <View style={{flex:1, justifyContent:"flex-start", alignItems:"center", backgroundColor:"green"}}> */}
+                      {/* <Pdf trustAllCerts={false} source={{uri: "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"}}
+                        style={{flex:1, width:100, height:100}} */}
+                      {/* /> */}
+                      {/* </View> */}
+                      {/* <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          backgroundColor: 'grey',
+                        }}>
+                        <Pdf
+                          trustAllCerts={false}
+                          source={{ uri: baseURL + item.certificates }}
+                          style={{ flex: 1, width: 100, height: 100 }}
+                        />
+                      </View> */}
+
+                      {/* <TouchableOpacity onPress={() => handlePress(item)}>
+                        <Image
+                          source={{uri: baseURL + item.certificates}}
+                          style={{width: 100, height: 100}}
+                        />
+                      </TouchableOpacity> */}
 
                       <View
                         style={{

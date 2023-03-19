@@ -17,11 +17,14 @@ import {
   ProgramListurl,
   getCategoryurl,
   ProgramDetailsurl,
+  addSessionurl,
+  listurl,
+  getmentorsurl,
 } from '../controllers/ApiList';
 import {Alert} from 'react-native';
 import {getUser} from '../../selectors/UserSelectors';
 import {useSelector, useDispatch} from 'react-redux';
-import { setContentType } from './HttpClient';
+import {setContentType} from './HttpClient';
 
 export class UserController {
   static login(data) {
@@ -30,7 +33,7 @@ export class UserController {
         .then(response => {
           console.log('TOKEN*********', response.data && response.data.token);
           console.log('Login response<<<', response.message);
-        
+
           if (response.status == 'Success') {
             // alert(response.message);
             console.log('Login success', response.status);
@@ -126,7 +129,53 @@ export class UserController {
     });
   }
 
+  // mentor list 
+
+  static mentorsDisplay(data) {
+    return new Promise((resolve, reject) => {
+      HttpClient.get(getmentorsurl)
+      HttpClient.get(
+        `mentor/getAll-users?page=${data.page}&roles=${data.roles}`,
+      )
+        .then(response => {
+          console.log('mentors response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('mentors display error""""', error);
+          reject(error);
+        });
+    });
+  }
+
+
+  static ListShowNew(data) {
+    return new Promise((resolve, reject) => {
+      // HttpClient.get(listurl,data)
+      HttpClient.get(
+        `mentorship/getallProgramDropdown?mentorid=${data.mentorid}`,
+      )
+        .then(response => {
+          console.log('list check response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('list error""""', error);
+          reject(error);
+        });
+    });
+  }
+
   static confirmOtp(data) {
+    console.log('OTP data check', data);
     return new Promise((resolve, reject) => {
       HttpClient.post(confirmOtpUrl, data)
         .then(response => {
@@ -171,10 +220,16 @@ export class UserController {
         .then(response => {
           console.log('Update Mentor/add program Response', response);
           if (response.status == 'Success') {
-            console.log('update mentor/ add program Success Response', response.status);
+            console.log(
+              'update mentor/ add program Success Response',
+              response.status,
+            );
             resolve({response});
           } else {
-            console.log('update mentor add program else message', response.message);
+            console.log(
+              'update mentor add program else message',
+              response.message,
+            );
             alert(response.message);
             reject(response.message);
           }
@@ -192,31 +247,55 @@ export class UserController {
     return new Promise((resolve, reject) => {
       setContentType(true);
       // setContentType(false);
-      console.log("add mentor inside")
+      console.log('add mentor inside');
       HttpClient.post(addProgram, data)
-        .then((response) => {
+        .then(response => {
           console.log('add mentor response', response);
           if (response.status == 'Success') {
-           console.log("add mentor success#######", response.status);
-            resolve({ response });
+            console.log('add mentor success#######', response.status);
+            resolve({response});
           } else {
             console.log('log1', response.message);
             reject(response.message);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           reject(error);
           console.log('add mentor error""""', error);
-          console.log('log2',error)
+          console.log('log2', error);
         });
     });
   }
 
+  static addSession(data) {
+    console.log('add session data', JSON.stringify(data));
+    return new Promise((resolve, reject) => {
+      setContentType(true);
+      // setContentType(false);
+      console.log('add session inside');
+      HttpClient.post(addSessionurl, data)
+        .then(response => {
+          console.log('add session response', response);
+          if (response.status == 'Success') {
+            console.log('add session success#######', response.status);
+            resolve({response});
+          } else {
+            console.log('session error-->>', response.message);
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          reject(error);
+          console.log('add session error""""', error);
+          console.log('log2', error);
+        });
+    });
+  }
 
   static FetchData(data) {
-    console.log("fetch data call",data)
+    console.log('fetch data call', data);
     return new Promise((resolve, reject) => {
-      console.log("fetch data call---")
+      console.log('fetch data call---');
       HttpClient.get(`mentor/getUser?user_id=${data.user_id}`)
         .then(response => {
           console.log('fetch response response<<>>', response);
@@ -233,13 +312,13 @@ export class UserController {
     });
   }
 
-  static FetchSessionData(data) {
-    console.log("fetch data call",data)
+  static SingleData(data) {
+    console.log('fetch single data call', data);
     return new Promise((resolve, reject) => {
-      console.log("fetch data call---")
-      HttpClient.get(`/mentorship/getAllDaywise?mentorid=${data.mentorid}&page=1&filter=`)
+      console.log('fetch single data call---');
+      HttpClient.get(`mentorship/getSingleProgram?_id=${data._id}`)
         .then(response => {
-          console.log('fetch response response<<>>', response);
+          console.log('fetch single response response<<>>', response);
           if (response.messageID === 200) {
             resolve({response});
           } else {
@@ -247,17 +326,41 @@ export class UserController {
           }
         })
         .catch(error => {
-          console.log('fetch session error ::', error);
+          console.log('fetch data error""""', error);
+          reject(error);
+        });
+    });
+  }
+
+  //sessionDisplay
+
+  static SessionDisplayData(data) {
+    console.log('fetch single session data call', data);
+    return new Promise((resolve, reject) => {
+      console.log('fetch session--');
+      HttpClient.get(`mentorship/getwholeProgramdetail?mentorid=${data.mentorid}&program_id=${data.program_id}`)
+     .then(response => {
+          console.log('session response<<>>', response);
+          if (response.messageID === 200) {
+            resolve({response});
+          } else {
+            reject(response.message);
+          }
+        })
+        .catch(error => {
+          console.log('show session error""""', error);
           reject(error);
         });
     });
   }
 
   static ShowProgram(data) {
-    console.log("//Inside show")
+    console.log('//Inside show');
     return new Promise((resolve, reject) => {
-      HttpClient.get(ProgramListurl, data)
-      HttpClient.get(`mentorship/getMentorshipById?mentorid=${data.mentorid}&category_id=${data.category_id}`)
+      // HttpClient.get(ProgramListurl, data);
+      HttpClient.get(
+        `mentorship/getMentorshipById?mentorid=${data.mentorid}&category_id=${data.category_id}`,
+      )
         .then(response => {
           console.log('show program response<<>>', response);
           if (response.messageID === 200) {
@@ -272,7 +375,6 @@ export class UserController {
         });
     });
   }
-
 
   static ShowDetails(data) {
     return new Promise((resolve, reject) => {
@@ -292,9 +394,6 @@ export class UserController {
         });
     });
   }
-
-
-
 
   static updateProgram(data) {
     return new Promise((resolve, reject) => {
@@ -317,4 +416,3 @@ export class UserController {
     });
   }
 }
-

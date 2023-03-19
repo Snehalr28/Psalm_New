@@ -9,7 +9,7 @@ function OnboardingS({navigation}) {
   const [isLoading, setisLoading] = useState(true);
 
   console.log('Show Intro response isss', showIntro);
-  console.log('Skip Value');
+  console.log('is loader value', isLoading);
 
   useEffect(() => {
     AsyncStorage.getItem('first_time').then(value => {
@@ -60,27 +60,39 @@ function OnboardingS({navigation}) {
     },
   ];
 
-  renderNextButton = () => {
+  const renderNextButton = () => {
     return (
-      <View style={styles.buttonCircle}>
-        <Text style={{color: 'white'}}>Next</Text>
-      </View>
+      <>
+        {showIntro == true && isLoading == false ? null : (
+          <View style={styles.buttonCircle}>
+            <Text style={{color: 'white'}}>Next</Text>
+          </View>
+        )}
+      </>
     );
   };
 
-  renderDoneButton = () => {
+  const renderDoneButton = () => {
     return (
-      <View style={styles.buttonCircle}>
-        <Text style={{color: 'white'}}>Next</Text>
-      </View>
+      <>
+        {showIntro == true && isLoading == false ? null : (
+          <View style={styles.buttonCircle}>
+            <Text style={{color: 'white'}}>Next</Text>
+          </View>
+        )}
+      </>
     );
   };
 
-  renderSkipButton = () => {
+  const renderSkipButton = () => {
     return (
-      <View>
-        <Text style={{color: 'black', marginTop: 15}}>Skip</Text>
-      </View>
+      <>
+        {showIntro == true && isLoading == false ? null : (
+          <View>
+            <Text style={{color: 'black', marginTop: 15}}>Skip</Text>
+          </View>
+        )}
+      </>
     );
   };
   const showLoder = () => {
@@ -145,9 +157,20 @@ function OnboardingS({navigation}) {
   return (
     <>
       {isLoading && showLoder()}
-      {isLoading == 'false' &&  showIntro == 'true' ? (
-        <Login />
-      ) :  (
+      {/* { showIntro ? (<Login />) : (<AppIntroSlider
+          data={slides}
+          renderItem={RenderItem}
+          renderDoneButton={renderDoneButton}
+          renderNextButton={renderNextButton}
+          renderSkipButton={renderSkipButton}
+          showSkipButton={true}
+          onDone={onDone}
+          onSkip={onSkip}
+          activeDotStyle={{backgroundColor: 'red'}}
+        />
+      )} */}
+      {showIntro == true && isLoading == false ? <Login /> : null}
+      {showIntro == false && isLoading == false ? (
         <AppIntroSlider
           data={slides}
           renderItem={RenderItem}
@@ -159,7 +182,7 @@ function OnboardingS({navigation}) {
           onSkip={onSkip}
           activeDotStyle={{backgroundColor: 'red'}}
         />
-      )}
+      ) : null}
 
       {/* {isLoading && showLoder()}
       {showIntro ? (
@@ -233,7 +256,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   activityIndicator: {
-    flex: 4,
+    flex: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: 80,
@@ -242,4 +265,3 @@ const styles = StyleSheet.create({
 });
 
 export default OnboardingS;
-

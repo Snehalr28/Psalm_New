@@ -70,6 +70,19 @@ export const userReducer = (
     case TYPES.ADD_MENTOR_ERROR:
       return {...state, isaddMentorRequest: false};
 
+/// add session 
+case TYPES.ADD_SESSION_REQUEST:
+  return {...state, isaddSessionRequest: true};
+case TYPES.ADD_SESSION_SUCCESS:
+  return {
+    ...state,
+    addSession: payload.addSession,
+    isaddSessionRequest: false,
+  };
+case TYPES.ADD_SESSION_ERROR:
+  return {...state, isaddSessionRequest: false};
+
+
     // Fetch Profile Data
 
     case TYPES.FETCH_PROFILE_REQUEST:
@@ -82,6 +95,36 @@ export const userReducer = (
       };
     case TYPES.FETCH_PROFILE_ERROR:
       return {...state, isFetchProfileRequest: false};
+
+
+// single program
+
+case TYPES.SINGLE_PROGRAM_REQUEST:
+  return {...state, isSingleProgramDetailsRequest: true};
+case TYPES. SINGLE_PROGRAM_SUCCESS:
+  return {
+    ...state,
+    singleprogramdata: payload.singleprogramdata,
+    isSingleProgramDetailsRequest: false,
+  };
+case TYPES.FETCH_PROFILE_ERROR:
+  return {...state, isSingleProgramDetailsRequest: false};
+
+  /// all session display
+
+  
+case TYPES.DISPLAY_SESSION_REQUEST:
+  return {...state, isDisplaySessionRequestt: true};
+case TYPES.DISPLAY_SESSION_SUCCESS:
+  return {
+    ...state,
+    sessiondata: payload.sessiondata,
+    isDisplaySessionRequest: false,
+  };
+case TYPES.DISPLAY_SESSION_ERROR:
+  return {...state, isDisplaySessionRequest: false};
+
+
 
    ///Program List
     case TYPES.PROGRAM_LIST_REQUEST:
@@ -121,6 +164,37 @@ export const userReducer = (
       };
     case TYPES.CATEGORY_DISPLAY_ERROR:
       return {...state, iscategoryDisplayRequest: false};
+
+ //mentors display reducer 
+
+      case TYPES.MENTORS_DISPLAY_REQUEST:
+        return {...state, ismentorsDisplayRequest: true};
+      case TYPES.MENTORS_DISPLAY_SUCCESS:
+        return {
+          ...state,
+          mentorlist: payload.mentorlist,
+          ismentorsDisplayRequest: false,
+        };
+      case TYPES.MENTORS_DISPLAY_ERROR:
+        return {...state, ismentorsDisplayRequest: false};
+  
+
+      /// list 
+
+
+
+      case TYPES.LIST_REQUEST:
+        return {...state, islistRequest: true};
+      case TYPES.LIST_SUCCESS:
+        return {
+          ...state,
+          list: payload.list,
+          islistRequest: false,
+        };
+      case TYPES.LIST_ERROR:
+        return {...state, islistRequest: false};
+
+
 
     case TYPES.FORGOT_PASS_REQUEST:
       return {...state, isForgotRequest: true};

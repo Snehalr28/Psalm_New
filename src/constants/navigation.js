@@ -6,6 +6,7 @@ export const NAVIGATION = {
   program: 'Program',
   session: 'Session',
   chat: 'Chat',
+  mentors: 'Mentors',
   editProfile: 'EditProfile',
   onboarding: 'Onboarding',
   forgetPassword: 'ForgetPassword',

@@ -28,6 +28,7 @@ export const TextInputComponent = props => {
         placeholderStyle={{fontFamily:FONTS.REGULAR,}}
         placeholderTextColor="grey"
         keyboardType={props.keyboardType}
+        onBlur={props.onBlur}
       />
       {props.empty ? (
         <Text style={[props.condtionText, styles.conditionText]}>{props.TextMessage}</Text>
